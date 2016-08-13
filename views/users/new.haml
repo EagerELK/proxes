@@ -1,0 +1,12 @@
+.row
+  .col-md-2
+  .col-md-8
+    .panel.panel-default
+      .panel-body
+        %form{ method: 'post', action: root_url + '/users' }
+          = csrf_tag
+          = partial('users/identity', locals: { identity: identity })
+          = partial('users/user', locals: { user: user })
+          %button.btn.btn-primary.btn{ type: 'submit' }
+            Create User
+  .col-md-2

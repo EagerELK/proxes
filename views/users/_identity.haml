@@ -1,0 +1,23 @@
+.form-group{ class: ('has-error' if identity.errors[:username]) }
+  %label.control-label Email
+  - if identity.id
+    %input.form-control.border-input{ disabled: true, id: :'identity_username', type: 'text', value: identity.username }
+  - else
+    %input.form-control.border-input{ name: 'identity[username]', id: :'identity_username', type: 'text', autofocus: true, value: identity.username, placeholder: 'Your email address' }
+    -if identity.errors[:username]
+      %p.help-block.text-danger
+        = identity.errors[:username].join(', ')
+
+.form-group{ class: ('has-error' if identity.errors[:password]) }
+  %label.control-label Password
+  %input.form-control.border-input{ name: 'identity[password]', id: 'identity_password', type: 'password', placeholder: 'Your password' }
+  -if identity.errors[:password]
+    %p.help-block.text-danger
+      = identity.errors[:password].join(', ')
+
+.form-group{ class: ('has-error' if identity.errors[:password_confirmation]) }
+  %label.control-label Confirm Password
+  %input.form-control.border-input{ name: 'identity[password_confirmation]', id: 'identity_password_confirmation', type: 'password', placeholder: 'Confirm your password' }
+  -if identity.errors[:password_confirmation]
+    %p.help-block.text-danger
+      = identity.errors[:password_confirmation].join(', ')

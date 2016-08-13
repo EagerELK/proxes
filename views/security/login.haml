@@ -1,0 +1,20 @@
+.row
+  .col-sm-3
+  .col-sm-6
+    .panel.panel-default
+      .panel-heading
+        ProxES Login
+      .panel-body
+        %form{ method: 'post', action: '/auth/identity/callback' }
+          = csrf_tag
+          .form-group
+            %label.control-label Username
+            %input.form-control.border-input{ name: 'username' }
+          .form-group
+            %label.control-label Password
+            %input.form-control.border-input{ name: 'password', type: 'password' }
+          %button.btn.btn-primary{ type: 'submit' } Log In
+          .pull-right
+            No account yet?
+            %a.btn.btn-default{ href: '/auth/identity/register' } Register
+  .col-sm-3

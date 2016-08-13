@@ -1,0 +1,12 @@
+.row
+  .col-md-2
+  .col-md-8
+    .panel.panel-default
+      .panel-body
+        %form{ method: 'post', action: root_url + "/users/#{user.id}" }
+          %input{ name: '_method', value: 'PUT', type: 'hidden' }
+          = csrf_tag
+          = partial('users/user', locals: { user: user })
+          %button.btn.btn-primary{ type: 'submit' }
+            Update User
+  .col-md-2

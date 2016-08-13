@@ -7,3 +7,5 @@
 /pkg/
 /spec/reports/
 /tmp/
+*_secret
+/node_modules

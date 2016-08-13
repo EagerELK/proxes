@@ -1,0 +1,20 @@
+%ul.nav.nav-pills.nav-stacked
+  - if defined?(current_user) && current_user
+    %li
+      %a{ href: root_url + '/' }
+        %i.fa.fa-pie-chart
+        Dashboard
+    - if current_user.admin?
+      %li
+        %a{ href: root_url + '/users' }
+          %i.fa.fa-user
+          Users
+  - else
+    %li.active
+      %a{ href: '/auth/identity' }
+        %i.fa.fa-user
+        Log In
+    %li
+      %a{ href: '/auth/identity/register' }
+        %i.fa.fa-pencil-square-o
+        Register

@@ -1,5 +1,5 @@
-require "proxes/version"
-
-module Proxes
-  # Your code goes here...
-end
+require 'proxes/version'
+require 'proxes/base'
+require 'proxes/app'
+require 'proxes/security'
+require 'proxes/es_request'

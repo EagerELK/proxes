@@ -1,0 +1,44 @@
+!!! 5
+%html{ lang: 'en' }
+  %head
+    %meta{ charset: 'utf-8' }
+    %meta{ 'http-equiv': "X-UA-Compatible", content: "IE=edge,chrome=1" }
+    %meta{ name: "viewport", content: "width=device-width, initial-scale=1" }
+    %link{ rel: "apple-touch-icon", sizes: "76x76", href: root_url + '/assets/img/apple-icon.png' }
+
+    %title
+      ProxES
+      - if defined? title
+        = "- #{title}"
+
+    %meta{ name: "description", content: "" }
+    %meta{ name: "author", content: "" }
+
+    / Le styles
+    %link{ rel: 'stylesheet', href: 'https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css', media: 'screen' }
+    %link{ rel: 'stylesheet', href: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css', media: 'screen' }
+    /[if lt IE 9] <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    /[if lt IE 9] <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    %style
+      body { padding-top: 60px; }
+  %body
+    = partial('navbar', locals: { title: (defined?(title) ? title : 'ProxES') })
+    .container-fluid
+      .row
+        .col-md-3.sidebar
+          = partial('sidebar')
+
+        .col-md-9
+          = partial('notifications')
+          = yield
+          %footer.footer.text-muted.text-center
+            %hr
+            .copyright
+              :plain
+                &copy; <script>document.write(new Date().getFullYear())</script>, JadeIT
+
+
+    / Placed at the end of the document so the pages load faster
+    %script{ type: 'text/javascript', src: '/assets/js/bundle.js' }
+    %script{ type: 'text/javascript', src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js' }
+    %script{ type: 'text/javascript', src: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' }

@@ -1,0 +1,21 @@
+.row
+  .col-sm-12
+    .panel.panel-success
+      .panel-heading
+        You can now start using this Elasticsearch cluster:
+      .panel-body
+        %h4 Send Data
+        %pre
+          :plain
+            curl -X POST 'http://proxes.co.za/#{ current_user.index_prefix}/test' \
+            -H 'Authorization: YourTokenHere' -d '{"message":"Get cracking!"}'
+
+        %h4 Search
+        %pre
+          curl -X GET 'http://proxes.co.za/#{ current_user.index_prefix}/_search' -H 'Authorization: YourTokenHere'
+
+        %form.text-center.lead{ method: 'post', action: root_url + '/tokens' }
+          No Token yet?
+          = csrf_tag
+          %button.btn.btn-primary{ type: 'submit' } Get One
+

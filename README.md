@@ -1,8 +1,26 @@
-# Proxes
+[![Build Status](https://travis-ci.org/EagerELK/proxes.svg?branch=master)](https://travis-ci.org/EagerELK/proxes)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/proxes`. To experiment with that code, run `bin/console` for an interactive prompt.
+# ProxES
 
-TODO: Delete this and the text above, and describe your gem
+ProxES provides a couple of components to allow you to embed and wrap
+Elasticsearch within your Rack app.
+
+## Components
+
+ProxES has two main components that works together, but can be used separately
+as well: 
+
+### 1. Management Interface
+
+This interface gives you the ability to manage your Elasticsearch users and get
+and overview of your Elasticsearch cluster.
+
+### 2. Security Middleware
+
+The Rack middleware checks all requests going to your Elasticsearch cluster
+against the users and permissions you've set up in the Management Interface. It
+uses a combination of [Pundit](https://github.com/elabs/pundit) and
+[OmniAuth](https://github.com/omniauth/omniauth) to secure your cluster.
 
 ## Installation
 
@@ -22,7 +40,15 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Check the included [`config.ru`](https://github.com/EagerELK/proxes/blob/master/config.ru) file for an example setup.
+
+At a minimum, you need to
+
+* Set up Session Middleware
+* Set up OmniAuth to Authenticate the user
+* Mount the `ProxES::App`
+* Proxy all Elasticsearch requests after running it through the `ProxES::Security`
+middleware
 
 ## Development
 
@@ -34,8 +60,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/proxes.
 
-
 ## License
 
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the [LGPLv3 license](http://www.gnu.org/licenses/lgpl-3.0.html).
 
