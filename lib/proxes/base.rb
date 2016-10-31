@@ -11,6 +11,7 @@ module ProxES
 
     use Rack::MethodOverride
     plugin :all_verbs
+    plugin :empty_root
 
     plugin :default_headers,
       'Content-Type'=>'text/html',
@@ -26,13 +27,14 @@ module ProxES
     plugin :indifferent_params
     plugin :flash
     plugin :halt
-    plugin :public, root: opts[:public]
 
     plugin(:not_found) { view 'http_404' }
     plugin(:error_handler) do |e|
       case true
       when e.is_a?(Roda::RodaPlugins::Authentication::NotAuthenticated) || e.is_a?(OmniAuth::Error)
         request.redirect '/auth/identity'
+      when e.is_a?(Pundit::NotAuthorizedError)
+        request.halt 404
       else
         logger.error e
         raise e unless ENV['RACK_ENV'] == 'production'

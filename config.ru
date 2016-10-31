@@ -5,6 +5,10 @@ $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 require 'proxes'
 require 'proxes/db'
 
+raise 'Unconfigured' unless ENV['ELASTICSEARCH_URL']
+
+use Rack::Static, urls: ['/assets'], root: 'public'
+
 use Rack::Session::Pool
 # use Rack::Session::Cookie,
 #   :key => '_ProxES_session',

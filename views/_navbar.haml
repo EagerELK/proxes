@@ -1,25 +1,25 @@
-.navbar.navbar-default.navbar-fixed-top
-  .container-fluid
-    .navbar-header
-      %span.navbar-brand
-        ProxES
-        - if defined? title
-          = "- #{title}"
-      %button.navbar-toggle.collapsed{ type: 'button', 'data-toggle': 'collapse', 'data-target': '#navbar', 'aria-expanded': 'false', 'aria-controls': 'navbar' }
-        %span.sr-only Toggle navigation
-        %span.icon-bar.bar1
-        %span.icon-bar.bar2
-        %span.icon-bar.bar3
-    #navbar.navbar-collapse.collapse
-      -if current_user
-        %form.navbar-form.navbar-right{ action: '/auth/identity', method: 'post' }
-          = csrf_tag
-          %input{ name: '_method', value: 'DELETE', type: 'hidden' }
-          %button.btn.btn-default{ type: 'submit' }
-            / %i.ti-panel
-            Logout
-      - else
-        %ul.nav.navbar-nav.navbar-right
-          %li
-            %a.btn.btn-link{ href: '/auth/identity' }
-              Log In
+.navbar.navbar-default.navbar-static-top{ role: 'navigation', style: 'margin-bottom: 0' }
+  .navbar-header
+    %span.navbar-brand
+      ProxES
+      - if defined? title
+        = "- #{title}"
+    %button.navbar-toggle.collapsed{ type: 'button', 'data-toggle': 'collapse', 'data-target': '#navbar', 'aria-expanded': 'false', 'aria-controls': 'navbar' }
+      %span.sr-only Toggle navigation
+      %span.icon-bar.bar1
+      %span.icon-bar.bar2
+      %span.icon-bar.bar3
+  -if current_user
+    %form.nav.navbar-top-links.navbar-form.navbar-right{ action: '/auth/identity', method: 'post' }
+      = csrf_tag
+      %input{ name: '_method', value: 'DELETE', type: 'hidden' }
+      %button.btn.btn-default{ type: 'submit' }
+        / %i.ti-panel
+        Logout
+    .navbar-default.sidebar{ role: 'navigation' }
+      = partial('sidebar')
+  - else
+    %ul.nav.navbar-top-links.navbar-right
+      %li
+        %a.btn.btn-link{ href: '/auth/identity' }
+          Log In

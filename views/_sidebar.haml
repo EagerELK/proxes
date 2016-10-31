@@ -2,7 +2,7 @@
   - if defined?(current_user) && current_user
     %li
       %a{ href: root_url + '/' }
-        %i.fa.fa-pie-chart
+        %i.fa.fa-dashboard.fa-fw
         Dashboard
     - if current_user.admin?
       %li

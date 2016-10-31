@@ -18,8 +18,6 @@ module ProxES
     route do |r|
       r.multi_route
 
-      r.public
-
       r.get do
         authenticate!
 
