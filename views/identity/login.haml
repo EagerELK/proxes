@@ -5,8 +5,7 @@
       .panel-heading
         ProxES Login
       .panel-body
-        %form{ method: 'post', action: '/auth/identity/callback' }
-          = csrf_tag
+        %form{ method: 'post', action: '/_proxes/auth/identity/callback' }
           .form-group
             %label.control-label Username
             %input.form-control.border-input{ name: 'username' }

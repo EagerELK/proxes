@@ -5,7 +5,6 @@ Sequel.migration do
       String :name
       String :surname
       String :email
-      String :role
       DateTime :created_at
       DateTime :updated_at
     end
@@ -17,6 +16,13 @@ Sequel.migration do
       String :crypted_password
       DateTime :created_at
       DateTime :updated_at
+    end
+
+    create_table :user_roles do
+      primary_key :id
+      foreign_key :user_id, :users
+      String :role
+      unique [:user_id, :role]
     end
   end
 end

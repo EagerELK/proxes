@@ -14,8 +14,7 @@
         %pre
           curl -X GET 'http://proxes.co.za/#{ current_user.index_prefix}/_search' -H 'Authorization: YourTokenHere'
 
-        %form.text-center.lead{ method: 'post', action: root_url + '/tokens' }
+        %form.text-center.lead{ method: 'post', action: '/tokens' }
           No Token yet?
-          = csrf_tag
           %button.btn.btn-primary{ type: 'submit' } Get One
 

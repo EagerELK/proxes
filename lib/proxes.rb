@@ -1,5 +1,3 @@
 require 'proxes/version'
-require 'proxes/base'
 require 'proxes/app'
 require 'proxes/security'
-require 'proxes/es_request'

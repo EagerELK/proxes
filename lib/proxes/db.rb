@@ -7,6 +7,8 @@ DB = Sequel.connect(ENV.delete('DATABASE_URL'))
 
 DB.loggers << Logger.new($stdout)
 
+DB.extension(:pagination)
+
 Sequel::Model.plugin :auto_validations
 Sequel::Model.plugin :prepared_statements
 Sequel::Model.plugin :prepared_statements_associations

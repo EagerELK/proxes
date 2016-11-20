@@ -2,47 +2,60 @@
 libdir = File.expand_path(File.dirname(__FILE__) + '/lib')
 $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 
+raise 'Unconfigured' unless ENV['ELASTICSEARCH_URL']
+
 require 'proxes'
 require 'proxes/db'
 
-raise 'Unconfigured' unless ENV['ELASTICSEARCH_URL']
-
 use Rack::Static, urls: ['/assets'], root: 'public'
-
-use Rack::Session::Pool
-# use Rack::Session::Cookie,
-#   :key => '_ProxES_session',
-#   #:secure=>!TEST_MODE, # Uncomment if only allowing https:// access
-#   :secret=>File.read('.session_secret')
+use Rack::MethodOverride
+use Rack::Session::Cookie,
+  :key => '_ProxES_session',
+  #:secure=>!TEST_MODE, # Uncomment if only allowing https:// access
+  :secret=>File.read('.session_secret')
 
 require 'omniauth'
 require 'omniauth-identity'
+require 'proxes/controllers/auth_identity'
 # OmniAuth.config.test_mode = true
-
 use OmniAuth::Builder do
   # The identity provider is used by the App.
   provider :identity,
     fields: [:username],
+    callback_path: '/_proxes/auth/identity/callback',
     model: ProxES::Identity,
-    on_login: ProxES::Security,
-    on_registration: ProxES::Security,
+    on_login: ProxES::AuthIdentity,
+    on_registration: ProxES::AuthIdentity,
     locate_conditions: lambda{|req| {username: req['username']} }
 end
-
-OmniAuth.config.on_failure = Proc.new { |env|
-  OmniAuth::FailureEndpoint.new(env).redirect_to_failure
-}
+OmniAuth.config.on_failure = ProxES::AuthIdentity
 
 require 'warden'
 require 'proxes/strategies/jwt_token'
 use Warden::Manager do |manager|
   manager.default_strategies :jwt_token
   manager.scope_defaults :default, action: '_proxes/unauthenticated'
-  manager.failure_app = ProxES::Security
+  manager.failure_app = ProxES::App
 end
-
 Warden::Manager.serialize_into_session { |user| user.id }
 Warden::Manager.serialize_from_session { |id| ProxES::User[id] }
+
+# Management App
+require 'proxes/controllers'
+
+map '/_proxes' do
+  {
+    '/users' => ProxES::Users,
+    '/user-roles' => ProxES::UserRoles,
+  }.each do |route, app|
+    map route do
+      run app
+    end
+  end
+
+  run ProxES::App
+end
+
 
 # Proxy all Elasticsearch requests
 map '/' do
@@ -51,9 +64,4 @@ map '/' do
 
   # Forward requests to ES
   run Rack::Proxy.new(backend: ENV['ELASTICSEARCH_URL'])
-end
-
-# Management App
-map '/_proxes' do
-  run ProxES::App
 end
