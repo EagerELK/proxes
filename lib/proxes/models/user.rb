@@ -8,9 +8,18 @@ require 'active_support/core_ext/object/blank'
 module ProxES
   class User < Sequel::Model
     one_to_many :identity
+    one_to_many :user_roles
 
     def has_role?(check)
-      check.to_sym == role.to_sym
+      user_roles.map(&:role).map(&:to_sym).include? check.to_sym
+    end
+
+    def admin?
+      (user_roles.map(&:role) & ['admin', 'super_admin']).any?
+    end
+
+    def admin?
+      has_role?(:admin) || has_role?(:super_admin)
     end
 
     def method_missing(method_sym, *arguments, &block)
@@ -30,9 +39,6 @@ module ProxES
       validates_presence :email
       validates_unique   :email unless email.blank?
       validates_format   /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :email unless email.blank?
-
-      validates_presence :role
-      validates_includes ['super_admin', 'admin', 'owner', 'user'], :role unless role.blank?
     end
 
     def index_prefix

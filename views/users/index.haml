@@ -1,0 +1,22 @@
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading
+        = title
+      %table.table.table-striped
+        %thead
+          %tr
+            %th Email
+            %th Name
+            %th Surname
+            %th Roles
+        %tbody
+          -list.each do |entity|
+            %tr
+              %td
+                %a{ href: "/_proxes/users/#{entity.id}" }= entity.email
+              %td= entity.name
+              %td= entity.surname
+              %td= entity.user_roles.map(&:role).map(&:titlecase).join(', ')
+      .panel-body.text-right
+        %a.btn.btn-primary{ href: '/_proxes/users/new' } New User

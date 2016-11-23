@@ -10,16 +10,15 @@
       %span.icon-bar.bar2
       %span.icon-bar.bar3
   -if current_user
-    %form.nav.navbar-top-links.navbar-form.navbar-right{ action: '/auth/identity', method: 'post' }
-      = csrf_tag
+    %form.nav.navbar-top-links.navbar-form.navbar-right{ action: '/_proxes/auth/identity', method: 'post' }
       %input{ name: '_method', value: 'DELETE', type: 'hidden' }
       %button.btn.btn-default{ type: 'submit' }
         / %i.ti-panel
         Logout
-    .navbar-default.sidebar{ role: 'navigation' }
-      = partial('sidebar')
   - else
     %ul.nav.navbar-top-links.navbar-right
       %li
         %a.btn.btn-link{ href: '/auth/identity' }
           Log In
+  .navbar-default.sidebar{ role: 'navigation' }
+    = haml :'partials/sidebar'

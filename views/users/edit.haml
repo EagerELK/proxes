@@ -3,10 +3,9 @@
   .col-md-8
     .panel.panel-default
       .panel-body
-        %form{ method: 'post', action: root_url + "/users/#{user.id}" }
+        %form.form-horizontal{ method: 'post', action: "/_proxes/users/#{entity.id}" }
           %input{ name: '_method', value: 'PUT', type: 'hidden' }
-          = csrf_tag
-          = partial('users/user', locals: { user: user })
+          = haml :'users/user', locals: { user: entity }
           %button.btn.btn-primary{ type: 'submit' }
             Update User
   .col-md-2

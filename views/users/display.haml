@@ -1,0 +1,32 @@
+.row
+  .col-md-2
+  .col-md-8
+    .panel.panel-default
+      .panel-body
+        .author
+          %img.pull-right.thumbnail{ src: entity.gravatar }
+          %h4.title= entity.email
+
+        %hr
+        %p.description
+          %label Name:
+          = entity.name
+        %p.description
+          %label Surname:
+          = entity.surname
+        %p.description
+          %label Roles:
+          = entity.user_roles.map(&:role).map(&:titlecase).join(', ')
+        %p.description
+          %label Signed up:
+          = entity.created_at.strftime('%Y-%m-%d %H:%M:%S')
+  
+        .row
+          .col-md-6
+            %a.btn.btn-default{ href: "/_proxes/users/#{entity.id}/edit" } Edit
+          .col-md-6.text-right
+            - if policy(entity).delete?
+              %form{ method: 'post', action: "/_proxes/users/#{entity.id}" }
+                %input{ name: '_method', value: 'DELETE', type: 'hidden' }
+                %button.btn.btn-warning{ type: 'submit' } Delete
+  .col-md-2

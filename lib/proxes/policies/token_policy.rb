@@ -1,10 +1,9 @@
-require 'proxes/policies/application_policy'
-
+require_relative 'application_policy'
 
 module ProxES
-  class UserPolicy < ApplicationPolicy
+  class TokenPolicy < ApplicationPolicy
     def create?
-      user && user.admin?
+      user.admin?
     end
 
     def list?
@@ -12,7 +11,7 @@ module ProxES
     end
 
     def read?
-      user && (record.id == user.id || user.admin?)
+      record.id == user.id || user.admin?
     end
 
     def update?
@@ -29,16 +28,16 @@ module ProxES
 
     def permitted_attributes
       attribs = [:email, :name, :surname]
-      attribs << :user_roles if user.admin?
+      attribs << :role if user.admin?
       attribs
     end
 
     class Scope < ApplicationPolicy::Scope
       def resolve
-        if user && user.admin?
-          scope
+        if user.admin?
+          scope.all
         else
-          scope.where(id: -1)
+          []
         end
       end
     end

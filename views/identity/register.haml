@@ -1,0 +1,17 @@
+.row
+  .col-sm-12
+    %h1 ProxES Registration
+.row
+  .col-sm-2
+  .col-sm-8
+    .panel.panel-default
+      .panel-heading
+        ProxES Registration
+      .panel-body
+        %form.form-horizontal{ method: 'post', action: '/_proxes/auth/identity/new' }
+          = form_control(:username, identity, label: 'Email', placeholder: 'Your email address')
+          = form_control(:password, identity, label: 'Password', type: :password)
+          = form_control(:password_confirmation, identity, label: 'Confirm Password', type: :password)
+
+          %button.btn.btn-primary{ type: 'submit' } Register
+  .col-sm-2

@@ -1,0 +1,11 @@
+= form_control(:name, user)
+= form_control(:surname, user)
+.form-group{ class: ('has-error' if user.errors[:user_roles]) }
+  %label.control-label.col-sm-3 Role
+  .col-sm-9
+    %select.form-control.border-input{ name: 'user[user_roles][]', id: 'user_user_roles', multiple: true }
+      - ProxES::UserRole.role_names.each do |name|
+        %option{ value: name, selected: user.has_role?(name) }= name.titlecase
+  -if user.errors[:role]
+    %p.help-block.text-danger
+      = user.errors[:role].join(', ')
