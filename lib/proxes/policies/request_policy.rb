@@ -19,5 +19,7 @@ module ProxES
 end
 
 require 'proxes/policies/request/root_policy'
+require 'proxes/policies/request/stats_policy'
 require 'proxes/policies/request/search_policy'
+require 'proxes/policies/request/cluster_policy'
 require 'proxes/policies/request/snapshot_policy'

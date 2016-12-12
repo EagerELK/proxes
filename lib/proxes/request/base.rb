@@ -10,16 +10,16 @@ module ProxES
         parse
       end
 
-      def parse
-        raise 'Not implemented'
-      end
-
       def endpoint
         '_' + ActiveSupport::Inflector.demodulize(self.class.name).downcase
       end
 
+      def parse
+        raise "#{endpoint} Not implemented"
+      end
+
       def has_indices?
-        raise 'Not implemented'
+        raise "#{endpoint} Not implemented"
       end
 
       private

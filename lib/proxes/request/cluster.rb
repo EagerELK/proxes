@@ -2,9 +2,9 @@ require 'rack'
 
 module ProxES
   class Request
-    class Stats < Base
+    class Cluster < Base
       def has_indices?
-        true
+        false
       end
 
       def parse
