@@ -31752,7 +31752,7 @@ var documents = React.createClass({
                 React.createElement(
                     'h4',
                     null,
-                    React.createElement('i', { className: 'fa fa-files' }),
+                    React.createElement('i', { className: 'fa fa-file-text-o' }),
                     ' Documents'
                 )
             ),
@@ -31961,7 +31961,7 @@ var storage = React.createClass({
                 React.createElement(
                     'h4',
                     null,
-                    React.createElement('i', { className: 'fa fa-files' }),
+                    React.createElement('i', { className: 'fa fa-server' }),
                     ' Storage'
                 )
             ),
