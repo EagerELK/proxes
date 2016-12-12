@@ -1,5 +1,5 @@
 require 'pundit'
-require 'proxes/es_request'
+require 'proxes/request'
 
 module ProxES
   module Helpers
@@ -7,12 +7,8 @@ module ProxES
       include ::Pundit
 
       def authorize(record, query = nil)
-        if record.is_a?(::ProxES::ESRequest)
-          if record.action.nil? && record.index
-            query = '_index?'
-          else
-            query = record.action ? record.action.to_s + '?' : '_root?'
-          end
+        if record.is_a?(::ProxES::Request::Base)
+          query = record.request_method.downcase
         else
           raise ArgumentError, 'Pundit cannot determine the query' if query.nil?
         end

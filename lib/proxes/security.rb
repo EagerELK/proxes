@@ -1,50 +1,41 @@
+require 'logger'
 require 'rack-proxy'
-require 'proxes/es_request'
-require 'proxes/policies/es_policy'
+require 'proxes/request'
+require 'proxes/policies/request_policy'
 require 'proxes/helpers/pundit'
 require 'proxes/helpers/authentication'
 
 module ProxES
   class Security
-    attr_reader :env
+    attr_reader :env, :logger
 
     include ProxES::Helpers::Authentication
     include ProxES::Helpers::Pundit
 
-    def initialize(app)
+    def initialize(app, logger = nil)
       @app = app
+      @logger = logger || Logger.new(nil)
     end
 
     def call(env)
       @env = env
 
-      request = ProxES::ESRequest.new(env)
+      request = ProxES::Request.from_env(env)
 
-      unless ENV['RACK_ENV'] == 'production'
-        puts '================================================================================'
-        puts '= ' + "Request: #{request.fullpath}".ljust(76) + '='
-        puts '= ' + "Endpoint: #{request.endpoint}".ljust(76) + '='
-        puts '= ' + "Index: #{request.index}".ljust(76) + '='
-        puts '= ' + "Type: #{request.type}".ljust(76) + '='
-        puts '= ' + "Action: #{request.action}".ljust(76) + '='
-        puts '================================================================================'
-      end
+      logger.debug '================================================================================'
+      logger.debug '= ' + "Request: #{request.fullpath}".ljust(76) + ' ='
+      logger.debug '= ' + "Endpoint: #{request.endpoint}".ljust(76) + ' ='
+      logger.debug '================================================================================'
 
+      authorize request
       if request.has_indices?
         policy_scope request
-      else
-        authorize request
       end
 
-      unless ENV['RACK_ENV'] == 'production'
-        puts '================================================================================'
-        puts '= ' + "Request: #{request.fullpath}".ljust(76) + '='
-        puts '= ' + "Endpoint: #{request.endpoint}".ljust(76) + '='
-        puts '= ' + "Index: #{request.index}".ljust(76) + '='
-        puts '= ' + "Type: #{request.type}".ljust(76) + '='
-        puts '= ' + "Action: #{request.action}".ljust(76) + '='
-        puts '================================================================================'
-      end
+      logger.debug '================================================================================'
+      logger.debug '= ' + "Request: #{request.fullpath}".ljust(76) + ' ='
+      logger.debug '= ' + "Endpoint: #{request.endpoint}".ljust(76) + ' ='
+      logger.debug '================================================================================'
 
       @app.call env
     end

@@ -9,8 +9,8 @@ describe ProxES::Security do
   end
 
   context '#call' do
-    fit 'rejects anonymous requests' do
-      expect { get('/') }.to raise_error(ProxES::Helpers::NotAuthenticated)
+    it 'rejects anonymous requests' do
+      expect { get('/') }.to raise_error(Pundit::NotAuthorizedError)
     end
 
     context 'logged in' do
@@ -30,6 +30,8 @@ describe ProxES::Security do
       end
 
       it 'authorizes calls that do actions' do
+        expect(get("/")).to be_ok
+        expect{ get('/_snapshot') }.to raise_error(Pundit::NotAuthorizedError)
       end
     end
   end

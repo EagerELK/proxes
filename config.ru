@@ -60,7 +60,7 @@ end
 # Proxy all Elasticsearch requests
 map '/' do
   # Security
-  use ProxES::Security
+  use ProxES::Security, Logger.new($stdout)
 
   # Forward requests to ES
   run Rack::Proxy.new(backend: ENV['ELASTICSEARCH_URL'])
