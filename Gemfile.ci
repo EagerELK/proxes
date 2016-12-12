@@ -4,3 +4,10 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'sqlite3'
+if RUBY_VERSION < '1.9.3'
+  gem 'activesupport', '<4.0.0'
+elsif RUBY_VERSION < '2.2.0'
+  gem 'activesupport', '<5.0.0'
+else
+  gem 'activesupport'
+end

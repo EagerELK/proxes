@@ -24,12 +24,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'racksh'
   spec.add_development_dependency 'rack-test'
-  spec.add_development_dependency 'pry-byebug'
-  spec.add_development_dependency 'rubocop'
-  spec.add_development_dependency 'guard'
-  spec.add_development_dependency 'guard-rake'
-  spec.add_development_dependency 'guard-rspec'
-  spec.add_development_dependency 'guard-shotgun'
   spec.add_development_dependency 'database_cleaner'
   spec.add_development_dependency 'factory_girl'
 
