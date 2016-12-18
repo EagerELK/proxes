@@ -21,7 +21,7 @@ module ProxES
         redirect '/auth/identity'
       else
         flash.now[:warning] = 'Could not complete the registration. Please try again.'
-        view 'security/register', locals: { identity: identity }
+        haml :'identity/register', locals: { identity: identity }
       end
     end
 
