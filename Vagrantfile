@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "ubuntu/xenial64"
+  config.vm.box = "ubuntu/trusty64"
 
   config.vm.network :private_network, ip: '172.16.248.110'
 
@@ -16,18 +16,18 @@ Vagrant.configure(2) do |config|
     sudo apt-get install -y screen curl git build-essential libssl-dev
 
     # Ruby
-    sudo apt-get install -y ruby2.3 ruby2.3-dev
-    # if [ ! -f /home/vagrant/.rvm/scripts/rvm ]
-    # then
-    #     gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-    #     \\curl -sSL https://get.rvm.io | bash
-    # fi
-    # source /home/vagrant/.rvm/scripts/rvm
+    # sudo apt-get install -y ruby2.3 ruby2.3-dev
+    if [ ! -f /home/vagrant/.rvm/scripts/rvm ]
+    then
+        gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+        \\curl -sSL https://get.rvm.io | bash
+    fi
+    source /home/vagrant/.rvm/scripts/rvm
 
     # Ruby and it's Gems
     cd /vagrant
-    # rvm use $(cat .ruby-version) --install
-    sudo gem install bundler --no-rdoc --no-ri
+    rvm use $(cat .ruby-version) --install
+    gem install bundler --no-rdoc --no-ri
     bundle install
 
     # Node
