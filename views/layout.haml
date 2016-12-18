@@ -28,6 +28,8 @@
       #page-wrapper
         .row
           .col-md-12
+            -if defined? title
+              %h1.page-header= title
             = haml :'partials/notifications'
             = yield
         %footer.footer.text-muted.text-center
