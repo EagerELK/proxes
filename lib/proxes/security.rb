@@ -37,7 +37,13 @@ module ProxES
       logger.debug '= ' + "Endpoint: #{request.endpoint}".ljust(76) + ' ='
       logger.debug '================================================================================'
 
-      @app.call env
+      begin
+        @app.call env
+      rescue Errno::EHOSTUNREACH
+        [500, {'Content-Type' => 'application/json'}, ['{"error":"Could not reach Elasticsearch at ' + ENV['ELASTICSEARCH_URL'] + '}']]
+      rescue Errno::ECONNREFUSED
+        [500, {'Content-Type' => 'application/json'}, ['{"error":"Elasticsearch not listening at ' + ENV['ELASTICSEARCH_URL'] + '}']]
+      end
     end
   end
 end
