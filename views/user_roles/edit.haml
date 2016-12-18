@@ -1,0 +1,11 @@
+.row
+  .col-md-2
+  .col-md-8
+    .panel.panel-default
+      .panel-body
+        %form.form-horizontal{ method: 'post', action: "/_proxes/user-roles/#{entity.id}" }
+          %input{ name: '_method', value: 'PUT', type: 'hidden' }
+          = haml :'user_roles/form', locals: { entity: entity }
+          %button.btn.btn-primary{ type: 'submit' }
+            Update User Role
+  .col-md-2

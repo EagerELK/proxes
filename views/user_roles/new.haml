@@ -1,0 +1,10 @@
+.row
+  .col-md-2
+  .col-md-8
+    .panel.panel-default
+      .panel-body
+        %form.form-horizontal{ method: 'post', action: '/_proxes/user-roles' }
+          = haml :'user_roles/form', locals: { entity: entity }
+          %button.btn.btn-primary.btn{ type: 'submit' }
+            Create User Role
+  .col-md-2

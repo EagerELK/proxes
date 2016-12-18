@@ -5,10 +5,9 @@ module ProxES
     many_to_one :user
 
     subset(:admins, role: ['admin', 'super_admin'])
-    subset(:authorisers, role: 'authoriser')
 
     def validate
-      validates_presence :user_id
+      validates_presence [:user_id, :role]
       validates_includes self.class.role_names, :role
     end
 

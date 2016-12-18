@@ -1,0 +1,18 @@
+.row
+  .col-md-2
+  .col-md-8
+    .panel.panel-default
+      .panel-body
+        %p.description
+          %label Role:
+          = entity.role
+
+        .row
+          .col-md-6
+            %a.btn.btn-default{ href: "/_proxes/user-roles/#{entity.id}/edit" } Edit
+          .col-md-6.text-right
+            - if policy(entity).delete?
+              %form{ method: 'post', action: "/_proxes/user-roles/#{entity.id}" }
+                %input{ name: '_method', value: 'DELETE', type: 'hidden' }
+                %button.btn.btn-warning{ type: 'submit' } Delete
+  .col-md-2

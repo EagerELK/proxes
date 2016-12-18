@@ -16,8 +16,10 @@ Sequel::Model.plugin :timestamps, update_on_create: true
 
 # Models
 require 'proxes/models/user'
+require 'proxes/models/user_role'
 require 'proxes/models/identity'
 
 require 'proxes/policies/user_policy'
+require 'proxes/policies/user_role_policy'
 require 'proxes/policies/token_policy'
 require 'proxes/policies/identity_policy'
