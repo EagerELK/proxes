@@ -5,7 +5,7 @@ module ProxES::Helpers
       type   = opts.delete(:type) || 'text'
       label  = opts.delete(:label) || name.to_s.titlecase
       klass  = opts.delete(:class) || 'form-control' unless type == 'file'
-      group  = opts.delete(:group) || model.class.name.split('::').last.downcase
+      group  = opts.delete(:group) || model.class.to_s.demodulize.underscore
 
       attributes = opts.merge(id: id, name: "#{group}[#{name}]", type: type, class: klass)
       locals = { model: model, label: label, attributes: attributes, name: name, group: group }
