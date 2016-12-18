@@ -24,6 +24,11 @@ module ProxES
           Sequel.extension :migration
           folder = File.expand_path(File.dirname(__FILE__) + '/../../migrate')
 
+          desc 'Check if the migration is current'
+          task :check do
+            Sequel::Migrator.check_current(DB, folder)
+          end
+
           desc 'Migrate ProxES database to latest version'
           task :up do
             Sequel::Migrator.apply(DB, folder)

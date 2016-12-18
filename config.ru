@@ -7,6 +7,9 @@ raise 'Unconfigured' unless ENV['ELASTICSEARCH_URL']
 require 'proxes'
 require 'proxes/db'
 
+Sequel.extension :migration
+Sequel::Migrator.check_current(DB, './migrate')
+
 use Rack::Static, urls: ['/assets'], root: 'public'
 use Rack::MethodOverride
 use Rack::Session::Cookie,
