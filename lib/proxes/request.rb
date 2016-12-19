@@ -1,4 +1,5 @@
 require 'rack'
+require 'proxes/request'
 
 module ProxES
   class Request
@@ -8,17 +9,10 @@ module ProxES
       if splits[1] && splits[1][0] == '_'
         endpoint = splits[1][1..-1].titlecase
       else
-        endpoint = splits.count.positive? ? splits[-1][1..-1].titlecase : 'Root'
+        endpoint = splits.count > 0 ? splits[-1][1..-1].titlecase : 'Root'
       end
-      klass = "ProxES::Request::#{endpoint}"
-      const_get(klass).new(env)
+      require 'proxes/request/' + endpoint.downcase
+      ProxES::Request.const_get(endpoint).new(env)
     end
   end
 end
-
-require 'proxes/request/base'
-require 'proxes/request/root'
-require 'proxes/request/stats'
-require 'proxes/request/search'
-require 'proxes/request/cluster'
-require 'proxes/request/snapshot'

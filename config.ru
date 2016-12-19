@@ -19,6 +19,7 @@ use Rack::Session::Cookie,
 
 require 'omniauth'
 require 'omniauth-identity'
+require 'proxes/models/identity'
 require 'proxes/controllers/auth_identity'
 # OmniAuth.config.test_mode = true
 use OmniAuth::Builder do

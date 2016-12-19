@@ -1,6 +1,7 @@
 require 'rack'
 require 'active_support'
 require 'active_support/inflector'
+require 'proxes/request'
 
 module ProxES
   class Request

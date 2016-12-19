@@ -1,4 +1,5 @@
 require 'rack'
+require 'proxes/request/base'
 
 module ProxES
   class Request

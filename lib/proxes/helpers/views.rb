@@ -24,7 +24,7 @@ module ProxES::Helpers
       haml :'partials/delete_form', locals: locals
     end
 
-    def pagination(list, base_path, count: params[:count])
+    def pagination(list, base_path)
       locals = {
         next_link: list.last_page? ? '#' : "#{base_path}?page=#{list.next_page}&count=#{list.page_size}",
         prev_link: list.first_page? ? '#' : "#{base_path}?page=#{list.prev_page}&count=#{list.page_size}",

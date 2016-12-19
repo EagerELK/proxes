@@ -1,24 +1,24 @@
 - if flash[:danger]
   .alert.alert-danger.alert-dismissible{ role: "alert" }
-    %button.close{ type: "button", 'aria-hidden': "true", 'area-label': "true", 'data-dismiss': "alert" } &times;
+    %button.close{ 'type' => 'button', 'aria-hidden' => 'true', 'area-label' => 'true', 'data-dismiss' => 'alert' } &times;
     - (flash[:danger].is_a?(Array) ? flash[:danger] : [flash[:danger]]).each do |msg|
       %span= msg
 
 - if flash[:warning]
   .alert.alert-warning.alert-dismissible{ role: "alert" }
-    %button.close{ type: "button", 'aria-hidden': "true", 'area-label': "true", 'data-dismiss': "alert" } &times;
+    %button.close{ 'type' => 'button', 'aria-hidden' => 'true', 'area-label' => 'true', 'data-dismiss' => 'alert' } &times;
     - (flash[:warning].is_a?(Array) ? flash[:warning] : [flash[:warning]]).each do |msg|
       %span= msg
 
 - if flash[:success]
   .alert.alert-success.alert-dismissible{ role: "alert" }
-    %button.close{ type: "button", 'aria-hidden': "true", 'area-label': "true", 'data-dismiss': "alert" } &times;
+    %button.close{ 'type' => 'button', 'aria-hidden' => 'true', 'area-label' => 'true', 'data-dismiss' => 'alert' } &times;
     - (flash[:success].is_a?(Array) ? flash[:success] : [flash[:success]]).each do |msg|
       %span= msg
 
 
 - if flash[:info]
   .alert.alert-info.alert-dismissible{ role: "alert" }
-    %button.close{ type: "button", 'aria-hidden': "true", 'area-label': "true", 'data-dismiss': "alert" } &times;
+    %button.close{ 'type' => 'button', 'aria-hidden' => 'true', 'area-label' => 'true', 'data-dismiss' => 'alert' } &times;
     - (flash[:info].is_a?(Array) ? flash[:info] : [flash[:info]]).each do |msg|
       %span= msg

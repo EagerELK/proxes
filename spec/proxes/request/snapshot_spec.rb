@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'proxes/request'
+require 'proxes/request/snapshot'
 
 describe ProxES::Request::Snapshot do
   def get_env(request)

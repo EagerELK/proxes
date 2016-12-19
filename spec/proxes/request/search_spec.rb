@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'proxes/request'
+require 'proxes/request/search'
 
 describe ProxES::Request::Search do
   def get_env(request)
