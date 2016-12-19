@@ -1,5 +1,6 @@
 require 'proxes/controllers/component'
 require 'proxes/models/user'
+require 'proxes/policies/user_policy'
 
 module ProxES
   class Users < Component

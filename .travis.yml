@@ -1,14 +1,13 @@
 sudo: false
 language: ruby
 rvm:
-  - 2.3.1
+  - 2.3.3
   - 1.9.3
 gemfile: Gemfile.ci
 env:
-  - DATABASE_URL="sqlite::memory:" ELASTICSEARCH_URL="http://localhost:9200"
+  - DATABASE_URL="sqlite::memory:" ELASTICSEARCH_URL="http://localhost:9200" RACK_ENV=test
 services:
   - elasticsearch
 before_script:
-  - bundle exec rake proxes:migrate
   - sleep 10
 before_install: gem install bundler -v 1.12.5

@@ -1,5 +1,6 @@
 require 'proxes/controllers/component'
 require 'proxes/models/user_role'
+require 'proxes/policies/user_role_policy'
 
 module ProxES
   class UserRoles < Component

@@ -9,7 +9,6 @@ FactoryGirl.define do
 
   factory :user, class: ProxES::User, aliases: [:'ProxES::User'] do
     email
-
     after(:create) do |user, evaluator|
       user.add_user_role(role: 'user')
     end

@@ -1,7 +1,13 @@
-ENV['RACK_ENV'] = 'test'
+ENV['RACK_ENV'] ||= 'test'
 
 require 'proxes'
 require 'proxes/db'
+if ENV['DATABASE_URL'] == 'sqlite::memory:'
+  folder = File.expand_path(File.dirname(__FILE__) + '/../migrate')
+  Sequel.extension :migration
+  Sequel::Migrator.apply(DB, folder)
+end
+
 require 'rspec'
 require 'rack/test'
 require 'warden'
