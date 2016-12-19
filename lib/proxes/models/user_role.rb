@@ -1,10 +1,11 @@
+# frozen_string_literal: true
 require 'sequel'
 
 module ProxES
   class UserRole < Sequel::Model
     many_to_one :user
 
-    subset(:admins, role: ['admin', 'super_admin'])
+    subset(:admins, role: %w(admin super_admin))
 
     def validate
       validates_presence [:user_id, :role]
@@ -12,7 +13,7 @@ module ProxES
     end
 
     def self.role_names
-      ['super_admin', 'admin', 'user']
+      %w(super_admin admin user)
     end
   end
 end

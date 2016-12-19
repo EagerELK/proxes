@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'proxes/controllers/application'
 require 'proxes/helpers/component'
 
@@ -82,7 +83,7 @@ module ProxES
       entity.destroy
 
       flash[:success] = "#{heading} Deleted"
-      redirect "#{base_path}"
+      redirect base_path.to_s
     end
   end
 end

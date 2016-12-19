@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'proxes/base'
 
 module ProxES
@@ -19,7 +20,7 @@ module ProxES
       {
         exp: Time.now.to_i + timeout,
         iss: 'ProxES',
-        scopes: [ '_search', '_index' ]
+        scopes: %w(_search _index)
       }
     end
 

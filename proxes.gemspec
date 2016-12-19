@@ -1,4 +1,5 @@
 # coding: utf-8
+# frozen_string_literal: true
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'proxes/version'
@@ -9,8 +10,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Jurgens du Toit']
   spec.email         = ['jrgns@jadeit.co.za']
 
-  spec.summary       = %q{Rack wrapper around Elasticsearch to provide security and management features}
-  spec.description   = %q{Rack wrapper around Elasticsearch to provide security and management features}
+  spec.summary       = 'Rack wrapper around Elasticsearch to provide security and management features'
+  spec.description   = 'Rack wrapper around Elasticsearch to provide security and management features'
   spec.homepage      = 'https://github.com/eagerelk/proxes'
   spec.license       = 'LGPLv3'
 

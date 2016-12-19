@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 require 'proxes/request'
 
@@ -8,7 +9,7 @@ describe ProxES::Request do
       'REQUEST_METHOD' => meth,
       'PATH_INFO' => path,
       'REQUEST_PATH' => path,
-      'REQUEST_URI' => path,
+      'REQUEST_URI' => path
     }
   end
 

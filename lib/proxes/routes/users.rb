@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'proxes/base'
 
 module ProxES
@@ -38,7 +39,7 @@ module ProxES
         user     = locals[:user]     = User.new(user_params)
         identity = locals[:identity] = Identity.new(identity_params)
         if identity.valid? && user.valid?
-          DB.transaction(:isolation => :serializable) do
+          DB.transaction(isolation: :serializable) do
             identity.save
             user.save
             user.add_identity identity
@@ -95,7 +96,7 @@ module ProxES
         # Delete
         r.delete do
           authorize user, :delete
-          DB.transaction(:isolation => :serializable) do
+          DB.transaction(isolation: :serializable) do
             user.identity.first.delete
             user.delete
           end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rack'
 require 'proxes/request/base'
 
@@ -17,7 +18,7 @@ module ProxES
         @id == [] ? nil : @id
       end
 
-      def has_indices?
+      def indices?
         true
       end
     end

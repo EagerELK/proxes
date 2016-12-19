@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'pundit'
 require 'proxes/request'
 
@@ -9,8 +10,8 @@ module ProxES
       def authorize(record, query = nil)
         if record.is_a?(::ProxES::Request::Base)
           query = record.request_method.downcase
-        else
-          raise ArgumentError, 'Pundit cannot determine the query' if query.nil?
+        elsif query.nil?
+          raise ArgumentError, 'Pundit cannot determine the query'
         end
         query = :"#{query}?" unless query[-1] == '?'
         super
@@ -20,12 +21,12 @@ module ProxES
         param_key = PolicyFinder.new(record).param_key
         policy = policy(record)
         method_name = if policy.respond_to?("permitted_attributes_for_#{action}")
-          "permitted_attributes_for_#{action}"
-        else
-          'permitted_attributes'
-        end
+                        "permitted_attributes_for_#{action}"
+                      else
+                        'permitted_attributes'
+                      end
 
-        request.params.fetch(param_key, {}).select do |key, value|
+        request.params.fetch(param_key, {}).select do |key, _value|
           policy.public_send(method_name).include? key.to_sym
         end
       end

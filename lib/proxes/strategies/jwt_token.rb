@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'warden'
 require 'jwt'
 
@@ -26,7 +27,10 @@ module ProxES
       end
 
       def authorization_header
-        env['HTTP_AUTHORIZATION'] || env['X-HTTP_AUTHORIZATION'] || env['X_HTTP_AUTHORIZATION'] || env['REDIRECT_X_HTTP_AUTHORIZATION']
+        env['HTTP_AUTHORIZATION'] \
+          || env['X-HTTP_AUTHORIZATION'] \
+          || env['X_HTTP_AUTHORIZATION'] \
+          || env['REDIRECT_X_HTTP_AUTHORIZATION']
       end
     end
   end

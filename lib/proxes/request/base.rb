@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rack'
 require 'active_support'
 require 'active_support/inflector'
@@ -19,11 +20,12 @@ module ProxES
         raise "#{endpoint} Not implemented"
       end
 
-      def has_indices?
+      def indices?
         raise "#{endpoint} Not implemented"
       end
 
       private
+
       def path_parts
         @path_parts ||= path[1..-1].split('/')
       end

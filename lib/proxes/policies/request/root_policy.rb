@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 module ProxES
   class Request
     class RootPolicy < ProxES::RequestPolicy
       def get?
-        !!user
+        !user.nil?
       end
 
       class Scope < ProxES::RequestPolicy::Scope

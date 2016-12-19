@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'proxes/controllers/component'
 require 'proxes/models/user'
 require 'proxes/policies/user_policy'
@@ -31,7 +32,7 @@ module ProxES
       user     = locals[:user]     = User.new(user_params)
       identity = locals[:identity] = Identity.new(identity_params)
       if identity.valid? && user.valid?
-        DB.transaction(:isolation => :serializable) do
+        DB.transaction(isolation: :serializable) do
           identity.save
           user.save
           user.add_identity identity
@@ -85,7 +86,7 @@ module ProxES
       entity.destroy
 
       flash[:success] = "#{heading} Deleted"
-      redirect "/_proxes/users"
+      redirect '/_proxes/users'
     end
   end
 end

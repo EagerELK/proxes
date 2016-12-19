@@ -1,5 +1,5 @@
+# frozen_string_literal: true
 require 'proxes/policies/application_policy'
-
 
 module ProxES
   class UserPolicy < ApplicationPolicy

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'sequel'
 require 'bcrypt'
 require 'digest/md5'
@@ -10,24 +11,24 @@ module ProxES
     one_to_many :identity
     one_to_many :user_roles
 
-    def has_role?(check)
+    def role?(check)
       user_roles.map(&:role).map(&:to_sym).include? check.to_sym
     end
 
     def admin?
-      (user_roles.map(&:role) & ['admin', 'super_admin']).any?
-    end
-
-    def admin?
-      has_role?(:admin) || has_role?(:super_admin)
+      (user_roles.map(&:role) & %w(admin super_admin)).any?
     end
 
     def method_missing(method_sym, *arguments, &block)
       if method_sym.to_s[-1] == '?'
-        has_role?(method_sym[0..-2])
+        role?(method_sym[0..-2])
       else
         super
       end
+    end
+
+    def respond_to_missing?(name, _include_private = false)
+      name[-1] == '?'
     end
 
     def gravatar
@@ -37,8 +38,9 @@ module ProxES
 
     def validate
       validates_presence :email
-      validates_unique   :email unless email.blank?
-      validates_format   /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :email unless email.blank?
+      return if email.blank?
+      validates_unique :email
+      validates_format(/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :email)
     end
 
     def index_prefix

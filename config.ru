@@ -1,4 +1,5 @@
-#\-o 0.0.0.0 -p 9292
+# frozen_string_literal: true
+#\-o 0.0.0.0 -p 9294
 libdir = File.expand_path(File.dirname(__FILE__) + '/lib')
 $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 
@@ -13,9 +14,9 @@ Sequel::Migrator.check_current(DB, './migrate')
 use Rack::Static, urls: ['/assets'], root: 'public'
 use Rack::MethodOverride
 use Rack::Session::Cookie,
-  :key => '_ProxES_session',
-  #:secure=>!TEST_MODE, # Uncomment if only allowing https:// access
-  :secret=>File.read('.session_secret')
+    key: '_ProxES_session',
+    #:secure=>!TEST_MODE, # Uncomment if only allowing https:// access
+    secret: File.read('.session_secret')
 
 require 'omniauth'
 require 'omniauth-identity'
@@ -25,12 +26,12 @@ require 'proxes/controllers/auth_identity'
 use OmniAuth::Builder do
   # The identity provider is used by the App.
   provider :identity,
-    fields: [:username],
-    callback_path: '/_proxes/auth/identity/callback',
-    model: ProxES::Identity,
-    on_login: ProxES::AuthIdentity,
-    on_registration: ProxES::AuthIdentity,
-    locate_conditions: lambda{|req| {username: req['username']} }
+           fields: [:username],
+           callback_path: '/_proxes/auth/identity/callback',
+           model: ProxES::Identity,
+           on_login: ProxES::AuthIdentity,
+           on_registration: ProxES::AuthIdentity,
+           locate_conditions: ->(req) { { username: req['username'] } }
 end
 OmniAuth.config.on_failure = ProxES::AuthIdentity
 
@@ -41,7 +42,7 @@ use Warden::Manager do |manager|
   manager.scope_defaults :default, action: '_proxes/unauthenticated'
   manager.failure_app = ProxES::App
 end
-Warden::Manager.serialize_into_session { |user| user.id }
+Warden::Manager.serialize_into_session(&:id)
 Warden::Manager.serialize_from_session { |id| ProxES::User[id] }
 
 # Management App
@@ -50,7 +51,7 @@ require 'proxes/controllers'
 map '/_proxes' do
   {
     '/users' => ProxES::Users,
-    '/user-roles' => ProxES::UserRoles,
+    '/user-roles' => ProxES::UserRoles
   }.each do |route, app|
     map route do
       run app
@@ -59,7 +60,6 @@ map '/_proxes' do
 
   run ProxES::App
 end
-
 
 # Proxy all Elasticsearch requests
 map '/' do

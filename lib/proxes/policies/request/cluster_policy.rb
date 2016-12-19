@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 module ProxES
   class Request
     class ClusterPolicy < ProxES::RequestPolicy
       def get?
-        !!user
+        !user.nil?
       end
 
       def health?

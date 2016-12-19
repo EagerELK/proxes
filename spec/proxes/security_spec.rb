@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 require 'proxes/security'
 require 'rack'
@@ -5,7 +6,7 @@ require 'pundit/rspec'
 
 describe ProxES::Security do
   def app
-    ProxES::Security.new(proc{[200,{},['Hello, world.']]})
+    ProxES::Security.new(proc { [200, {}, ['Hello, world.']] })
   end
 
   context '#call' do
@@ -26,12 +27,12 @@ describe ProxES::Security do
 
       it 'authorizes calls that return data' do
         expect(get("/#{user.email}/_search")).to be_ok
-        expect{ get('/notmyindex/_search') }.to raise_error(Pundit::NotAuthorizedError)
+        expect { get('/notmyindex/_search') }.to raise_error(Pundit::NotAuthorizedError)
       end
 
       it 'authorizes calls that do actions' do
-        expect(get("/")).to be_ok
-        expect{ get('/_snapshot') }.to raise_error(Pundit::NotAuthorizedError)
+        expect(get('/')).to be_ok
+        expect { get('/_snapshot') }.to raise_error(Pundit::NotAuthorizedError)
       end
     end
   end

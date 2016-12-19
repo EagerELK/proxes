@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'proxes/controllers/application'
 
 module ProxES
@@ -27,13 +28,13 @@ module ProxES
 
     post '/auth/identity/callback' do
       user = User.find_or_create(email: env['omniauth.auth']['info']['email'])
-      user.add_user_role role: 'user' unless user.has_role? 'user'
-      user.add_user_role(role: 'super_admin') if (user.id == 1 && user.has_role?('super_admin') == false)
+      user.add_user_role role: 'user' unless user.role? 'user'
+      user.add_user_role(role: 'super_admin') if user.id == 1 && user.role?('super_admin') == false
 
       identity = Identity.find(username: user.email)
       user.add_identity identity unless identity.user == user
 
-      set_user user
+      self.current_user = user
       flash[:success] = 'Logged In'
       redirect '/_proxes'
     end

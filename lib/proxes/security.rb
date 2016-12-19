@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'logger'
 require 'rack-proxy'
 require 'proxes/request'
@@ -28,9 +29,7 @@ module ProxES
       logger.debug '================================================================================'
 
       authorize request
-      if request.has_indices?
-        policy_scope request
-      end
+      policy_scope request if request.indices?
 
       logger.debug '================================================================================'
       logger.debug '= ' + "Request: #{request.fullpath}".ljust(76) + ' ='
@@ -40,9 +39,11 @@ module ProxES
       begin
         @app.call env
       rescue Errno::EHOSTUNREACH
-        [500, {'Content-Type' => 'application/json'}, ['{"error":"Could not reach Elasticsearch at ' + ENV['ELASTICSEARCH_URL'] + '}']]
+        message = 'Could not reach Elasticsearch at ' + ENV['ELASTICSEARCH_URL']
+        [500, { 'Content-Type' => 'application/json' }, ['{"error":"' + message + '}']]
       rescue Errno::ECONNREFUSED
-        [500, {'Content-Type' => 'application/json'}, ['{"error":"Elasticsearch not listening at ' + ENV['ELASTICSEARCH_URL'] + '}']]
+        message = 'Elasticsearch not listening at ' + ENV['ELASTICSEARCH_URL']
+        [500, { 'Content-Type' => 'application/json' }, ['{"error":"' + message + '}']]
       end
     end
   end

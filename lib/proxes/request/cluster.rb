@@ -1,15 +1,15 @@
+# frozen_string_literal: true
 require 'rack'
 require 'proxes/request/base'
 
 module ProxES
   class Request
     class Cluster < Base
-      def has_indices?
+      def indices?
         false
       end
 
-      def parse
-      end
+      def parse; end
     end
   end
 end

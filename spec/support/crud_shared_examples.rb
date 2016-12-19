@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 shared_examples 'a CRUD Controller' do |route|
   context 'GET' do
-    it "#{route}" do
+    it route.to_s do
       model # Ensure that there's at least one item in the list
       get '/'
 

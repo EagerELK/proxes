@@ -1,9 +1,10 @@
+# frozen_string_literal: true
 require 'spec_helper'
 require 'proxes/controllers'
 require 'support/crud_shared_examples'
 
 {
-  '/users' => ProxES::Users,
+  '/users' => ProxES::Users
 }.each do |route, controller|
   describe controller do
     def app

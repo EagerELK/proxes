@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 require 'proxes/request/search'
 
@@ -8,14 +9,14 @@ describe ProxES::Request::Search do
       'REQUEST_METHOD' => meth,
       'PATH_INFO' => path,
       'REQUEST_PATH' => path,
-      'REQUEST_URI' => path,
+      'REQUEST_URI' => path
     }
   end
 
-  context '#has_indices?' do
+  context '#indices?' do
     it 'does have indices' do
       request = described_class.new(get_env('GET /_search'))
-      expect(request.has_indices?).to be true
+      expect(request.indices?).to be true
     end
   end
 
@@ -24,26 +25,26 @@ describe ProxES::Request::Search do
       endpoint: nil,
       index: [],
       type: nil,
-      id: nil,
+      id: nil
     },
     '/some-index/_all' => {
       endpoint: nil,
       index: ['some-index'],
       type: [],
-      id: nil,
+      id: nil
     },
     '/some-index/some-type/some-id' => {
       endpoint: nil,
       index: ['some-index'],
       type: ['some-type'],
-      id: ['some-id'],
+      id: ['some-id']
     },
     '/some-index/some-type/_search' => {
       endpoint: nil,
       index: ['some-index'],
       type: ['some-type'],
-      id: nil,
-    },
+      id: nil
+    }
   }.each do |path, values|
     context '.from_env' do
       it 'returns a Search request' do
@@ -53,11 +54,9 @@ describe ProxES::Request::Search do
 
     context 'accessors' do
       subject do
-        ProxES::Request::Search.new({
-          'PATH_INFO' => path,
-          'REQUEST_PATH' => path,
-          'REQUEST_URI' => path,
-        })
+        ProxES::Request::Search.new('PATH_INFO' => path,
+                                    'REQUEST_PATH' => path,
+                                    'REQUEST_URI' => path)
       end
 
       it "provides the index for #{path} as #{values[:index]}" do

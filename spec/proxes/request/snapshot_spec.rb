@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 require 'proxes/request/snapshot'
 
@@ -8,7 +9,7 @@ describe ProxES::Request::Snapshot do
       'REQUEST_METHOD' => meth,
       'PATH_INFO' => path,
       'REQUEST_PATH' => path,
-      'REQUEST_URI' => path,
+      'REQUEST_URI' => path
     }
   end
 
@@ -19,10 +20,10 @@ describe ProxES::Request::Snapshot do
     end
   end
 
-  context '#has_indices?' do
+  context '#indices?' do
     it 'does not have indices' do
       request = described_class.new(get_env('GET /_search'))
-      expect(request.has_indices?).to be false
+      expect(request.indices?).to be false
     end
   end
 
@@ -39,7 +40,7 @@ describe ProxES::Request::Snapshot do
 
     it 'returns an array of repositories if more than one is specified' do
       request = described_class.new(get_env('GET /_snapshot/one,two'))
-      expect(request.repository).to eq(['one', 'two'])
+      expect(request.repository).to eq(%w(one two))
     end
   end
 end

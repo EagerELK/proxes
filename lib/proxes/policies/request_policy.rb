@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ProxES
   class RequestPolicy
     attr_reader :user, :record
