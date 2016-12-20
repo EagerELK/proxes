@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 require 'pundit'
-require 'proxes/request'
+require 'proxes/request/base'
 
 module ProxES
   module Helpers

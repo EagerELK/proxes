@@ -31,4 +31,9 @@ FactoryGirl.define do
     role 'admin'
     user
   end
+
+  factory :identity, class: ProxES::Identity, aliases: [:'ProxES::Identity'] do
+    username { generate :email }
+    crypted_password 'som3Password!'
+  end
 end

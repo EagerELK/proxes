@@ -12,7 +12,10 @@
           -list.each do |entity|
             %tr
               %td
-                %a{ href: "/_proxes/users/#{entity.user.id}" }= entity.user.identity&.first&.username
+                -if entity.user
+                  %a{ href: "/_proxes/users/#{entity.user.id}" }= entity.user.identity&.first&.username
+                -else
+                  None
               %td
                 %a{ href: "/_proxes/user-roles/#{entity.id}" }= entity.role
       .panel-body.text-right

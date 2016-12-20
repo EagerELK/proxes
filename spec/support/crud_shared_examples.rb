@@ -68,8 +68,7 @@ shared_examples 'a CRUD Controller' do |route|
     end
 
     it route.to_s do
-      group = app.model_class.to_s.demodulize.underscore
-      post '/', group => model_attributes
+      post '/', create_data
 
       if Pundit.policy(user, app.model_class).list?
         expect(last_response.status).to eq 302
@@ -79,8 +78,7 @@ shared_examples 'a CRUD Controller' do |route|
     end
 
     it "#{route} with invalid parameters" do
-      group = app.model_class.to_s.demodulize.underscore
-      post '/', group => {}
+      post '/', invalid_create_data
 
       if Pundit.policy(user, app.model_class).list?
         expect(last_response).to be_ok # A 200 is given since it just re-renders the form
@@ -98,8 +96,7 @@ shared_examples 'a CRUD Controller' do |route|
     end
 
     it "#{route}/:id" do
-      group = app.model_class.to_s.demodulize.underscore
-      put "/#{model.id}", group => model_attributes
+      put "/#{model.id}", update_data
 
       if Pundit.policy(user, app.model_class).list?
         expect(last_response.status).to eq 302
@@ -108,17 +105,15 @@ shared_examples 'a CRUD Controller' do |route|
       end
     end
 
-    # TODO: Somehow empty a required parameter to make this work
-    # it "#{route} with invalid parameters" do
-    #   group = app.model_class.to_s.demodulize.underscore
-    #   put "/#{model.id}", group => {}
+    it "#{route} with invalid parameters" do
+      put "/#{model.id}", invalid_update_data
 
-    #   if Pundit.policy(user, app.model_class).list?
-    #     expect(last_response).to be_ok # A 200 is given since it just re-renders the form
-    #   else
-    #     expect(last_response).to_not be_ok
-    #   end
-    # end
+      if Pundit.policy(user, app.model_class).list?
+        expect(last_response).to be_ok # A 200 is given since it just re-renders the form
+      else
+        expect(last_response).to_not be_ok
+      end
+    end
   end
 
   context 'DELETE' do
