@@ -2,6 +2,8 @@
 require 'proxes/controllers/component'
 require 'proxes/models/user'
 require 'proxes/policies/user_policy'
+require 'proxes/models/identity'
+require 'proxes/policies/identity_policy'
 
 module ProxES
   class Users < Component
@@ -13,8 +15,8 @@ module ProxES
 
       locals = {
         title: heading(:new),
-        entity: User.new,
-        identity: Identity.new
+        entity: ProxES::User.new,
+        identity: ProxES::Identity.new
       }
       haml :"#{view_location}/new", locals: locals, layout_opts: { locals: locals }
     end
@@ -55,7 +57,7 @@ module ProxES
 
     # Update
     put '/:id' do |id|
-      entity = dataset.find(id: id.to_i)
+      entity = dataset[id.to_i]
       halt 404 unless entity
       authorize entity, :update
 
@@ -77,7 +79,7 @@ module ProxES
 
     # Delete
     delete '/:id' do |id|
-      entity = dataset.find(id: id.to_i)
+      entity = dataset[id.to_i]
       halt 404 unless entity
       authorize entity, :delete
 

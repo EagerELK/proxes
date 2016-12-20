@@ -4,7 +4,7 @@ module ProxES
     module Views
       def form_control(name, model, opts = {})
         label  = opts.delete(:label) || name.to_s.titlecase
-        klass  = opts.delete(:class) || 'form-control' unless type == 'file'
+        klass  = opts.delete(:class) || 'form-control' unless opts[:type] == 'file'
         group  = opts.delete(:group) || model.class.to_s.demodulize.underscore
 
         attributes = { type: 'text', id: name, name: "#{group}[#{name}]", class: klass }.merge(opts)

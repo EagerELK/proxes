@@ -53,7 +53,7 @@ module ProxES
 
     # Update Form
     get '/:id/edit' do |id|
-      entity = dataset.find(id: id.to_i)
+      entity = dataset[id.to_i]
       halt 404 unless entity
       authorize entity, :update
 
@@ -62,7 +62,7 @@ module ProxES
 
     # Update
     put '/:id' do |id|
-      entity = dataset.find(id: id.to_i)
+      entity = dataset[id.to_i]
       halt 404 unless entity
       authorize entity, :update
 
@@ -76,7 +76,7 @@ module ProxES
     end
 
     delete '/:id' do |id|
-      entity = dataset.find(id: id.to_i)
+      entity = dataset[id.to_i]
       halt 404 unless entity
       authorize entity, :delete
 

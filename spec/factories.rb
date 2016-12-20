@@ -28,7 +28,7 @@ FactoryGirl.define do
   end
 
   factory :user_role, class: ProxES::UserRole, aliases: [:'ProxES::UserRole'] do
-    role
+    role 'admin'
     user
   end
 end
