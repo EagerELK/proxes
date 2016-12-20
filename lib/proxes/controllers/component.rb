@@ -66,7 +66,7 @@ module ProxES
       halt 404 unless entity
       authorize entity, :update
 
-      entity.set(permitted_attributes(settings.model_class, :create))
+      entity.set(permitted_attributes(settings.model_class, :update))
       if entity.valid? && entity.save
         flash[:success] = "#{heading} Updated"
         redirect "#{base_path}/#{entity.id}"
