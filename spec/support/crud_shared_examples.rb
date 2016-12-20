@@ -12,6 +12,17 @@ shared_examples 'a CRUD Controller' do |route|
       end
     end
 
+    it "#{route}?count=1&page=1" do
+      model # Ensure that there's at least one item in the list
+      get '/?count=1&page=1'
+
+      if Pundit.policy(user, app.model_class).list?
+        expect(last_response).to be_ok
+      else
+        expect(last_response).to_not be_ok
+      end
+    end
+
     it "#{route}/new" do
       get '/'
 

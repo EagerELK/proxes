@@ -10,24 +10,22 @@ module ProxES
       end
 
       def list
-        params['count'] = params['count'] ? params['count'].to_i : 10
-        params['page'] = params['page'] ? params['page'].to_i : 1
+        params['count'] ||= 10
+        params['page'] ||= 1
 
-        dataset.select.paginate(params['page'], params['count'])
+        dataset.select.paginate(params['page'].to_i, params['count'].to_i)
       end
 
       def heading(action = nil)
-        heading = ActiveSupport::Inflector.demodulize settings.model_class
-        case action
-        when :list
-          ActiveSupport::Inflector.pluralize heading
-        when :new
-          "New #{heading}"
-        when :edit
-          "Edit #{heading}"
-        else
-          heading
+        @headings ||= begin
+          heading = ActiveSupport::Inflector.demodulize settings.model_class
+          h = Hash.new(heading)
+          h[:new] = "New #{heading}"
+          h[:list] = ActiveSupport::Inflector.pluralize heading
+          h[:edit] = "Edit #{heading}"
+          h
         end
+        @headings[action]
       end
 
       def base_path
