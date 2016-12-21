@@ -13,7 +13,7 @@
             %tr
               %td
                 -if entity.user
-                  %a{ href: "/_proxes/users/#{entity.user.id}" }= entity.user.identity&.first&.username
+                  %a{ href: "/_proxes/users/#{entity.user.id}" }= entity.user.email
                 -else
                   None
               %td
