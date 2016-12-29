@@ -1,0 +1,19 @@
+{
+  "name": "proxes",
+  "version": "0.1.0",
+  "description": "Elasticsearch Management System",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EagerELK/proxes.git"
+  },
+  "author": "Jurgens du Toit",
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/EagerELK/proxes/issues"
+  },
+  "homepage": "https://github.com/EagerELK/proxes#readme",
+  "dependencies": {
+    "react": "^0.14.0",
+    "react-proxes-components": "^0.1.0"
+  }
+}

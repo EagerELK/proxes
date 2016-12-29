@@ -27,6 +27,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rack-test'
   spec.add_development_dependency 'database_cleaner'
   spec.add_development_dependency 'factory_girl'
+  spec.add_development_dependency 'sprockets'
+  spec.add_development_dependency 'react-jsx-sprockets'
+  spec.add_development_dependency 'therubyracer'
 
   spec.add_dependency 'rack-proxy'
   spec.add_dependency 'sinatra'

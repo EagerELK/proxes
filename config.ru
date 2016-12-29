@@ -45,20 +45,31 @@ end
 Warden::Manager.serialize_into_session(&:id)
 Warden::Manager.serialize_from_session { |id| ProxES::User[id] }
 
+# Assets
+require 'sprockets'
+require 'sprockets/es6'
+require 'react-jsx-sprockets'
+
 # Management App
 require 'proxes/controllers'
-
+require 'rack/urlmap'
 map '/_proxes' do
-  {
-    '/users' => ProxES::Users,
-    '/user-roles' => ProxES::UserRoles
-  }.each do |route, app|
-    map route do
-      run app
-    end
+  map '/assets' do
+    environment = Sprockets::Environment.new
+    environment.append_path 'node_modules'
+    environment.append_path 'assets/javascripts'
+    # environment.append_path 'assets/stylesheets'
+    # environment.append_path 'assets/components'
+    run environment
   end
 
-  run ProxES::App
+  run Rack::URLMap.new(
+    '/' => ProxES::App,
+    '/users' => ProxES::Users,
+    '/user-roles' => ProxES::UserRoles,
+    '/settings' => ProxES::Settings,
+    '/tokens' => ProxES::Tokens,
+  )
 end
 
 # Proxy all Elasticsearch requests
