@@ -6,7 +6,7 @@ module ProxES
   class App < Application
     get '/' do
       authenticate!
-      haml :index
+      haml :index, locals: { title: 'Dashboard' }
     end
 
     ['/unauthenticated', '/_proxes/unauthenticated'].each do |path|
