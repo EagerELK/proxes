@@ -11,7 +11,7 @@ require 'proxes/db'
 Sequel.extension :migration
 Sequel::Migrator.check_current(DB, './migrate')
 
-use Rack::Static, urls: ['/assets'], root: 'public'
+use Rack::Static, urls: ['/css', '/js'], root: 'public'
 use Rack::MethodOverride
 use Rack::Session::Cookie,
     key: '_ProxES_session',
