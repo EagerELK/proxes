@@ -20,7 +20,7 @@
     "numeral": "^1.5.3",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
-    "react-proxes-components": "^0.1.5"
+    "react-proxes-components": "^0.1.8"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.9.0",
