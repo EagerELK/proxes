@@ -31,7 +31,7 @@
             -if defined? title
               %h1.page-header= title
             = haml :'partials/notifications'
-            = yield
+        = yield
         %footer.footer.text-muted.text-center
           %hr
           .copyright
