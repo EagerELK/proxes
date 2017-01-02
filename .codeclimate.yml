@@ -5,8 +5,6 @@ engines:
       languages:
       - ruby
       - javascript
-      - python
-      - php
   eslint:
     enabled: true
   fixme:
@@ -23,5 +21,4 @@ ratings:
   - "**.py"
   - "**.rb"
 exclude_paths:
-- public/assets/js/bundle.js
-- public/assets/js/vendors.js
+- public/js/bundle.js
