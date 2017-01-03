@@ -2,10 +2,6 @@
 module ProxES
   class Request
     class RootPolicy < ProxES::RequestPolicy
-      def get?
-        !user.nil?
-      end
-
       class Scope < ProxES::RequestPolicy::Scope
         def resolve
           scope
