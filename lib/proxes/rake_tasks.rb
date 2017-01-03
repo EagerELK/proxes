@@ -15,6 +15,15 @@ module ProxES
           File.write('.token_secret', SecureRandom.random_bytes(40))
         end
 
+        desc 'Seed the database'
+        task :seed do
+          require_relative './db'
+          require 'proxes/models/role'
+
+          ProxES::Role.find_or_create(name: 'user')
+          ProxES::Role.find_or_create(name: 'super_admin')
+        end
+
         desc 'Migrate ProxES database to latest version'
         task :migrate do
           Rake::Task['proxes:migrate:up'].invoke

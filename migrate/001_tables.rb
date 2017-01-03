@@ -19,11 +19,26 @@ Sequel.migration do
       DateTime :updated_at
     end
 
-    create_table :user_roles do
+    create_table :roles do
       primary_key :id
+      String :name
+      DateTime :created_at
+      DateTime :updated_at
+    end
+
+    create_table :permissions do
+      primary_key :id
+      String :verb
+      String :pattern
+      DateTime :created_at
+      foreign_key :role_id, :roles
+    end
+
+    create_table :roles_users do
+      DateTime :created_at
       foreign_key :user_id, :users
-      String :role
-      unique [:user_id, :role]
+      foreign_key :role_id, :roles
+      unique [:user_id, :role_id]
     end
   end
 end

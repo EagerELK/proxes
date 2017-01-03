@@ -16,7 +16,7 @@
           = entity.surname
         %p.description
           %label Roles:
-          = entity.user_roles.map(&:role).map(&:titlecase).join(', ')
+          = entity.roles_dataset.map(:name).map(&:titlecase).join(', ')
         %p.description
           %label Signed up:
           = entity.created_at.strftime('%Y-%m-%d %H:%M:%S')

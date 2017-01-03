@@ -1,0 +1,3 @@
+= form_control(:role_id, entity, type: 'select', options: ProxES::Role.to_hash(:id, :name))
+= form_control(:verb, entity, type: 'select', options: ProxES::Permission.verbs)
+= form_control(:pattern, entity)

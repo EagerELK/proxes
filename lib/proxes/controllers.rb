@@ -1,3 +1,5 @@
 # frozen_string_literal: true
 require 'proxes/controllers/users'
-require 'proxes/controllers/user_roles'
+require 'proxes/controllers/roles'
+require 'proxes/controllers/permissions'
+require 'proxes/controllers/settings'

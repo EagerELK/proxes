@@ -1,0 +1,14 @@
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading VERB Pattern
+      %table.table.table-striped
+        %tbody
+          -list.each do |entity|
+            %tr
+              %td
+                %a.btn-block{ href: "/_proxes/permissions/#{entity.id}" }
+                  = entity.verb
+                  = entity.pattern
+      .panel-body.text-right
+        %a.btn.btn-primary{ href: '/_proxes/permissions/new' } New Permission

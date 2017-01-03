@@ -5,14 +5,20 @@
       .panel-body
         %p.description
           %label Role:
-          = entity.role
+          = entity.role.name
+        %p.description
+          %label Verb:
+          = entity.verb
+        %p.description
+          %label Pattern:
+          = entity.pattern
 
         .row
           .col-md-6
-            %a.btn.btn-default{ href: "/_proxes/user-roles/#{entity.id}/edit" } Edit
+            %a.btn.btn-default{ href: "/_proxes/permissions/#{entity.id}/edit" } Edit
           .col-md-6.text-right
             - if policy(entity).delete?
-              %form{ method: 'post', action: "/_proxes/user-roles/#{entity.id}" }
+              %form{ method: 'post', action: "/_proxes/permissions/#{entity.id}" }
                 %input{ name: '_method', value: 'DELETE', type: 'hidden' }
                 %button.btn.btn-warning{ type: 'submit' } Delete
   .col-md-2

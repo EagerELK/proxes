@@ -3,7 +3,7 @@ module ProxES
   class Request
     class SnapshotPolicy < ProxES::RequestPolicy
       def get?
-        user && user.admin?
+        user && user.super_admin?
       end
 
       class Scope < ProxES::RequestPolicy::Scope

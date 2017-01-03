@@ -51,7 +51,8 @@ require 'proxes/controllers'
 map '/_proxes' do
   {
     '/users' => ProxES::Users,
-    '/user-roles' => ProxES::UserRoles
+    '/roles' => ProxES::Roles,
+    '/permissions' => ProxES::Permissions,
   }.each do |route, app|
     map route do
       run app

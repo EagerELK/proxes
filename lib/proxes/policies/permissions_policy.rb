@@ -2,7 +2,7 @@
 require 'proxes/policies/application_policy'
 
 module ProxES
-  class UserPolicy < ApplicationPolicy
+  class PermissionPolicy < ApplicationPolicy
     def create?
       user && user.super_admin?
     end
@@ -12,7 +12,7 @@ module ProxES
     end
 
     def read?
-      user && (record.id == user.id || user.super_admin?)
+      create?
     end
 
     def update?
@@ -23,14 +23,8 @@ module ProxES
       create?
     end
 
-    def register?
-      true
-    end
-
     def permitted_attributes
-      attribs = [:email, :name, :surname]
-      attribs << :user_roles if user.super_admin?
-      attribs
+      []
     end
 
     class Scope < ApplicationPolicy::Scope

@@ -13,7 +13,7 @@ module ProxES
 
     class Scope < ApplicationPolicy::Scope
       def resolve
-        if user.admin?
+        if user.super_admin?
           scope.all
         else
           []

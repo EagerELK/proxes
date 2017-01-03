@@ -4,15 +4,23 @@
       %a{ href: '/_proxes' }
         %i.fa.fa-dashboard.fa-fw
         Dashboard
-    - if current_user.admin?
+    - if current_user.super_admin?
       %li
         %a{ href: '/_proxes/users' }
           %i.fa.fa-user.fa-fw
           Users
       %li
-        %a{ href: '/_proxes/user-roles' }
+        %a{ href: '/_proxes/roles' }
           %i.fa.fa-group.fa-fw
-          User Roles
+          Roles
+      %li
+        %a{ href: '/_proxes/permissions' }
+          %i.fa.fa-check-square-o.fa-fw
+          Permissions
+    %li
+      %a{ href: '/_proxes/settings' }
+        %i.fa.fa-cog.fa-fw
+        Settings
   - else
     %li.active
       %a{ href: '/auth/identity' }

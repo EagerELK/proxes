@@ -1,8 +1,6 @@
 .row
   .col-md-12
     .panel.panel-default
-      .panel-heading
-        = title
       %table.table.table-striped
         %thead
           %tr
@@ -17,6 +15,6 @@
                 %a{ href: "/_proxes/users/#{entity.id}" }= entity.email
               %td= entity.name
               %td= entity.surname
-              %td= entity.user_roles.map(&:role).map(&:titlecase).join(', ')
+              %td= entity.roles_dataset.map(:name).map(&:titlecase).join(', ')
       .panel-body.text-right
         %a.btn.btn-primary{ href: '/_proxes/users/new' } New User

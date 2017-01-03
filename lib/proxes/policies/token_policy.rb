@@ -4,7 +4,7 @@ require_relative 'application_policy'
 module ProxES
   class TokenPolicy < ApplicationPolicy
     def create?
-      user.admin?
+      user.super_admin?
     end
 
     def list?
@@ -12,7 +12,7 @@ module ProxES
     end
 
     def read?
-      record.id == user.id || user.admin?
+      record.id == user.id || user.super_admin?
     end
 
     def update?
@@ -29,13 +29,13 @@ module ProxES
 
     def permitted_attributes
       attribs = [:email, :name, :surname]
-      attribs << :role if user.admin?
+      attribs << :role if user.super_admin?
       attribs
     end
 
     class Scope < ApplicationPolicy::Scope
       def resolve
-        if user.admin?
+        if user.super_admin?
           scope.all
         else
           []

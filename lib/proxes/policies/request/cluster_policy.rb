@@ -7,7 +7,7 @@ module ProxES
       end
 
       def health?
-        user && user.admin?
+        user && user.super_admin?
       end
 
       class Scope < ProxES::RequestPolicy::Scope
