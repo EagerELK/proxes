@@ -19,9 +19,13 @@ module ProxES
         task :seed do
           require_relative './db'
           require 'proxes/models/role'
+          require 'proxes/models/permission'
 
           ProxES::Role.find_or_create(name: 'user')
-          ProxES::Role.find_or_create(name: 'super_admin')
+          sa = ProxES::Role.find_or_create(name: 'super_admin')
+          %w(GET POST PUT DELETE HEAD OPTIONS).each do |verb|
+            ProxES::Permission.find_or_create(role: sa, verb: verb, pattern: '.*')
+          end
         end
 
         desc 'Migrate ProxES database to latest version'

@@ -10,6 +10,7 @@ services:
   - elasticsearch
 before_script:
   - sleep 10
+  - bundle exec rake proxes:seed
 before_install: gem install bundler -v 1.12.5
 addons:
   code_climate:
