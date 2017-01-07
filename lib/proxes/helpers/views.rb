@@ -3,12 +3,13 @@ module ProxES
   module Helpers
     module Views
       def form_control(name, model, opts = {})
-        label  = opts.delete(:label) || name.to_s.titlecase
-        klass  = opts.delete(:class) || 'form-control' unless opts[:type] == 'file'
-        group  = opts.delete(:group) || model.class.to_s.demodulize.underscore
+        label = opts.delete(:label) || name.to_s.titlecase
+        klass = opts.delete(:class) || 'form-control' unless opts[:type] == 'file'
+        group = opts.delete(:group) || model.class.to_s.demodulize.underscore
+        field = opts.delete(:field) || name
 
         attributes = { type: 'text', id: name, name: "#{group}[#{name}]", class: klass }.merge(opts)
-        locals = { model: model, label: label, attributes: attributes, name: name, group: group }
+        locals = { model: model, label: label, attributes: attributes, name: name, group: group, field: field }
         haml :'partials/form_control', locals: locals
       end
 

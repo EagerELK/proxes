@@ -1,17 +1,21 @@
-%div{ class: "form-group#{model.errors[name] ? ' has-error' : ''}" }
+%div{ class: "form-group#{model.errors[field] ? ' has-error' : ''}" }
   %label.col-sm-3.control-label{ for: attributes[:id] }= label
   .col-sm-9
     - type = attributes.delete(:type)
     - if type == 'select'
       - options = attributes.delete(:options)
       %select{attributes}
-        %option{ value: ""} -- Select One --
-        - options.each do |k,v| k ||= v;  v ||= k;
-          %option{ value: k, selected: (k.to_s == model[name].to_s)}= v
+        - if attributes[:multiple]
+          - options.each do |k,v| k ||= v;  v ||= k;
+            %option{ value: k, selected: (model.send(field).map(&:id).include? k)}= v
+        - else
+          %option{ value: ""} -- Select One --
+          - options.each do |k,v| k ||= v;  v ||= k;
+            %option{ value: k, selected: (k.to_s == model[field].to_s)}= v
     - elsif type == 'textarea'
       %textarea{attributes}
-        = model[name]
+        = model[field]
     - else
-      %input{attributes, type: type, value: model[name]}
-    - if model.errors[name]
-      %p.help-block.text-danger= model.errors[name].join(', ')
+      %input{attributes, type: type, value: model[field]}
+    - if model.errors[field]
+      %p.help-block.text-danger= model.errors[field].join(', ')
