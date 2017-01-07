@@ -14,9 +14,9 @@ describe ProxES::Security do
       expect { get('/') }.to raise_error(Pundit::NotAuthorizedError)
       expect { get('/_search') }.to raise_error(Pundit::NotAuthorizedError)
       expect { get('/index/_search') }.to raise_error(Pundit::NotAuthorizedError)
-      expect { get('/_snapshot') }.to raise_error(Pundit::NotAuthorizedError)
       expect { get('/_node') }.to raise_error(Pundit::NotAuthorizedError)
       expect { get('/_cluster') }.to raise_error(Pundit::NotAuthorizedError)
+      expect { get('/_snapshot') }.to raise_error(Pundit::NotAuthorizedError)
     end
 
     context 'logged in' do
@@ -53,12 +53,14 @@ describe ProxES::Security do
         end
 
         it 'authorizes calls that return data' do
-          expect { get("/notmyindex/_search")  }.to_not raise_error(Pundit::NotAuthorizedError)
+          expect { get("/notmyindex/_search")  }.to_not raise_error
         end
 
         it 'authorizes calls that do actions' do
-          expect { get('/') }.to_not raise_error(Pundit::NotAuthorizedError)
-          expect { get('/_snapshot') }.to_not raise_error(Pundit::NotAuthorizedError)
+          expect { get('/') }.to_not raise_error
+          expect { get('/_node') }.to_not raise_error
+          expect { get('/_cluster') }.to_not raise_error
+          expect { get('/_snapshot') }.to_not raise_error
         end
       end
     end
