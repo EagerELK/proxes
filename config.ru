@@ -63,6 +63,8 @@ map '/_proxes' do
 end
 
 # Proxy all Elasticsearch requests
+require 'proxes/security'
+
 map '/' do
   # Security
   use ProxES::Security, Logger.new($stdout)
