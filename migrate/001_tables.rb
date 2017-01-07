@@ -8,6 +8,7 @@ Sequel.migration do
       String :email
       DateTime :created_at
       DateTime :updated_at
+      unique [:email]
     end
 
     create_table :identities do
@@ -17,6 +18,7 @@ Sequel.migration do
       String :crypted_password
       DateTime :created_at
       DateTime :updated_at
+      unique [:username]
     end
 
     create_table :roles do
@@ -24,6 +26,7 @@ Sequel.migration do
       String :name
       DateTime :created_at
       DateTime :updated_at
+      unique [:name]
     end
 
     create_table :permissions do
