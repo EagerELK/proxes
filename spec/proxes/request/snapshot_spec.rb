@@ -18,6 +18,10 @@ describe ProxES::Request::Snapshot do
       expect(ProxES::Request.from_env(get_env('GET /_snapshot'))).to be_a(described_class)
       expect(ProxES::Request.from_env(get_env('GET /_snapshot/repository'))).to be_a(described_class)
     end
+
+    it 'gives the endpoint as _snapshot' do
+      expect(ProxES::Request.from_env(get_env('GET /_snapshot')).endpoint).to eq '_snapshot'
+    end
   end
 
   context '#indices?' do

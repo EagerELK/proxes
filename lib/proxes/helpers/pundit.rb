@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 require 'pundit'
-require 'proxes/request/base'
+require 'proxes/request'
 
 module ProxES
   module Helpers
@@ -8,7 +8,7 @@ module ProxES
       include ::Pundit
 
       def authorize(record, query = nil)
-        if record.is_a?(::ProxES::Request::Base)
+        if record.is_a?(::ProxES::Request)
           query = record.request_method.downcase
         elsif query.nil?
           raise ArgumentError, 'Pundit cannot determine the query'

@@ -1,15 +1,10 @@
 # frozen_string_literal: true
 require 'rack'
-require 'proxes/request/base'
+require 'proxes/request'
 
 module ProxES
   class Request
-    class Root < Base
-      def indices?
-        false
-      end
-
-      def parse; end
+    class Root < ProxES::Request
     end
   end
 end

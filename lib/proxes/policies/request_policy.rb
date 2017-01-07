@@ -12,6 +12,7 @@ module ProxES
 
     def method_missing(method_sym, *arguments, &block)
       if method_sym.to_s[-1] == '?'
+        return false if user.nil?
         # Give me all the user's permissions that match the verb
         ProxES::Permission.where(verb: method_sym[0..-2].upcase, role: user.roles).each do |permission|
           return true if record.path =~ %r{#{permission.pattern}}
@@ -38,7 +39,5 @@ module ProxES
 end
 
 require 'proxes/policies/request/root_policy'
-require 'proxes/policies/request/stats_policy'
 require 'proxes/policies/request/search_policy'
-require 'proxes/policies/request/cluster_policy'
 require 'proxes/policies/request/snapshot_policy'

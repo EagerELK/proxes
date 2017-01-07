@@ -16,7 +16,7 @@ describe ProxES::Request do
   context '.from_env' do
     it 'returns a rack request' do
       expect(described_class.from_env(get_env('GET /_search'))).to be_a(Rack::Request)
-      expect(described_class.from_env(get_env('GET /_search'))).to be_a(ProxES::Request::Base)
+      expect(described_class.from_env(get_env('GET /_search'))).to be_a(ProxES::Request)
     end
   end
 end

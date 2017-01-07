@@ -1,19 +1,15 @@
 # frozen_string_literal: true
 require 'rack'
-require 'proxes/request/base'
+require 'proxes/request'
 
 module ProxES
   class Request
-    class Snapshot < Base
+    class Snapshot < ProxES::Request
       attr_reader :repository
 
       def parse
         @repository ||= check_part(path_parts[1])
         @repository = [] if repository.nil?
-      end
-
-      def indices?
-        false
       end
     end
   end

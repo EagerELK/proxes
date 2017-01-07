@@ -50,6 +50,10 @@ describe ProxES::Request::Search do
       it 'returns a Search request' do
         expect(ProxES::Request.from_env(get_env('GET /_search'))).to be_a(described_class)
       end
+
+      it 'gives the endpoint as _search' do
+        expect(ProxES::Request.from_env(get_env('GET /_search')).endpoint).to eq '_search'
+      end
     end
 
     context 'accessors' do

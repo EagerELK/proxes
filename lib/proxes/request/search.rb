@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 require 'rack'
-require 'proxes/request/base'
+require 'proxes/request'
 
 module ProxES
   class Request
-    class Search < Base
+    class Search < ProxES::Request
       attr_accessor :index
       attr_reader :type
+
+      def endpoint
+        '_search'
+      end
 
       def parse
         @index ||= check_part(path_parts[0])
