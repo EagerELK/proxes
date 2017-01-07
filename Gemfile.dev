@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in proxes.gemspec
 gemspec
 
-gem 'sqlite3'
 gem 'rerun', git: 'https://github.com/alexch/rerun.git', branch: 'master'
+gem 'sqlite3'
+gem 'simplecov'
 
