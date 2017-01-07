@@ -29,6 +29,9 @@ module ProxES
     post '/auth/identity/callback' do
       user = User.find_or_create(email: env['omniauth.auth']['info']['email'])
 
+      identity = Identity.find(username: user.email)
+      user.add_identity identity unless identity.user == user
+
       self.current_user = user
       flash[:success] = 'Logged In'
       redirect '/_proxes'

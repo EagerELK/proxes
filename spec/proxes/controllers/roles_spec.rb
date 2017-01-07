@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 require 'spec_helper'
-require 'proxes/controllers/user_roles'
+require 'proxes/controllers/roles'
 require 'support/crud_shared_examples'
 
-describe ProxES::UserRoles do
+describe ProxES::Roles do
   def app
     described_class
   end
@@ -21,11 +21,11 @@ describe ProxES::UserRoles do
     end
     let(:invalid_create_data) do
       group = described_class.model_class.to_s.demodulize.underscore
-      { group => { role: 'not_a_role' } }
+      { group => { name: '' } }
     end
     let(:invalid_update_data) do
       group = described_class.model_class.to_s.demodulize.underscore
-      { group => { role: 'not_a_role' } }
+      { group => { name: '' } }
     end
 
     before(:each) do
@@ -35,7 +35,7 @@ describe ProxES::UserRoles do
       env 'warden', warden
     end
 
-    it_behaves_like 'a CRUD Controller', '/user_roles'
+    it_behaves_like 'a CRUD Controller', '/roles'
   end
 
   context 'as user' do
@@ -51,11 +51,11 @@ describe ProxES::UserRoles do
     end
     let(:invalid_create_data) do
       group = described_class.model_class.to_s.demodulize.underscore
-      { group => { role: 'not_a_role' } }
+      { group => { name: '' } }
     end
     let(:invalid_update_data) do
       group = described_class.model_class.to_s.demodulize.underscore
-      { group => { role: 'not_a_role' } }
+      { group => { name: '' } }
     end
 
     before(:each) do
@@ -65,6 +65,6 @@ describe ProxES::UserRoles do
       env 'warden', warden
     end
 
-    it_behaves_like 'a CRUD Controller', '/user_roles'
+    it_behaves_like 'a CRUD Controller', '/roles'
   end
 end

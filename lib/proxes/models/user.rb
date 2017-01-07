@@ -43,7 +43,6 @@ module ProxES
     def after_create
       add_role Role.find_or_create(name: 'user')
       add_role Role.find_or_create(name: 'super_admin') if id == 1
-      add_identity Identity.find_or_create(username: email)
     end
 
     def index_prefix

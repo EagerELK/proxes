@@ -30,19 +30,19 @@ module ProxES
       user_params = permitted_attributes(User, :create)
       identity_params = permitted_attributes(Identity, :create)
       user_params['email'] = identity_params['username']
-      roles = user_params.delete('user_roles')
+      roles = user_params.delete('role_id')
+
       user     = locals[:user]     = User.new(user_params)
       identity = locals[:identity] = Identity.new(identity_params)
+
       if identity.valid? && user.valid?
         DB.transaction(isolation: :serializable) do
           identity.save
           user.save
           user.add_identity identity
-
-          if roles
-            user.remove_all_user_roles
-            roles.each { |role| user.add_user_role(role: role) }
-          end
+          roles.each do |role_id|
+            user.add_role(role_id) unless user.roles.map(&:id).include? role_id.to_i
+          end if roles
         end
 
         flash[:success] = 'User created'
@@ -62,14 +62,11 @@ module ProxES
       authorize entity, :update
 
       values = permitted_attributes(settings.model_class, :update)
-      roles = values.delete('user_roles')
+      roles  = values.delete('role_id')
       entity.set values
       if entity.valid? && entity.save
-        if roles
-          entity.remove_all_user_roles
-          roles.each { |role| entity.add_user_role(role: role) }
-        end
-
+        entity.remove_all_roles
+        roles.each { |role_id| entity.add_role(role_id) } if roles
         flash[:success] = "#{heading} Updated"
         redirect "/_proxes/users/#{entity.id}"
       else
@@ -84,7 +81,7 @@ module ProxES
       authorize entity, :delete
 
       entity.remove_all_identity
-      entity.remove_all_user_roles
+      entity.remove_all_roles
       entity.destroy
 
       flash[:success] = "#{heading} Deleted"
