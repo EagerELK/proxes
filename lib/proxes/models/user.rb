@@ -41,8 +41,12 @@ module ProxES
 
     # Add the basic roles and identity
     def after_create
-      add_role Role.find_or_create(name: 'user')
-      add_role Role.find_or_create(name: 'super_admin') if id == 1 && ENV['RACK_ENV'] != 'test'
+      check_roles
+    end
+
+    def check_roles
+      add_role Role.find_or_create(name: 'user') unless role?('user')
+      add_role Role.find_or_create(name: 'super_admin') if id == 1 && ENV['RACK_ENV'] != 'test' && !role?('super_admin')
     end
 
     def index_prefix

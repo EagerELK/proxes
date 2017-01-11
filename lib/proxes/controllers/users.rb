@@ -43,6 +43,7 @@ module ProxES
           roles.each do |role_id|
             user.add_role(role_id) unless user.roles.map(&:id).include? role_id.to_i
           end if roles
+          user.check_roles
         end
 
         flash[:success] = 'User created'
@@ -67,6 +68,7 @@ module ProxES
       if entity.valid? && entity.save
         entity.remove_all_roles
         roles.each { |role_id| entity.add_role(role_id) } if roles
+        entity.check_roles
         flash[:success] = "#{heading} Updated"
         redirect "/_proxes/users/#{entity.id}"
       else
