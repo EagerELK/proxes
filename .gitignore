@@ -9,3 +9,5 @@
 /tmp/
 *_secret
 /node_modules
+.vagrant
+*.db
