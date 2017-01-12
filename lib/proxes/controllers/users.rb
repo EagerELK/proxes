@@ -89,5 +89,17 @@ module ProxES
       flash[:success] = "#{heading} Deleted"
       redirect '/_proxes/users'
     end
+
+    # Profile
+    get '/profile' do
+      entity = dataset[current_user.id.to_i] if current_user
+      halt 404 unless entity
+      authorize entity, :read
+
+      actions = {}
+      actions["#{base_path}/#{entity.id}/edit"] = "Edit #{heading}" if policy(entity).update?
+
+      haml :"#{view_location}/display", locals: { entity: entity, title: heading, actions: actions }
+    end
   end
 end
