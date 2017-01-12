@@ -1,3 +1,6 @@
 = form_control(:name, user)
 = form_control(:surname, user)
+= form_control(:email, user)
+= form_control(:password, ProxES::Identity.new, type: 'password')
+= form_control(:password_confirmation, ProxES::Identity.new, type: 'password')
 = form_control(:role_id, user, type: 'select', options: ProxES::Role.to_hash(:id, :name), name: 'user[role_id][]', field: :roles, multiple: true)

@@ -65,10 +65,26 @@ module ProxES
       values = permitted_attributes(settings.model_class, :update)
       roles  = values.delete('role_id')
       entity.set values
-      if entity.valid? && entity.save
-        entity.remove_all_roles
-        roles.each { |role_id| entity.add_role(role_id) } if roles
-        entity.check_roles
+
+      identity_params = permitted_attributes(Identity, :create)
+      identity_params['username'] = SecureRandom.hex + values['email'].to_s
+      identity = Identity.new(identity_params)
+      password = identity.password
+
+      if entity.valid? && (password.blank? || identity.valid?)
+        DB.transaction(isolation: :serializable) do
+          if identity.valid?
+            entity.identity.each do |i|
+              i.password = password
+              i.password_confirmation = password
+              i.save
+            end
+          end
+          entity.save
+          entity.remove_all_roles
+          roles.each { |role_id| entity.add_role(role_id) } if roles
+          entity.check_roles
+        end
         flash[:success] = "#{heading} Updated"
         redirect "/_proxes/users/#{entity.id}"
       else
