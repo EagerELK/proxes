@@ -70,14 +70,14 @@ module ProxES
       password = identity_params['password']
       password_confirmation = identity_params['password_confirmation']
 
-      if !password.blank? && password == password_confirmation
+      if !password.blank?
         identity = Identity.find_or_new(username: values['email'])
         identity.user_id = entity.id
         identity.password = password
         identity.password_confirmation = password_confirmation
       end
 
-      if entity.valid? && (password.blank? || identity&.valid?)
+      if entity.valid? && (password.blank? || identity.valid?)
         DB.transaction(isolation: :serializable) do
           identity.save if identity
           entity.save
