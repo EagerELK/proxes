@@ -67,19 +67,19 @@ module ProxES
       entity.set values
 
       identity_params = permitted_attributes(Identity, :create)
-      identity_params['username'] = SecureRandom.hex + values['email'].to_s
-      identity = Identity.new(identity_params)
-      password = identity.password
+      password = identity_params['password']
+      password_confirmation = identity_params['password_confirmation']
 
-      if entity.valid? && (password.blank? || identity.valid?)
+      if !password.blank? && password == password_confirmation
+        identity = Identity.find_or_new(username: values['email'])
+        identity.user_id = entity.id
+        identity.password = password
+        identity.password_confirmation = password_confirmation
+      end
+
+      if entity.valid? && (password.blank? || identity&.valid?)
         DB.transaction(isolation: :serializable) do
-          if identity.valid?
-            entity.identity.each do |i|
-              i.password = password
-              i.password_confirmation = password
-              i.save
-            end
-          end
+          identity.save if identity
           entity.save
           entity.remove_all_roles
           roles.each { |role_id| entity.add_role(role_id) } if roles
