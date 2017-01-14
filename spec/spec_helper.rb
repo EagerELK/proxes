@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 ENV['RACK_ENV'] ||= 'test'
+ENV['ELASTICSEARCH_URL'] = 'http://test.cluster:9200'
 
-require "simplecov"
+require 'simplecov'
 SimpleCov.start
 
 require 'proxes'
@@ -20,6 +21,7 @@ require 'rack/test'
 require 'warden'
 require 'factory_girl'
 require 'database_cleaner'
+require 'webmock/rspec'
 
 RSpec.configure do |config|
   config.include Rack::Test::Methods
@@ -34,6 +36,8 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :transaction
 
     FactoryGirl.find_definitions
+
+    WebMock.disable_net_connect!
   end
 
   config.around(:each) do |example|
