@@ -1,9 +1,3 @@
 ---
-- name: files
+- name: default
   class: Logger
-- name: ES
-  class: ProxES::Loggers::Elasticsearch
-  level: WARN
-  options:
-    url: http://logging.proxes.io:9200
-    log: false
