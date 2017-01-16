@@ -67,7 +67,7 @@ require 'proxes/security'
 
 map '/' do
   # Security
-  use ProxES::Security, Logger.new($stdout)
+  use ProxES::Security, ProxES::Services::Logger.instance
 
   # Forward requests to ES
   run Rack::Proxy.new(backend: ENV['ELASTICSEARCH_URL'])

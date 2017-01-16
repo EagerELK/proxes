@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'logger'
+require 'proxes/services/logger'
 require 'rack-proxy'
 require 'proxes/request'
 require 'proxes/policies/request_policy'
@@ -15,7 +15,7 @@ module ProxES
 
     def initialize(app, logger = nil)
       @app = app
-      @logger = logger || Logger.new(nil)
+      @logger = logger || ProxES::Services::Logger.instance
     end
 
     def call(env)
