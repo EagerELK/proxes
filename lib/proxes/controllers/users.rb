@@ -65,30 +65,31 @@ module ProxES
       values = permitted_attributes(settings.model_class, :update)
       roles  = values.delete('role_id')
       entity.set values
-
-      identity_params = permitted_attributes(Identity, :create)
-      password = identity_params['password']
-      password_confirmation = identity_params['password_confirmation']
-
-      if !password.blank?
-        identity = Identity.find_or_new(username: values['email'])
-        identity.user_id = entity.id
-        identity.password = password
-        identity.password_confirmation = password_confirmation
-      end
-
-      if entity.valid? && (password.blank? || identity.valid?)
-        DB.transaction(isolation: :serializable) do
-          identity.save if identity
-          entity.save
-          entity.remove_all_roles
-          roles.each { |role_id| entity.add_role(role_id) } if roles
-          entity.check_roles
-        end
+      if entity.valid? && entity.save
+        entity.remove_all_roles
+        roles.each { |role_id| entity.add_role(role_id) } if roles
+        entity.check_roles
         flash[:success] = "#{heading} Updated"
         redirect "/_proxes/users/#{entity.id}"
       else
         haml :"#{view_location}/edit", locals: { entity: entity, title: heading(:edit) }
+      end
+    end
+
+    put '/:id/identity' do |id|
+      entity = dataset[id.to_i]
+      halt 404 unless entity
+      authorize entity, :update
+
+      identity = entity.identity.first
+
+      values = permitted_attributes(Identity, :create)
+      identity.set values
+      if identity.valid? && identity.save
+        flash[:success] = "Password Updated"
+        redirect '/_proxes/users/profile'
+      else
+        haml :"#{view_location}/profile", locals: { entity: entity, identity: identity, title: heading }
       end
     end
 
@@ -112,10 +113,7 @@ module ProxES
       halt 404 unless entity
       authorize entity, :read
 
-      actions = {}
-      actions["#{base_path}/#{entity.id}/edit"] = "Edit #{heading}" if policy(entity).update?
-
-      haml :"#{view_location}/display", locals: { entity: entity, title: heading, actions: actions }
+      haml :"#{view_location}/profile", locals: { entity: entity, identity: entity.identity.first, title: 'My Account' }
     end
   end
 end
