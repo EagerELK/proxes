@@ -6,5 +6,5 @@ gemspec
 gem 'rerun', git: 'https://github.com/alexch/rerun.git', branch: 'master'
 gem 'sqlite3'
 gem 'simplecov'
-gem 'pry'
+gem 'pry', '~> 0.10.4'
 

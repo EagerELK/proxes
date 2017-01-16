@@ -65,10 +65,26 @@ module ProxES
       values = permitted_attributes(settings.model_class, :update)
       roles  = values.delete('role_id')
       entity.set values
-      if entity.valid? && entity.save
-        entity.remove_all_roles
-        roles.each { |role_id| entity.add_role(role_id) } if roles
-        entity.check_roles
+
+      identity_params = permitted_attributes(Identity, :create)
+      password = identity_params['password']
+      password_confirmation = identity_params['password_confirmation']
+
+      if !password.blank?
+        identity = Identity.find_or_new(username: values['email'])
+        identity.user_id = entity.id
+        identity.password = password
+        identity.password_confirmation = password_confirmation
+      end
+
+      if entity.valid? && (password.blank? || identity.valid?)
+        DB.transaction(isolation: :serializable) do
+          identity.save if identity
+          entity.save
+          entity.remove_all_roles
+          roles.each { |role_id| entity.add_role(role_id) } if roles
+          entity.check_roles
+        end
         flash[:success] = "#{heading} Updated"
         redirect "/_proxes/users/#{entity.id}"
       else
@@ -88,6 +104,18 @@ module ProxES
 
       flash[:success] = "#{heading} Deleted"
       redirect '/_proxes/users'
+    end
+
+    # Profile
+    get '/profile' do
+      entity = dataset[current_user.id.to_i] if current_user
+      halt 404 unless entity
+      authorize entity, :read
+
+      actions = {}
+      actions["#{base_path}/#{entity.id}/edit"] = "Edit #{heading}" if policy(entity).update?
+
+      haml :"#{view_location}/display", locals: { entity: entity, title: heading, actions: actions }
     end
   end
 end
