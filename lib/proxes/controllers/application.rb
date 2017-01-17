@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require 'sinatra/base'
 require 'sinatra/flash'
+require 'sinatra/respond_with'
 require 'proxes/helpers/views'
 require 'proxes/helpers/pundit'
 require 'proxes/helpers/authentication'
@@ -8,7 +9,7 @@ require 'proxes/helpers/authentication'
 module ProxES
   class Application < Sinatra::Base
     set :root, ::File.expand_path(::File.dirname(__FILE__) + '/../../../')
-    register Sinatra::Flash
+    register Sinatra::Flash, Sinatra::RespondWith
     helpers ProxES::Helpers::Pundit, ProxES::Helpers::Views, ProxES::Helpers::Authentication
 
     configure :production do
@@ -35,6 +36,13 @@ module ProxES
     error ::Pundit::NotAuthorizedError do
       flash[:warning] = 'Please log in first.'
       redirect '/auth/identity'
+    end
+
+    before (/.*/) do
+      if request.url.match(/.json/)
+        request.accept.unshift('application/json')
+        request.path_info = request.path_info.gsub(/.json/,'')
+      end
     end
   end
 end
