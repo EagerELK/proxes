@@ -9,6 +9,29 @@ module ProxES
   class Users < Component
     set model_class: ProxES::User
 
+    # List
+    get '/', provides: [:html, :json]  do
+      authorize settings.model_class, :list
+
+      actions = {}
+      actions["#{base_path}/new"] = "New #{heading}" if policy(settings.model_class).create?
+
+      respond_to do |format|
+        format.html do
+          haml :"#{view_location}/index",
+            locals: { list: list, title: heading(:list), actions: actions }
+        end
+        format.json do
+          {
+            'items' => list.map { |entity| entity.values },
+            'page' => params[:page],
+            'count' => params[:count],
+            'total' => list.to_a.size
+          }.to_json
+        end
+      end
+    end
+
     # New
     get '/new' do
       authorize settings.model_class, :create
@@ -53,6 +76,24 @@ module ProxES
         locals[:entity] = user
         locals[:identity] = identity
         haml :"#{view_location}/new", locals: locals
+      end
+    end
+
+    # Read
+    get '/:id', provides: [:html, :json] do |id|
+      entity = dataset[id.to_i]
+      halt 404 unless entity
+      authorize entity, :read
+
+      actions = {}
+      actions["#{base_path}/#{entity.id}/edit"] = "Edit #{heading}" if policy(entity).update?
+
+      respond_to do |format|
+        format.html do
+          haml :"#{view_location}/display",
+            locals: { entity: entity, title: heading, actions: actions }
+        end
+        format.json { entity.values.to_json }
       end
     end
 

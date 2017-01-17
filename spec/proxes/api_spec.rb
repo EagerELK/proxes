@@ -30,7 +30,7 @@ describe ProxES::Users do
         get '/', { 'Accept' => 'application/json' }
 
         expect(last_response).to be_ok
-        expect(last_response.headers).to include('Content-Type' => 'application/json;charset=utf-8')
+        expect(last_response.headers).to include('Content-Type' => 'application/json')
         expect{JSON.parse(last_response.body)}.to_not raise_error
       end
 
@@ -60,7 +60,7 @@ describe ProxES::Users do
         get "/#{entity.id}", { 'Accept' => 'application/json' }
 
         expect(last_response).to be_ok
-        expect(last_response.headers).to include('Content-Type' => 'application/json;charset=utf-8')
+        expect(last_response.headers).to include('Content-Type' => 'application/json')
         expect{JSON.parse(last_response.body)}.to_not raise_error
       end
 
@@ -69,7 +69,8 @@ describe ProxES::Users do
 
         response = JSON.parse last_response.body
         expect(response).to be_a Hash
-        expect(response).to include(user.to_h)
+        user = JSON.parse entity.values.to_json
+        expect(response).to include(user)
       end
     end
 
