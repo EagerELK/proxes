@@ -10,6 +10,7 @@ module ProxES
   class User < Sequel::Model
     one_to_many :identity
     many_to_many :roles
+    many_to_one :audit_log
 
     def role?(check)
       !roles_dataset.first(name: check).nil?
