@@ -53,6 +53,7 @@ map '/_proxes' do
     '/users' => ProxES::Users,
     '/roles' => ProxES::Roles,
     '/permissions' => ProxES::Permissions,
+    '/audit_logs' => ProxES::AuditLogs,
   }.each do |route, app|
     map route do
       run app
