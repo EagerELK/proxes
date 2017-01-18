@@ -27,4 +27,10 @@ FactoryGirl.define do
   factory :role, class: ProxES::Role, aliases: [:'ProxES::Role'] do
     name 'test'
   end
+
+  factory :permission, class: ProxES::Permission, aliases: [:'ProxES::Permission'] do
+    pattern '*'
+    verb 'GET'
+    role
+  end
 end
