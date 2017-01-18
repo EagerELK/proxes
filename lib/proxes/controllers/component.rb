@@ -9,13 +9,26 @@ module ProxES
     set view_location: nil
 
     # List
-    get '/' do
+    get '/', provides: [:html, :json] do
       authorize settings.model_class, :list
 
       actions = {}
       actions["#{base_path}/new"] = "New #{heading}" if policy(settings.model_class).create?
 
-      haml :"#{view_location}/index", locals: { list: list, title: heading(:list), actions: actions }
+      respond_to do |format|
+        format.html do
+          haml :"#{view_location}/index",
+            locals: { list: list, title: heading(:list), actions: actions }
+        end
+        format.json do
+          {
+            'items' => list.map { |entity| entity.values },
+            'page' => params[:page],
+            'count' => params[:count],
+            'total' => list.to_a.size
+          }.to_json
+        end
+      end
     end
 
     # Create Form
@@ -48,7 +61,13 @@ module ProxES
       actions = {}
       actions["#{base_path}/#{entity.id}/edit"] = "Edit #{heading}" if policy(entity).update?
 
-      haml :"#{view_location}/display", locals: { entity: entity, title: heading, actions: actions }
+      respond_to do |format|
+        format.html do
+          haml :"#{view_location}/display",
+            locals: { entity: entity, title: heading, actions: actions }
+        end
+        format.json { entity.values.to_json }
+      end
     end
 
     # Update Form
