@@ -46,13 +46,14 @@ Warden::Manager.serialize_into_session(&:id)
 Warden::Manager.serialize_from_session { |id| ProxES::User[id] }
 
 # Management App
-require 'proxes/controllers'
+Dir.glob("#{libdir}/proxes/controllers/*.rb").each { |file| require file }
 
 map '/_proxes' do
   {
     '/users' => ProxES::Users,
     '/roles' => ProxES::Roles,
     '/permissions' => ProxES::Permissions,
+    '/audit_logs' => ProxES::AuditLogs,
   }.each do |route, app|
     map route do
       run app
