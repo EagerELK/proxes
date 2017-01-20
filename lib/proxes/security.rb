@@ -18,6 +18,10 @@ module ProxES
       @logger = logger || ProxES::Services::Logger.instance
     end
 
+    def error(message, code = 500)
+      [code, { 'Content-Type' => 'application/json' }, ['{"error":"' + message + '}']]
+    end
+
     def call(env)
       @env = env
 
@@ -28,7 +32,11 @@ module ProxES
       logger.debug '= ' + "Endpoint: #{request.endpoint}".ljust(76) + ' ='
       logger.debug '================================================================================'
 
-      authorize request
+      begin
+        authorize request
+      rescue
+        return error 'Forbidden', 403
+      end
       policy_scope request if request.indices?
 
       logger.debug '================================================================================'
@@ -39,11 +47,9 @@ module ProxES
       begin
         @app.call env
       rescue Errno::EHOSTUNREACH
-        message = 'Could not reach Elasticsearch at ' + ENV['ELASTICSEARCH_URL']
-        [500, { 'Content-Type' => 'application/json' }, ['{"error":"' + message + '}']]
+        error 'Could not reach Elasticsearch at ' + ENV['ELASTICSEARCH_URL']
       rescue Errno::ECONNREFUSED
-        message = 'Elasticsearch not listening at ' + ENV['ELASTICSEARCH_URL']
-        [500, { 'Content-Type' => 'application/json' }, ['{"error":"' + message + '}']]
+        error 'Elasticsearch not listening at ' + ENV['ELASTICSEARCH_URL']
       end
     end
   end
