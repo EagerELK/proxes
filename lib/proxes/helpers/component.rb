@@ -33,7 +33,7 @@ module ProxES
       end
 
       def view_location
-        settings.view_location || heading(:list).downcase.to_s
+        settings.view_location || heading(:list).underscore.to_s
       end
     end
   end
