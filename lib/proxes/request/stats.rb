@@ -4,9 +4,8 @@ require 'proxes/request'
 
 module ProxES
   class Request
-    class Search < ProxES::Request
-      attr_reader :index, :type
-      attr_reader :type
+    class Stats < ProxES::Request
+      attr_reader :index
 
       def index=(idx)
         @index = idx
@@ -16,17 +15,11 @@ module ProxES
       end
 
       def endpoint
-        '_search'
+        '_stats'
       end
 
       def parse
         @index ||= check_part(path_parts[0])
-        @type  ||= check_part(path_parts[1])
-        @id    ||= check_part(path_parts[2])
-      end
-
-      def id
-        @id == [] ? nil : @id
       end
 
       def indices?

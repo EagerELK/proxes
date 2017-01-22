@@ -11,7 +11,7 @@ module ProxES
     end
 
     def self.verbs
-      ['GET', 'POST', 'PUT', 'DELETE', 'HEAD', 'OPTIONS', 'TRACE']
+      ['GET', 'POST', 'PUT', 'DELETE', 'HEAD', 'OPTIONS', 'TRACE', 'INDEX']
     end
   end
 end
