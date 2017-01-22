@@ -29,7 +29,7 @@ module ProxES
       end
 
       def base_path
-        settings.base_path || "/#{heading(:list).downcase}"
+        settings.base_path || "/_proxes/#{heading(:list).downcase}"
       end
 
       def view_location
