@@ -5,6 +5,7 @@ require 'proxes/request'
 require 'proxes/policies/request_policy'
 require 'proxes/helpers/pundit'
 require 'proxes/helpers/authentication'
+require 'proxes/services/logger'
 
 module ProxES
   class Security
@@ -27,25 +28,26 @@ module ProxES
 
       request = ProxES::Request.from_env(env)
 
-      logger.debug '================================================================================'
+      logger.debug '==========================BEFORE================================================'
       logger.debug '= ' + "Request: #{request.fullpath}".ljust(76) + ' ='
       logger.debug '= ' + "Endpoint: #{request.endpoint}".ljust(76) + ' ='
       logger.debug '================================================================================'
 
       begin
         authorize request
-      rescue
+      rescue StandardError => e
+        logger.debug "Access denied by security layer: #{e.message}"
         return error 'Forbidden', 403
       end
-      policy_scope request if request.indices?
+      request.index = policy_scope(request) if request.indices?
 
-      logger.debug '================================================================================'
+      logger.debug '==========================AFTER================================================='
       logger.debug '= ' + "Request: #{request.fullpath}".ljust(76) + ' ='
       logger.debug '= ' + "Endpoint: #{request.endpoint}".ljust(76) + ' ='
       logger.debug '================================================================================'
 
       begin
-        @app.call env
+        @app.call request.env
       rescue Errno::EHOSTUNREACH
         error 'Could not reach Elasticsearch at ' + ENV['ELASTICSEARCH_URL']
       rescue Errno::ECONNREFUSED
