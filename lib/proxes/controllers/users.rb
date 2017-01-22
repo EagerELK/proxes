@@ -109,7 +109,7 @@ module ProxES
 
     # Profile
     get '/profile' do
-      entity = dataset[current_user.id.to_i] if current_user
+      entity = current_user
       halt 404 unless entity
       authorize entity, :read
 
