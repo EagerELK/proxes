@@ -27,6 +27,16 @@ module ProxES
       def logout
         env['rack.session'].delete('user_id')
       end
+
+      def check_basic
+        auth = Rack::Auth::Basic::Request.new(env)
+        return unless auth.provided?
+        return unless auth.basic?
+
+        identity = ProxES::Identity.find(username: auth.credentials[0])
+        raise NotAuthenticated unless identity
+        self.current_user = identity.user if identity.authenticate(auth.credentials[1])
+      end
     end
 
     class NotAuthenticated < StandardError

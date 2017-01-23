@@ -34,6 +34,7 @@ module ProxES
       logger.debug '================================================================================'
 
       begin
+        check_basic
         authorize request
       rescue StandardError => e
         logger.debug "Access denied by security layer: #{e.message}"
