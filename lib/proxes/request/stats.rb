@@ -9,8 +9,8 @@ module ProxES
 
       def index=(idx)
         @index = idx
-        self.path_info = '/' + [ index, type, id, endpoint ]
-          .map { |v| v.is_a? Array ? v.join(',') : v }
+        self.path_info = '/' + [ index, endpoint ]
+          .map { |v| v.is_a?(Array) ? v.join(',') : v }
           .select { |v| !v.nil? && v != '' }.join('/')
       end
 
