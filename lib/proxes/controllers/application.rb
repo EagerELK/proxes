@@ -33,6 +33,11 @@ module ProxES
       haml :error, locals: { title: 'Something went wrong', message: error }
     end
 
+    error ::ProxES::Helpers::NotAuthenticated do
+      flash[:warning] = 'Please log in first.'
+      redirect '/auth/identity'
+    end
+
     error ::Pundit::NotAuthorizedError do
       flash[:warning] = 'Please log in first.'
       redirect '/auth/identity'

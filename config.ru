@@ -35,16 +35,6 @@ use OmniAuth::Builder do
 end
 OmniAuth.config.on_failure = ProxES::AuthIdentity
 
-require 'warden'
-require 'proxes/strategies/jwt_token'
-use Warden::Manager do |manager|
-  manager.default_strategies :jwt_token
-  manager.scope_defaults :default, action: '_proxes/unauthenticated'
-  manager.failure_app = ProxES::App
-end
-Warden::Manager.serialize_into_session(&:id)
-Warden::Manager.serialize_from_session { |id| ProxES::User[id] }
-
 # Management App
 Dir.glob("#{libdir}/proxes/controllers/*.rb").each { |file| require file }
 
@@ -65,7 +55,6 @@ end
 
 # Proxy all Elasticsearch requests
 require 'proxes/security'
-
 map '/' do
   # Security
   use ProxES::Security, ProxES::Services::Logger.instance

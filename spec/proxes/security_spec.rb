@@ -11,12 +11,24 @@ describe ProxES::Security do
 
   context '#call' do
     it 'rejects anonymous requests' do
-      expect { get('/') }.to raise_error(Pundit::NotAuthorizedError)
-      expect { get('/_search') }.to raise_error(Pundit::NotAuthorizedError)
-      expect { get('/index/_search') }.to raise_error(Pundit::NotAuthorizedError)
-      expect { get('/_node') }.to raise_error(Pundit::NotAuthorizedError)
-      expect { get('/_cluster') }.to raise_error(Pundit::NotAuthorizedError)
-      expect { get('/_snapshot') }.to raise_error(Pundit::NotAuthorizedError)
+      get('/')
+      expect(last_response).to_not be_ok
+      expect(last_response.status).to eq 403
+      get('/_search')
+      expect(last_response).to_not be_ok
+      expect(last_response.status).to eq 403
+      get('/index/_search')
+      expect(last_response).to_not be_ok
+      expect(last_response.status).to eq 403
+      get('/_node')
+      expect(last_response).to_not be_ok
+      expect(last_response.status).to eq 403
+      get('/_cluster')
+      expect(last_response).to_not be_ok
+      expect(last_response.status).to eq 403
+      get('/_snapshot')
+      expect(last_response).to_not be_ok
+      expect(last_response.status).to eq 403
     end
 
     context 'logged in' do
@@ -25,19 +37,23 @@ describe ProxES::Security do
 
         before(:each) do
           # Log in
-          warden = double(Warden::Proxy)
-          allow(warden).to receive(:user).and_return(user)
-          allow(warden).to receive(:authenticate!)
-          env 'warden', warden
+          env 'rack.session', { 'user_id' => user.id }
         end
 
         it 'authorizes calls that return data' do
-          expect { get("/notmyindex/_search")  }.to raise_error(Pundit::NotAuthorizedError)
+          get '/notmyindex/_search'
+          expect(last_response).to_not be_ok
+          expect(last_response.status).to eq 403
         end
 
         it 'authorizes calls that do actions' do
-          expect { get('/') }.to raise_error(Pundit::NotAuthorizedError)
-          expect { get('/_snapshot') }.to raise_error(Pundit::NotAuthorizedError)
+          get '/'
+          expect(last_response).to_not be_ok
+          expect(last_response.status).to eq 403
+
+          get '/_snapshot'
+          expect(last_response).to_not be_ok
+          expect(last_response.status).to eq 403
         end
       end
 
@@ -46,10 +62,7 @@ describe ProxES::Security do
 
         before(:each) do
           # Log in
-          warden = double(Warden::Proxy)
-          allow(warden).to receive(:user).and_return(user)
-          allow(warden).to receive(:authenticate!)
-          env 'warden', warden
+          env 'rack.session', { 'user_id' => user.id }
         end
 
         it 'authorizes calls that return data' do

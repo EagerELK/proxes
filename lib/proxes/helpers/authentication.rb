@@ -3,29 +3,29 @@ module ProxES
   module Helpers
     module Authentication
       def current_user
-        env['warden'] ? env['warden'].user : nil
+        return nil unless env['rack.session'] && env['rack.session']['user_id']
+        @user ||= User[env['rack.session']['user_id']]
       end
 
       def current_user=(user)
-        p user
-        env['warden'].set_user(user)
+        env['rack.session']['user_id'] = user.id
       end
 
       def authenticate
-        env['warden'] && env['warden'].authenticate
+        authenticated?
       end
 
       def authenticated?
-        env['warden'] && env['warden'].authenticated?
+        !env['rack.session']['user_id'].nil?
       end
 
       def authenticate!
-        raise NotAuthenticated unless env['warden']
-        env['warden'].authenticate!
+        raise NotAuthenticated unless env['rack.session']['user_id']
+        true
       end
 
       def logout
-        env['warden'] && env['warden'].logout
+        env['rack.session'].delete('user_id')
       end
     end
 

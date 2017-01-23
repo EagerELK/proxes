@@ -35,9 +35,7 @@ describe ProxES::Users do
 
     before(:each) do
       # Log in
-      warden = double(Warden::Proxy)
-      allow(warden).to receive(:user).and_return(user)
-      env 'warden', warden
+      env 'rack.session', { 'user_id' => user.id }
     end
 
     it_behaves_like 'a CRUD Controller', '/users'
@@ -65,9 +63,7 @@ describe ProxES::Users do
 
     before(:each) do
       # Log in
-      warden = double(Warden::Proxy)
-      allow(warden).to receive(:user).and_return(user)
-      env 'warden', warden
+      env 'rack.session', { 'user_id' => user.id }
     end
 
     it_behaves_like 'a CRUD Controller', '/users'

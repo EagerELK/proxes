@@ -16,10 +16,7 @@ require 'support/api_shared_examples'
     let(:user) { create(:super_admin_user) }
 
     before(:each) do
-      warden = double(Warden::Proxy)
-      allow(warden).to receive(:user).and_return(user)
-      allow(warden).to receive(:authenticate!)
-      env 'warden', warden
+      env 'rack.session', { 'user_id' => user.id }
     end
 
     it_behaves_like 'has API interface', subject
