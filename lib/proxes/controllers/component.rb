@@ -44,11 +44,21 @@ module ProxES
       authorize settings.model_class, :create
 
       entity = settings.model_class.new(permitted_attributes(settings.model_class, :create))
-      if entity.valid? && entity.save
-        flash[:success] = "#{heading} Created"
-        redirect "#{base_path}/#{entity.id}"
-      else
-        haml :"#{view_location}/new", locals: { entity: entity, title: heading(:new) }
+      success = entity.valid? && entity.save
+
+      respond_to do |format|
+        format.html do
+          if success
+            flash[:success] = "#{heading} Created"
+            redirect "#{base_path}/#{entity.id}"
+          else
+            haml :"#{view_location}/new", locals: { entity: entity, title: heading(:new) }
+          end
+        end
+        format.json do
+          headers 'Content-Type' => 'application/json'
+          redirect "#{base_path}/#{entity.id}", 201 if success
+        end
       end
     end
 

@@ -9,7 +9,7 @@ GIT
 PATH
   remote: .
   specs:
-    proxes (0.1.0)
+    proxes (0.1.1)
       bcrypt
       elasticsearch
       haml
@@ -17,6 +17,7 @@ PATH
       omniauth
       omniauth-identity
       pundit
+      rack-contrib
       rack-proxy
       sequel
       sinatra
@@ -36,6 +37,7 @@ GEM
     bcrypt (3.1.11)
     bcrypt-ruby (3.1.5)
       bcrypt (>= 3.1.3)
+    byebug (9.0.6)
     coderay (1.1.1)
     concurrent-ruby (1.0.4)
     database_cleaner (1.5.3)
@@ -54,6 +56,7 @@ GEM
     faraday (0.11.0)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.14)
+    git-version-bump (0.15.1)
     haml (4.0.7)
       tilt
     hashie (3.4.6)
@@ -78,9 +81,15 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-byebug (3.4.2)
+      byebug (~> 9.0)
+      pry (~> 0.10)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
     rack (1.6.5)
+    rack-contrib (1.4.0)
+      git-version-bump (~> 0.15)
+      rack (~> 1.4)
     rack-protection (1.5.3)
       rack
     rack-proxy (0.6.0)
@@ -130,7 +139,7 @@ GEM
     slop (3.6.0)
     sqlite3 (1.3.12)
     thread_safe (0.3.5)
-    tilt (2.0.5)
+    tilt (2.0.6)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
 
@@ -142,7 +151,7 @@ DEPENDENCIES
   database_cleaner
   factory_girl
   proxes!
-  pry (~> 0.10.4)
+  pry-byebug
   rack-test
   racksh
   rake (~> 10.0)

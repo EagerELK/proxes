@@ -5,12 +5,15 @@ require 'sinatra/respond_with'
 require 'proxes/helpers/views'
 require 'proxes/helpers/pundit'
 require 'proxes/helpers/authentication'
+require 'rack/contrib'
 
 module ProxES
   class Application < Sinatra::Base
     set :root, ::File.expand_path(::File.dirname(__FILE__) + '/../../../')
     register Sinatra::Flash, Sinatra::RespondWith
     helpers ProxES::Helpers::Pundit, ProxES::Helpers::Views, ProxES::Helpers::Authentication
+
+    use Rack::PostBodyContentTypeParser
 
     configure :production do
       disable :show_exceptions

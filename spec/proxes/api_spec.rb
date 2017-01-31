@@ -19,6 +19,6 @@ require 'support/api_shared_examples'
       env 'rack.session', { 'user_id' => user.id }
     end
 
-    it_behaves_like 'has API interface', subject
+    it_behaves_like 'an API interface', subject
   end
 end

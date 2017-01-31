@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'json'
 
-shared_examples 'has API interface' do |subject|
+shared_examples 'an API interface' do |subject|
   context 'GET /' do
     it 'returns HTML when requested' do
       get '/', { 'Accept' => 'text/html' }
@@ -11,7 +11,8 @@ shared_examples 'has API interface' do |subject|
     end
 
     it 'returns JSON when requested' do
-      get '/', { 'Accept' => 'application/json' }
+      header 'Accept', 'application/json'
+      get '/'
 
       expect(last_response).to be_ok
       expect(last_response.headers).to include('Content-Type' => 'application/json')
@@ -19,7 +20,8 @@ shared_examples 'has API interface' do |subject|
     end
 
     it 'returns a list object' do
-      get '/', { 'Accept' => 'application/json' }
+      header 'Accept', 'application/json'
+      get '/'
 
       response = JSON.parse last_response.body
       expect(response).to include('page', 'count', 'total', 'items')
@@ -34,14 +36,16 @@ shared_examples 'has API interface' do |subject|
     let(:entity) { create(subject) }
 
     it 'returns HTML when requested' do
-      get "/#{entity.id}", { 'Accept' => 'text/html' }
+      header 'Accept', 'text/html'
+      get "/#{entity.id}"
 
       expect(last_response).to be_ok
       expect(last_response.headers).to include('Content-Type' => 'text/html;charset=utf-8')
     end
 
     it 'returns JSON when requested' do
-      get "/#{entity.id}", { 'Accept' => 'application/json' }
+      header 'Accept', 'application/json'
+      get "/#{entity.id}"
 
       expect(last_response).to be_ok
       expect(last_response.headers).to include('Content-Type' => 'application/json')
@@ -49,7 +53,8 @@ shared_examples 'has API interface' do |subject|
     end
 
     it 'returns the fetched object' do
-      get "/#{entity.id}", { 'Accept' => 'application/json' }
+      header 'Accept', 'application/json'
+      get "/#{entity.id}"
 
       response = JSON.parse last_response.body
       expect(response).to be_a Hash
@@ -59,5 +64,52 @@ shared_examples 'has API interface' do |subject|
   end
 
   context 'POST /' do
+    it 'returns HTML when requested' do
+      header 'Accept', 'text/html'
+      header 'Content-Type', 'application/x-www-form-urlencoded'
+      post "/", { subject => build(subject).to_hash }
+
+      expect(last_response.headers).to include('Content-Type' => 'text/html;charset=utf-8')
+    end
+
+    it 'returns a 302 Created response for a HTML Request' do
+      header 'Accept', 'text/html'
+      header 'Content-Type', 'application/x-www-form-urlencoded'
+      post "/", { subject => build(subject).to_hash }
+
+      expect(last_response.status).to eq 302
+    end
+
+    it 'returns JSON when requested' do
+      header 'Accept', 'application/json'
+      header 'Content-Type', 'application/json'
+      post "/", { subject => build(subject).to_hash }.to_json
+
+      expect(last_response.headers).to include('Content-Type' => 'application/json')
+    end
+
+    it 'returns a 201 Created response for a JSON Request' do
+      header 'Accept', 'application/json'
+      header 'Content-Type', 'application/json'
+      post "/", { subject => build(subject).to_hash }.to_json
+
+      expect(last_response.status).to eq 201
+    end
+
+    it 'returns a Location Header for a JSON Request' do
+      header 'Accept', 'application/json'
+      header 'Content-Type', 'application/json'
+      post "/", { subject => build(subject).to_hash }.to_json
+
+      expect(last_response.headers).to include 'Location'
+    end
+
+    it 'returns an empty body for a JSON Request' do
+      header 'Accept', 'application/json'
+      header 'Content-Type', 'application/json'
+      post "/", { subject => build(subject).to_hash }.to_json
+
+      expect(last_response.body).to eq ''
+    end
   end
 end

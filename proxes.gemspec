@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'factory_girl'
 
   spec.add_dependency 'rack-proxy'
+  spec.add_dependency 'rack-contrib'
   spec.add_dependency 'sinatra'
   spec.add_dependency 'sinatra-flash'
   spec.add_dependency 'sinatra-contrib'
