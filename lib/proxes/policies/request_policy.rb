@@ -18,8 +18,6 @@ module ProxES
     def method_missing(method_sym, *arguments, &block)
       if method_sym.to_s[-1] == '?'
         return false if user.nil?
-        require 'pry'
-        # binding.pry
 
         if record.indices?
           patterns = ProxES::Permission.where(verb: 'INDEX', role: user.roles).map do |permission|
