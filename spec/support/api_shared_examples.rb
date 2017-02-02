@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 require 'json'
 
-shared_examples 'an API interface' do |subject|
+shared_examples 'an API interface' do |subject, params|
   context 'GET /' do
     it 'returns HTML when requested' do
-      get '/', { 'Accept' => 'text/html' }
+      get '/', 'Accept' => 'text/html'
 
       expect(last_response).to be_ok
       expect(last_response.headers).to include('Content-Type' => 'text/html;charset=utf-8')
@@ -16,7 +16,7 @@ shared_examples 'an API interface' do |subject|
 
       expect(last_response).to be_ok
       expect(last_response.headers).to include('Content-Type' => 'application/json')
-      expect{JSON.parse(last_response.body)}.to_not raise_error
+      expect { JSON.parse(last_response.body) }.to_not raise_error
     end
 
     it 'returns a list object' do
@@ -49,7 +49,7 @@ shared_examples 'an API interface' do |subject|
 
       expect(last_response).to be_ok
       expect(last_response.headers).to include('Content-Type' => 'application/json')
-      expect{JSON.parse(last_response.body)}.to_not raise_error
+      expect { JSON.parse(last_response.body) }.to_not raise_error
     end
 
     it 'returns the fetched object' do
@@ -67,7 +67,8 @@ shared_examples 'an API interface' do |subject|
     it 'returns HTML when requested' do
       header 'Accept', 'text/html'
       header 'Content-Type', 'application/x-www-form-urlencoded'
-      post "/", { subject => build(subject).to_hash }
+      params[subject] = build(subject).to_hash
+      post '/', params
 
       expect(last_response.headers).to include('Content-Type' => 'text/html;charset=utf-8')
     end
@@ -75,7 +76,8 @@ shared_examples 'an API interface' do |subject|
     it 'returns a 302 Created response for a HTML Request' do
       header 'Accept', 'text/html'
       header 'Content-Type', 'application/x-www-form-urlencoded'
-      post "/", { subject => build(subject).to_hash }
+      params[subject] = build(subject).to_hash
+      post '/', params
 
       expect(last_response.status).to eq 302
     end
@@ -83,7 +85,8 @@ shared_examples 'an API interface' do |subject|
     it 'returns JSON when requested' do
       header 'Accept', 'application/json'
       header 'Content-Type', 'application/json'
-      post "/", { subject => build(subject).to_hash }.to_json
+      params[subject] = build(subject).to_hash
+      post '/', params.to_json
 
       expect(last_response.headers).to include('Content-Type' => 'application/json')
     end
@@ -91,7 +94,8 @@ shared_examples 'an API interface' do |subject|
     it 'returns a 201 Created response for a JSON Request' do
       header 'Accept', 'application/json'
       header 'Content-Type', 'application/json'
-      post "/", { subject => build(subject).to_hash }.to_json
+      params[subject] = build(subject).to_hash
+      post '/', params.to_json
 
       expect(last_response.status).to eq 201
     end
@@ -99,7 +103,8 @@ shared_examples 'an API interface' do |subject|
     it 'returns a Location Header for a JSON Request' do
       header 'Accept', 'application/json'
       header 'Content-Type', 'application/json'
-      post "/", { subject => build(subject).to_hash }.to_json
+      params[subject] = build(subject).to_hash
+      post '/', params.to_json
 
       expect(last_response.headers).to include 'Location'
     end
@@ -107,7 +112,8 @@ shared_examples 'an API interface' do |subject|
     it 'returns an empty body for a JSON Request' do
       header 'Accept', 'application/json'
       header 'Content-Type', 'application/json'
-      post "/", { subject => build(subject).to_hash }.to_json
+      params[subject] = build(subject).to_hash
+      post '/', params.to_json
 
       expect(last_response.body).to eq ''
     end
