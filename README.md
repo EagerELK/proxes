@@ -4,8 +4,7 @@
 
 # ProxES
 
-ProxES provides a couple of components to allow you to embed and wrap
-Elasticsearch within your Rack app.
+ProxES provides a management and security layer for Elasticsearch.
 
 ## Components
 
@@ -71,9 +70,13 @@ gulp deploy
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/proxes.
+Bug reports and pull requests are welcome on GitHub at https://github.com/EagerELK/proxes.
 
 ## License
 
-The gem is available as open source under the terms of the [LGPLv3 license](http://www.gnu.org/licenses/lgpl-3.0.html).
+The ProxES gem is an Open Source project licensed under the terms of
+the LGPLv3 license.  Please see [LGPLv3 license](http://www.gnu.org/licenses/lgpl-3.0.html)
+for license text.
 
+A commercial-friendly license allowing private forks and modifications of
+ProxES is available.  Please contact info@jadeit.co.za more detail.
