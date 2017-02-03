@@ -40,19 +40,40 @@ module ProxES
           identity.save
           user.save
           user.add_identity identity
-          roles.each do |role_id|
-            user.add_role(role_id) unless user.roles.map(&:id).include? role_id.to_i
-          end if roles
+          if roles
+            roles.each do |role_id|
+              user.add_role(role_id) unless user.roles.map(&:id).include? role_id.to_i
+            end
+          end
           user.check_roles
         end
 
-        flash[:success] = 'User created'
-        redirect "/_proxes/users/#{user.id}"
+        respond_to do |format|
+          format.html do
+            flash[:success] = 'User created'
+            redirect "/_proxes/users/#{user.id}"
+          end
+          format.json do
+            headers 'Content-Type' => 'application/json'
+            redirect "/_proxes/users/#{user.id}", 201
+          end
+        end
       else
-        flash.now[:danger] = 'Could not create the user'
-        locals[:entity] = user
-        locals[:identity] = identity
-        haml :"#{view_location}/new", locals: locals
+        respond_to do |format|
+          format.html do
+            flash.now[:danger] = 'Could not create the user'
+            locals[:entity] = user
+            locals[:identity] = identity
+            haml :"#{view_location}/new", locals: locals
+          end
+          format.json do
+            headers \
+              'Content-Type' => 'application/json',
+              'Content-Location' => "#{view_location}/new"
+            body ''
+            status 402
+          end
+        end
       end
     end
 
