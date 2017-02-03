@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'sequel'
+require 'proxes/models/base'
 require 'bcrypt'
 require 'digest/md5'
 require 'active_support'
@@ -7,7 +7,7 @@ require 'active_support/core_ext/object/blank'
 
 # Why not store this in Elasticsearch?
 module ProxES
-  class User < Sequel::Model
+  class User < Base
     one_to_many :identity
     many_to_many :roles
     one_to_many :audit_logs

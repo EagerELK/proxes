@@ -1,8 +1,8 @@
 # frozen_string_literal: true
-require 'sequel'
+require 'proxes/models/base'
 
 module ProxES
-  class Role < Sequel::Model
+  class Role < Base
     many_to_many :users
     one_to_many :permissions
 

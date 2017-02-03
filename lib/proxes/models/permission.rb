@@ -1,8 +1,8 @@
 # frozen_string_literal: true
-require 'sequel'
+require 'proxes/models/base'
 
 module ProxES
-  class Permission < Sequel::Model
+  class Permission < Base
     many_to_one :role
 
     def validate

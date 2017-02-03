@@ -1,8 +1,8 @@
 # frozen_string_literal: true
-require 'sequel'
+require 'proxes/models/base'
 
 module ProxES
-  class AuditLog < Sequel::Model
+  class AuditLog < Base
     many_to_one :user
 
     def validate

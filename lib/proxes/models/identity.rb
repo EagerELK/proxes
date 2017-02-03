@@ -1,11 +1,11 @@
 # frozen_string_literal: true
-require 'sequel'
+require 'proxes/models/base'
 require 'omniauth-identity'
 require 'active_support'
 require 'active_support/core_ext/object/blank'
 
 module ProxES
-  class Identity < Sequel::Model
+  class Identity < Base
     many_to_one :user
 
     attr_accessor :password, :password_confirmation
