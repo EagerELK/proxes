@@ -4,7 +4,7 @@
 
 # ProxES
 
-ProxES provides a management and security layer for Elasticsearch.
+ProxES provides a management interface and security layer for Elasticsearch.
 
 ## Components
 
@@ -33,23 +33,28 @@ gem 'proxes'
 
 And then execute:
 
-    $ bundle
+```bash
+bundle install
+```
 
 Or install it yourself as:
 
-    $ gem install proxes
+```bash
+gem install proxes
+```
 
 ## Usage
 
-Check the included [`config.ru`](https://github.com/EagerELK/proxes/blob/master/config.ru) file for an example setup.
+1. Add the components to your rack config file. See the included [`config.ru`](https://github.com/EagerELK/proxes/blob/master/config.ru) file for an example setup
+2. Add the ProxES rake tasks to your Rakefile: `require 'proxes/rake_tasks'`
+3. Create and populate the DB: 
 
-At a minimum, you need to
+```bash
+bundle exec rake proxes:migrate
+bundle exec rake proxes:seed
+```
 
-* Set up Session Middleware
-* Set up OmniAuth to Authenticate the user
-* Mount the `ProxES::App`
-* Proxy all Elasticsearch requests after running it through the `ProxES::Security`
-middleware
+4. Start up the web app: `bundle exec rackup`
 
 ## Development
 
