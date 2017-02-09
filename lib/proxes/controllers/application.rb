@@ -1,17 +1,22 @@
 # frozen_string_literal: true
+require 'wisper'
 require 'sinatra/base'
 require 'sinatra/flash'
 require 'sinatra/respond_with'
 require 'proxes/helpers/views'
 require 'proxes/helpers/pundit'
+require 'proxes/helpers/wisper'
 require 'proxes/helpers/authentication'
 require 'rack/contrib'
 
 module ProxES
   class Application < Sinatra::Base
     set :root, ::File.expand_path(::File.dirname(__FILE__) + '/../../../')
-    register Sinatra::Flash, Sinatra::RespondWith
+    # The order here is important, since Wisper has a deprecated method respond_with method
+    helpers Wisper::Publisher, ProxES::Helpers::Wisper
     helpers ProxES::Helpers::Pundit, ProxES::Helpers::Views, ProxES::Helpers::Authentication
+
+    register Sinatra::Flash, Sinatra::RespondWith
 
     use Rack::PostBodyContentTypeParser
 

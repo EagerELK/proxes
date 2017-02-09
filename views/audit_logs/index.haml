@@ -11,7 +11,10 @@
           -list.each do |entity|
             %tr
               %td
-                %a{ href: "/_proxes/users/#{entity.user.id}" }= entity.user.email
+                -if entity.user
+                  %a{ href: "/_proxes/users/#{entity.user.id}" }= entity.user.email
+                -else
+                  None
               %td
                 = entity.action
               %td

@@ -9,7 +9,7 @@ GIT
 PATH
   remote: .
   specs:
-    proxes (0.1.1)
+    proxes (0.2.0)
       bcrypt
       elasticsearch
       haml
@@ -24,6 +24,7 @@ PATH
       sinatra-contrib
       sinatra-flash
       tilt (>= 2)
+      wisper
 
 GEM
   remote: https://rubygems.org/
@@ -142,6 +143,7 @@ GEM
     tilt (2.0.6)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    wisper (1.6.1)
 
 PLATFORMS
   ruby

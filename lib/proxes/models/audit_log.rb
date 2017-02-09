@@ -6,7 +6,7 @@ module ProxES
     many_to_one :user
 
     def validate
-      validates_presence [:user_id, :action]
+      validates_presence [:action]
     end
   end
 end

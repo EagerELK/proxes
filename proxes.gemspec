@@ -41,5 +41,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'omniauth'
   spec.add_dependency 'omniauth-identity'
   spec.add_dependency 'haml'
+  spec.add_dependency 'wisper'
   spec.add_dependency 'tilt', '>= 2'
 end

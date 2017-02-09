@@ -9,6 +9,7 @@ module ProxES
 
     # Failed Login
     post '/_proxes/auth/identity/callback' do
+      broadcast(:identity_failed_login)
       flash[:warning] = 'Invalid credentials. Please try again.'
       redirect '/auth/identity'
     end

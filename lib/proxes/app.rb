@@ -18,6 +18,10 @@ module ProxES
     post '/auth/identity/new' do
       identity = Identity.new(params['identity'])
       if identity.valid? && identity.save
+        user = User.find_or_create(email: identity.username)
+        user.add_identity identity
+
+        log_action(:identity_register, user: user)
         flash[:info] = 'Successfully Registered. Please log in'
         redirect '/auth/identity'
       else
@@ -27,19 +31,16 @@ module ProxES
     end
 
     post '/auth/identity/callback' do
-      user = User.find_or_create(email: env['omniauth.auth']['info']['email'])
-
-      identity = Identity.find(username: user.email)
-      user.add_identity identity unless identity.user == user
-
+      user = User.find(email: env['omniauth.auth']['info']['email'])
       self.current_user = user
+      log_action(:identity_login, user: user)
       flash[:success] = 'Logged In'
       redirect '/_proxes'
     end
 
     delete '/auth/identity' do
+      log_action(:identity_logout)
       logout
-
       flash[:info] = 'Logged Out'
 
       redirect '/_proxes'
