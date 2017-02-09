@@ -6,7 +6,9 @@ module ProxES
   class Component < Application
     helpers ProxES::Helpers::Component
     set base_path: nil
+    set dehumanized: nil
     set view_location: nil
+    set track_actions: false
 
     # List
     get '/', provides: [:html, :json] do
@@ -15,6 +17,7 @@ module ProxES
       actions = {}
       actions["#{base_path}/new"] = "New #{heading}" if policy(settings.model_class).create?
 
+      log_action("#{dehumanized}_list".to_sym) if settings.track_actions
       respond_to do |format|
         format.html do
           haml :"#{view_location}/index",
@@ -46,6 +49,7 @@ module ProxES
       entity = settings.model_class.new(permitted_attributes(settings.model_class, :create))
       success = entity.valid? && entity.save
 
+      log_action("#{dehumanized}_create".to_sym) if success && settings.track_actions
       respond_to do |format|
         format.html do
           if success
@@ -71,6 +75,7 @@ module ProxES
       actions = {}
       actions["#{base_path}/#{entity.id}/edit"] = "Edit #{heading}" if policy(entity).update?
 
+      log_action("#{dehumanized}_read".to_sym) if settings.track_actions
       respond_to do |format|
         format.html do
           haml :"#{view_location}/display",
@@ -96,7 +101,10 @@ module ProxES
       authorize entity, :update
 
       entity.set(permitted_attributes(settings.model_class, :update))
-      if entity.valid? && entity.save
+
+      success = entity.valid? && entity.save
+      log_action("#{dehumanized}_update".to_sym) if success && settings.track_actions
+      if success
         flash[:success] = "#{heading} Updated"
         redirect "#{base_path}/#{entity.id}"
       else
@@ -111,6 +119,7 @@ module ProxES
 
       entity.destroy
 
+      log_action("#{dehumanized}_delete".to_sym) if settings.track_actions
       flash[:success] = "#{heading} Deleted"
       redirect base_path.to_s
     end

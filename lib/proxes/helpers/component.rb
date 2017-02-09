@@ -28,6 +28,10 @@ module ProxES
         @headings[action]
       end
 
+      def dehumanized
+        settings.dehumanized || ActiveSupport::Inflector.underscore(heading)
+      end
+
       def base_path
         settings.base_path || "/_proxes/#{heading(:list).downcase}"
       end

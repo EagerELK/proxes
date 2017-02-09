@@ -8,6 +8,7 @@ require 'proxes/policies/identity_policy'
 module ProxES
   class Users < Component
     set model_class: ProxES::User
+    set track_actions: true
 
     # New
     get '/new' do
@@ -48,6 +49,7 @@ module ProxES
           user.check_roles
         end
 
+        log_action("#{dehumanized}_create".to_sym) if settings.track_actions
         respond_to do |format|
           format.html do
             flash[:success] = 'User created'
@@ -90,6 +92,7 @@ module ProxES
         entity.remove_all_roles
         roles.each { |role_id| entity.add_role(role_id) } if roles
         entity.check_roles
+        log_action("#{dehumanized}_update".to_sym) if settings.track_actions
         flash[:success] = "#{heading} Updated"
         redirect "/_proxes/users/#{entity.id}"
       else
@@ -107,6 +110,7 @@ module ProxES
       values = permitted_attributes(Identity, :create)
       identity.set values
       if identity.valid? && identity.save
+        log_action("#{dehumanized}_update_password".to_sym) if settings.track_actions
         flash[:success] = "Password Updated"
         redirect '/_proxes/users/profile'
       else
@@ -124,6 +128,7 @@ module ProxES
       entity.remove_all_roles
       entity.destroy
 
+      log_action("#{dehumanized}_delete".to_sym) if settings.track_actions
       flash[:success] = "#{heading} Deleted"
       redirect '/_proxes/users'
     end
