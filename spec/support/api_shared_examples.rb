@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 require 'json'
+require 'active_support/core_ext/hash/except'
 
 shared_examples 'an API interface' do |subject, params|
+  before(:each) { create(subject) }
+
   context 'GET /' do
     it 'returns HTML when requested' do
       get '/', 'Accept' => 'text/html'
@@ -73,13 +76,14 @@ shared_examples 'an API interface' do |subject, params|
       expect(last_response.headers).to include('Content-Type' => 'text/html;charset=utf-8')
     end
 
-    it 'returns a 302 Created response for a HTML Request' do
+    it 'returns a 302 Redirect response for a HTML Request' do
       header 'Accept', 'text/html'
       header 'Content-Type', 'application/x-www-form-urlencoded'
       params[subject] = build(subject).to_hash
       post '/', params
 
       expect(last_response.status).to eq 302
+      expect(last_response.headers).to include('Location')
     end
 
     it 'returns JSON when requested' do
@@ -114,6 +118,128 @@ shared_examples 'an API interface' do |subject, params|
       header 'Content-Type', 'application/json'
       params[subject] = build(subject).to_hash
       post '/', params.to_json
+
+      expect(last_response.body).to eq ''
+    end
+  end
+
+  context 'PUT /:id' do
+    let(:entity) { create(subject) }
+
+    it 'returns HTML when requested' do
+      header 'Accept', 'text/html'
+      header 'Content-Type', 'application/x-www-form-urlencoded'
+
+      values = entity.to_hash.except(:id)
+      params[subject] = values
+      put "/#{entity.id}", params
+
+      expect(last_response.headers).to include('Content-Type' => 'text/html;charset=utf-8')
+    end
+
+    it 'returns a 302 Redirect response for a HTML Request' do
+      header 'Accept', 'text/html'
+      header 'Content-Type', 'application/x-www-form-urlencoded'
+
+      values = entity.to_hash.except(:id)
+      params[subject] = values
+      put "/#{entity.id}", params
+
+      expect(last_response.status).to eq 302
+      expect(last_response.headers).to include('Location')
+    end
+
+    it 'returns JSON when requested' do
+      header 'Accept', 'application/json'
+      header 'Content-Type', 'application/json'
+
+      values = entity.to_hash.except(:id)
+      params[subject] = values
+      put "/#{entity.id}", params.to_json
+
+      expect(last_response.headers).to include('Content-Type' => 'application/json')
+    end
+
+    it 'returns a 200 OK response for a JSON Request' do
+      header 'Accept', 'application/json'
+      header 'Content-Type', 'application/json'
+
+      values = entity.to_hash.except(:id)
+      params[subject] = values
+      put "/#{entity.id}", params.to_json
+
+      expect(last_response.status).to eq 200
+    end
+
+    it 'returns a Location Header for a JSON Request' do
+      header 'Accept', 'application/json'
+      header 'Content-Type', 'application/json'
+
+      values = entity.to_hash.except(:id)
+      params[subject] = values
+      put "/#{entity.id}", params.to_json
+
+      expect(last_response.headers).to include 'Location'
+    end
+
+    it 'returns the updated entity in the body for a JSON Request' do
+      header 'Accept', 'application/json'
+      header 'Content-Type', 'application/json'
+
+      values = entity.to_hash.except(:id)
+      params[subject] = values
+      put "/#{entity.id}", params.to_json
+
+      response = JSON.parse last_response.body
+      expect(response).to eq entity.to_hash
+    end
+  end
+
+  context 'DELETE /:id' do
+    let(:entity) { create(subject) }
+
+    it 'returns HTML when requested' do
+      header 'Accept', 'text/html'
+      header 'Content-Type', 'application/x-www-form-urlencoded'
+
+      delete "/#{entity.id}"
+
+      expect(last_response.headers).to include('Content-Type' => 'text/html;charset=utf-8')
+    end
+
+    it 'returns a 302 Redirect response for a HTML Request' do
+      header 'Accept', 'text/html'
+      header 'Content-Type', 'application/x-www-form-urlencoded'
+
+      delete "/#{entity.id}"
+
+      expect(last_response.status).to eq 302
+      expect(last_response.headers).to include('Location')
+    end
+
+    it 'returns JSON when requested' do
+      header 'Accept', 'application/json'
+      header 'Content-Type', 'application/json'
+
+      delete "/#{entity.id}"
+
+      expect(last_response.headers).to include('Content-Type' => 'application/json')
+    end
+
+    it 'returns a 204 No Content response for a JSON Request' do
+      header 'Accept', 'application/json'
+      header 'Content-Type', 'application/json'
+
+      delete "/#{entity.id}"
+
+      expect(last_response.status).to eq 204
+    end
+
+    it 'returns an empty body for a JSON Request' do
+      header 'Accept', 'application/json'
+      header 'Content-Type', 'application/json'
+
+      delete "/#{entity.id}"
 
       expect(last_response.body).to eq ''
     end
