@@ -105,10 +105,22 @@ module ProxES
       success = entity.valid? && entity.save
       log_action("#{dehumanized}_update".to_sym) if success && settings.track_actions
       if success
-        flash[:success] = "#{heading} Updated"
-        redirect "#{base_path}/#{entity.id}"
+        respond_to do |format|
+          format.html do
+            flash[:success] = "#{heading} Updated"
+            redirect "#{base_path}/#{entity.id}"
+          end
+          format.json do
+            content_type 'application/json'
+            headers 'Location' => "#{base_path}/#{entity.id}"
+            body entity.to_hash.to_json
+            status 200
+          end
+        end
       else
-        haml :"#{view_location}/edit", locals: { entity: entity, title: heading(:edit) }
+        format.html do
+          haml :"#{view_location}/edit", locals: { entity: entity, title: heading(:edit) }
+        end
       end
     end
 
@@ -120,8 +132,17 @@ module ProxES
       entity.destroy
 
       log_action("#{dehumanized}_delete".to_sym) if settings.track_actions
-      flash[:success] = "#{heading} Deleted"
-      redirect base_path.to_s
+      respond_to do |format|
+        format.html do
+          flash[:success] = "#{heading} Deleted"
+          redirect base_path.to_s
+        end
+        format.json do
+          content_type 'application/json'
+          headers 'Location' => '/_proxes/users'
+          status 204
+        end
+      end
     end
   end
 end

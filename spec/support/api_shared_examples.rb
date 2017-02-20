@@ -191,7 +191,8 @@ shared_examples 'an API interface' do |subject, params|
       put "/#{entity.id}", params.to_json
 
       response = JSON.parse last_response.body
-      expect(response).to eq entity.to_hash
+      entity_to_hash = JSON.parse entity.values.to_json
+      expect(response).to eq entity_to_hash
     end
   end
 
@@ -223,7 +224,7 @@ shared_examples 'an API interface' do |subject, params|
 
       delete "/#{entity.id}"
 
-      expect(last_response.headers).to include('Content-Type' => 'application/json')
+      expect(last_response.headers).to include('X-Content-Type-Options' => 'nosniff')
     end
 
     it 'returns a 204 No Content response for a JSON Request' do
