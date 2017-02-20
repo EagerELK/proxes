@@ -118,8 +118,10 @@ module ProxES
           end
         end
       else
-        format.html do
-          haml :"#{view_location}/edit", locals: { entity: entity, title: heading(:edit) }
+        respond_to do |format|
+          format.html do
+            haml :"#{view_location}/edit", locals: { entity: entity, title: heading(:edit) }
+          end
         end
       end
     end
