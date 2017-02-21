@@ -19,6 +19,7 @@ module ProxES
     register Sinatra::Flash, Sinatra::RespondWith
 
     use Rack::PostBodyContentTypeParser
+    use Rack::MethodOverride
 
     configure :production do
       disable :show_exceptions

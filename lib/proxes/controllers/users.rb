@@ -93,8 +93,18 @@ module ProxES
         roles.each { |role_id| entity.add_role(role_id) } if roles
         entity.check_roles
         log_action("#{dehumanized}_update".to_sym) if settings.track_actions
-        flash[:success] = "#{heading} Updated"
-        redirect "/_proxes/users/#{entity.id}"
+        respond_to do |format|
+          format.html do
+            flash[:success] = "#{heading} Updated"
+            redirect "/_proxes/users/#{entity.id}"
+          end
+          format.json do
+            content_type 'application/json'
+            headers 'Location' => "/_proxes/users/#{entity.id}"
+            body entity.to_hash.to_json
+            status 200
+          end
+        end
       else
         haml :"#{view_location}/edit", locals: { entity: entity, title: heading(:edit) }
       end
@@ -119,7 +129,7 @@ module ProxES
     end
 
     # Delete
-    delete '/:id' do |id|
+    delete '/:id', provides: [:html, :json] do |id|
       entity = dataset[id.to_i]
       halt 404 unless entity
       authorize entity, :delete
@@ -129,8 +139,17 @@ module ProxES
       entity.destroy
 
       log_action("#{dehumanized}_delete".to_sym) if settings.track_actions
-      flash[:success] = "#{heading} Deleted"
-      redirect '/_proxes/users'
+      respond_to do |format|
+        format.html do
+          flash[:success] = "#{heading} Deleted"
+          redirect '/_proxes/users'
+        end
+        format.json do
+          content_type 'application/json'
+          headers 'Location' => '/_proxes/users'
+          status 204
+        end
+      end
     end
 
     # Profile

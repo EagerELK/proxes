@@ -25,7 +25,7 @@ FactoryGirl.define do
   end
 
   factory :role, class: ProxES::Role, aliases: [:'ProxES::Role'] do
-    name 'test'
+    name { "Role #{generate(:name)}" }
   end
 
   factory :permission, class: ProxES::Permission, aliases: [:'ProxES::Permission'] do

@@ -9,7 +9,7 @@ require 'support/api_shared_examples'
 }.each do |subject, controller|
   describe controller, type: :controller do
     def app
-      described_class.new(proc { [200, {}, ['Hello, world.']] })
+      described_class
     end
 
     let(:user) { create(:super_admin_user) }
@@ -24,7 +24,7 @@ end
 
 describe ProxES::Users, type: :controller do
   def app
-    described_class.new(proc { [200, {}, ['Hello, world.']] })
+    described_class
   end
 
   let(:user) { create(:super_admin_user) }
