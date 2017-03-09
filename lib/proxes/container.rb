@@ -25,6 +25,10 @@ module ProxES
       def map(&block)
         @mutex.synchronize{@hash.map(&block)}
       end
+
+      def inject(memo, &block)
+        @mutex.synchronize{@hash.inject(memo, &block)}
+      end
     end
 
     # Ripped off from Roda - https://github.com/jeremyevans/roda
@@ -80,12 +84,19 @@ module ProxES
             nil
           end
 
+          # Return a hash of controllers with their routes as keys: `{ '/users' => ProxES::Controllers::Users }`
           def routes
-            {} # Return a hash of controllers with their routes as keys: `{ '/users' => ProxES::Controllers::Users }`
+            Plugins.plugins.inject({}) do |memo, plugin|
+              memo.merge!(plugin[1].route_mappings) if plugin[1].respond_to?(:route_mappings)
+              memo
+            end
           end
 
-          def nav_items
-            [] # Return an ordered list of navigation items: `[{order:0, link:'/users/' text:'Users'}, {order:1, link:'/roles/', text:'Roles'}]
+          # Return an ordered list of navigation items: `[{order:0, link:'/users/', text:'Users'}, {order:1, link:'/roles/', text:'Roles'}]
+          def navigation
+            Plugins.plugins.map do |_key, plugin|
+              plugin.nav_items if plugin.respond_to?(:nav_items)
+            end # TODO: Order and use in navbar.haml
           end
 
           def migrations
