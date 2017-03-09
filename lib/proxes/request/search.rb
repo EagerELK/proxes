@@ -4,7 +4,7 @@ require 'proxes/request'
 
 module ProxES
   class Request
-    class Search < ProxES::Request
+    class Search < Request
       attr_reader :index, :type
       attr_reader :type
 

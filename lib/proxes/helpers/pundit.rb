@@ -8,7 +8,7 @@ module ProxES
       include ::Pundit
 
       def authorize(record, query = nil)
-        if record.is_a?(::ProxES::Request)
+        if record.is_a?(Request)
           query = record.request_method.downcase
         elsif query.nil?
           raise ArgumentError, 'Pundit cannot determine the query'

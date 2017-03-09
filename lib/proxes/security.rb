@@ -11,12 +11,12 @@ module ProxES
   class Security
     attr_reader :env, :logger
 
-    include ProxES::Helpers::Authentication
-    include ProxES::Helpers::Pundit
+    include Helpers::Authentication
+    include Helpers::Pundit
 
     def initialize(app, logger = nil)
       @app = app
-      @logger = logger || ProxES::Services::Logger.instance
+      @logger = logger || Services::Logger.instance
     end
 
     def error(message, code = 500)
@@ -26,7 +26,7 @@ module ProxES
     def call(env)
       @env = env
 
-      request = ProxES::Request.from_env(env)
+      request = Request.from_env(env)
 
       logger.debug '==========================BEFORE================================================'
       logger.debug '= ' + "Request: #{request.fullpath}".ljust(76) + ' ='

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 module ProxES
   class Request
-    class RootPolicy < ProxES::RequestPolicy
-      class Scope < ProxES::RequestPolicy::Scope
+    class RootPolicy < RequestPolicy
+      class Scope < RequestPolicy::Scope
         def resolve
           scope
         end

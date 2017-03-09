@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 module ProxES
   class Request
-    class SearchPolicy < ProxES::RequestPolicy
-      class Scope < ProxES::RequestPolicy::Scope
+    class SearchPolicy < RequestPolicy
+      class Scope < RequestPolicy::Scope
         def resolve
           patterns = ProxES::Permission.where(verb: 'INDEX', role: user.roles).map do |permission|
             permission.pattern.gsub(/\{user.(.*)\}/) { |match| user.send(Regexp.last_match[1].to_sym) }

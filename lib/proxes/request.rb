@@ -13,7 +13,7 @@ module ProxES
                  end
       begin
         require 'proxes/request/' + endpoint.downcase
-        ProxES::Request.const_get(endpoint).new(env)
+        Request.const_get(endpoint).new(env)
       rescue LoadError
         self.new(env)
       end

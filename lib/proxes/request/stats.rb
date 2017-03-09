@@ -4,7 +4,7 @@ require 'proxes/request'
 
 module ProxES
   class Request
-    class Stats < ProxES::Request
+    class Stats < Request
       attr_reader :index
 
       def index=(idx)

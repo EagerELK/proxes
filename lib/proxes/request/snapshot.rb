@@ -4,7 +4,7 @@ require 'proxes/request'
 
 module ProxES
   class Request
-    class Snapshot < ProxES::Request
+    class Snapshot < Request
       attr_reader :repository
 
       def parse

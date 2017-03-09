@@ -4,7 +4,7 @@ require 'proxes/request'
 
 module ProxES
   class Request
-    class Root < ProxES::Request
+    class Root < Request
     end
   end
 end

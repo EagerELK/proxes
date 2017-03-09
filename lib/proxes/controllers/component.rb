@@ -4,7 +4,7 @@ require 'proxes/helpers/component'
 
 module ProxES
   class Component < Application
-    helpers ProxES::Helpers::Component
+    helpers Helpers::Component
     set base_path: nil
     set dehumanized: nil
     set view_location: nil
