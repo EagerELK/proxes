@@ -16,8 +16,8 @@ module ProxES
 
       locals = {
         title: heading(:new),
-        entity: ProxES::User.new,
-        identity: ProxES::Identity.new
+        entity: User.new,
+        identity: Identity.new
       }
       haml :"#{view_location}/new", locals: locals, layout_opts: { locals: locals }
     end
