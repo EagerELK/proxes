@@ -96,7 +96,7 @@ module ProxES
           def navigation
             Plugins.plugins.map do |_key, plugin|
               plugin.nav_items if plugin.respond_to?(:nav_items)
-            end # TODO: Order and use in navbar.haml
+            end.flatten.sort_by { |h| h[:order] }
           end
 
           def migrations

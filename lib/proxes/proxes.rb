@@ -24,9 +24,9 @@ module ProxES
 
     def self.nav_items
       [
-        { order: 0, link:'/users/', text: 'Users' },
-        { order: 1, link:'/roles/', text: 'Roles' },
-        { order: 2, link:'/permissions/', text: 'Permissions' },
+        { order: 0, link:'/users/', text: 'Users', target: User, icon: 'user' },
+        { order: 1, link:'/roles/', text: 'Roles', target: Role, icon: 'group' },
+        { order: 2, link:'/permissions/', text: 'Permissions', target: Permission, icon: 'check-square' },
       ]
     end
   end
