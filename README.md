@@ -47,7 +47,8 @@ gem install proxes
 
 1. Add the components to your rack config file. See the included [`config.ru`](https://github.com/EagerELK/proxes/blob/master/config.ru) file for an example setup
 2. Add the ProxES rake tasks to your Rakefile: `require 'proxes/rake_tasks'`
-3. Create and populate the DB: 
+3. Set the DB connection as the `DATABASE_URL` ENV variable: `DATABASE_URL=sqlite://development.db`
+4. Create and populate the DB: 
 
 ```bash
 bundle exec rake proxes:migrate
