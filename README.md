@@ -6,22 +6,12 @@
 
 ProxES provides a management interface and security layer for Elasticsearch.
 
-## Components
+## Getting Started
 
-ProxES has two main components that works together, but can be used separately
-as well: 
+This is a full application that requires some setup. The following complete setup
+scripts are available:
 
-### 1. Management Interface
-
-This interface gives you the ability to manage your Elasticsearch users and get
-and overview of your Elasticsearch cluster.
-
-### 2. Security Middleware
-
-The Rack middleware checks all requests going to your Elasticsearch cluster
-against the users and permissions you've set up in the Management Interface. It
-uses a combination of [Pundit](https://github.com/elabs/pundit) and
-[OmniAuth](https://github.com/omniauth/omniauth) to secure your cluster.
+* [Ubuntu](https://gist.github.com/jrgns/979a6d3ea7cc94db671551227fd6469a#file-setup-ubuntu-sh)
 
 ## Installation
 
@@ -48,14 +38,32 @@ gem install proxes
 1. Add the components to your rack config file. See the included [`config.ru`](https://github.com/EagerELK/proxes/blob/master/config.ru) file for an example setup
 2. Add the ProxES rake tasks to your Rakefile: `require 'proxes/rake_tasks'`
 3. Set the DB connection as the `DATABASE_URL` ENV variable: `DATABASE_URL=sqlite://development.db`
-4. Create and populate the DB: 
+4. Create and populate the DB and secret tokens: 
 
 ```bash
 bundle exec rake proxes:migrate
 bundle exec rake proxes:seed
+bundle exec rake proxes:generate_tokens
 ```
 
-4. Start up the web app: `bundle exec rackup`
+5. Start up the web app: `bundle exec rackup`
+
+## Components
+
+ProxES has two main components that works together, but can be used separately
+as well: 
+
+### 1. Management Interface
+
+This interface gives you the ability to manage your Elasticsearch users and get
+and overview of your Elasticsearch cluster.
+
+### 2. Security Middleware
+
+The Rack middleware checks all requests going to your Elasticsearch cluster
+against the users and permissions you've set up in the Management Interface. It
+uses a combination of [Pundit](https://github.com/elabs/pundit) and
+[OmniAuth](https://github.com/omniauth/omniauth) to secure your cluster.
 
 ## Development
 
