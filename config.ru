@@ -24,6 +24,9 @@ end
 OmniAuth.config.on_failure = ProxES::AuthIdentity
 
 # Management App
+require 'proxes/proxes'
+ProxES::Container.plugin(:proxes)
+
 map '/_proxes' do
   run Rack::URLMap.new ProxES::Container.routes
 end
