@@ -20,13 +20,13 @@ module ProxES
         return false if user.nil?
 
         if record.indices?
-          patterns = ProxES::Permission.where(verb: 'INDEX', role: user.roles).map do |permission|
+          patterns = Permission.where(verb: 'INDEX', role: user.roles).map do |permission|
             permission.pattern.gsub(/\{user.(.*)\}/) { |match| user.send(Regexp.last_match[1].to_sym) }
           end
           return filter(record.index, patterns).count.positive?
         else
           # Give me all the user's permissions that match the verb
-          ProxES::Permission.where(verb: method_sym[0..-2].upcase, role: user.roles).each do |permission|
+          Permission.where(verb: method_sym[0..-2].upcase, role: user.roles).each do |permission|
             return true if record.path =~ %r{#{permission.pattern}}
           end
         end
