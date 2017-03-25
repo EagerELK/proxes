@@ -1,4 +1,10 @@
 # frozen_string_literal: true
+require 'proxes/app'
+require 'proxes/controllers/users'
+require 'proxes/controllers/roles'
+require 'proxes/controllers/permissions'
+require 'proxes/controllers/audit_logs'
+
 module ProxES
   class ProxES
     def self.migration_folder
@@ -7,11 +13,11 @@ module ProxES
 
     def self.route_mappings
       {
-        '/' => App,
-        '/users' => Users,
-        '/roles' => Roles,
-        '/permissions' => Permissions,
-        '/audit-logs' => AuditLogs,
+        '/' => ::ProxES::App,
+        '/users' => ::ProxES::Users,
+        '/roles' => ::ProxES::Roles,
+        '/permissions' => ::ProxES::Permissions,
+        '/audit-logs' => ::ProxES::AuditLogs,
       }
     end
 
