@@ -28977,7 +28977,7 @@ var _reactProxesComponents2 = _interopRequireDefault(_reactProxesComponents);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_reactDom2.default.render(_react2.default.createElement(_reactProxesComponents2.default, { pollInterval: '30000' }), document.getElementById('react-dashboard'));
+_reactDom2.default.render(_react2.default.createElement(_reactProxesComponents2.default, { pollInterval: '30000', elasticsearch_url: './' }), document.getElementById('react-dashboard'));
 
 // ReactDOM.render(
 //     <Health store={new ESStore()}/>,
