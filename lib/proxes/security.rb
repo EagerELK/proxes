@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 require 'proxes/services/logger'
-require 'rack-proxy'
 require 'proxes/request'
 require 'proxes/policies/request_policy'
 require 'proxes/helpers/pundit'

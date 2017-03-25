@@ -4,19 +4,13 @@ $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 
 raise 'Unconfigured' unless ENV['ELASTICSEARCH_URL']
 
-use Rack::Static, urls: ['/css', '/js'], root: 'public'
-use Rack::MethodOverride
+require 'proxes'
+require 'proxes/omniauth'
 use Rack::Session::Cookie,
     key: '_ProxES_session',
     #:secure=>!TEST_MODE, # Uncomment if only allowing https:// access
     secret: File.read('.session_secret')
 
-require 'proxes'
-require 'omniauth'
-require 'omniauth-identity'
-require 'proxes/models/identity'
-require 'proxes/controllers/auth_identity'
-# OmniAuth.config.test_mode = true
 use OmniAuth::Builder do
   # The identity provider is used by the App.
   provider :identity,
@@ -36,10 +30,12 @@ end
 
 # Proxy all Elasticsearch requests
 require 'proxes/security'
+require 'proxes/forwarder'
 map '/' do
   # Security
   use ProxES::Security, ProxES::Services::Logger.instance
+  use Rack::ContentLength
 
   # Forward requests to ES
-  run Rack::Proxy.new(backend: ENV['ELASTICSEARCH_URL'])
+  run ProxES::Forwarder.new(backend: ENV['ELASTICSEARCH_URL'])
 end
