@@ -5,7 +5,6 @@ require "simplecov"
 SimpleCov.start
 
 require 'proxes'
-require 'proxes/db'
 if ENV['DATABASE_URL'] == 'sqlite::memory:'
   folder = File.expand_path(File.dirname(__FILE__) + '/../migrate')
   Sequel.extension :migration

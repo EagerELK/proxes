@@ -5,7 +5,7 @@ require 'proxes/policies/audit_log_policy'
 
 module ProxES
   class AuditLogs < Component
-    set model_class: ProxES::AuditLog
+    set model_class: AuditLog
 
     get '/new' do
       halt 404

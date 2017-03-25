@@ -7,7 +7,7 @@ require 'proxes/policies/identity_policy'
 
 module ProxES
   class Users < Component
-    set model_class: ProxES::User
+    set model_class: User
     set track_actions: true
 
     # New

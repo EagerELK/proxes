@@ -5,6 +5,6 @@ require 'proxes/policies/permission_policy'
 
 module ProxES
   class Permissions < Component
-    set model_class: ProxES::Permission
+    set model_class: Permission
   end
 end

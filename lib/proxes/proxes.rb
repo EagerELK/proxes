@@ -1,11 +1,4 @@
 # frozen_string_literal: true
-require 'proxes'
-require 'proxes/db'
-require 'proxes/controllers/users'
-require 'proxes/controllers/roles'
-require 'proxes/controllers/permissions'
-require 'proxes/controllers/audit_logs'
-
 module ProxES
   class ProxES
     def self.migration_folder
