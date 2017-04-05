@@ -15,9 +15,17 @@ module ProxES
           File.write('.token_secret', SecureRandom.random_bytes(40))
         end
 
-        desc 'Seed the database'
+        desc 'Seed the ProxES database'
         task :seed do
           require 'proxes/seed'
+        end
+
+        desc 'Prepare ProxES migrations'
+        task :prep do
+          Dir.mkdir 'migrations' unless File.exists?('migrations')
+          ::ProxES::Container.migrations.each do |path|
+            FileUtils.cp_r "#{path}/.", 'migrations'
+          end
         end
 
         desc 'Migrate ProxES database to latest version'
