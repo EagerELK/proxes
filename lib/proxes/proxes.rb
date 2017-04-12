@@ -1,9 +1,4 @@
 # frozen_string_literal: true
-require 'proxes/app'
-require 'proxes/controllers/users'
-require 'proxes/controllers/roles'
-require 'proxes/controllers/permissions'
-require 'proxes/controllers/audit_logs'
 
 module ProxES
   class ProxES
@@ -12,6 +7,12 @@ module ProxES
     end
 
     def self.route_mappings
+      require 'proxes/app'
+      require 'proxes/controllers/users'
+      require 'proxes/controllers/roles'
+      require 'proxes/controllers/permissions'
+      require 'proxes/controllers/audit_logs'
+
       {
         '/' => ::ProxES::App,
         '/users' => ::ProxES::Users,
