@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'database_cleaner'
   spec.add_development_dependency 'factory_girl'
 
+  spec.add_dependency 'activesupport'
   spec.add_dependency 'rake', '~> 10.0'
   spec.add_dependency 'rack-contrib'
   spec.add_dependency 'sinatra'
