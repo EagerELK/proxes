@@ -6,7 +6,7 @@ require 'proxes/services/logger'
 # passed to subprocesses.  DATABASE_URL may contain passwords.
 DB = Sequel.connect(ENV['RACK_ENV'] == 'production' ? ENV.delete('DATABASE_URL') : ENV['DATABASE_URL'])
 
-DB.loggers <<  ProxES::Services::Logger.instance
+DB.loggers << ProxES::Services::Logger.instance
 
 DB.extension(:pagination)
 

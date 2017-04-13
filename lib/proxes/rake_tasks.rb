@@ -36,7 +36,7 @@ module ProxES
         namespace :migrate do
           require_relative './db'
           Sequel.extension :migration
-          folder = File.expand_path(File.dirname(__FILE__) + '/../../migrate')
+          folder = 'migrations'
 
           desc 'Check if the migration is current'
           task :check do
