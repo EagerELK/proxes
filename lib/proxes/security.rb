@@ -4,6 +4,7 @@ require 'proxes/request'
 require 'proxes/policies/request_policy'
 require 'proxes/helpers/pundit'
 require 'proxes/helpers/authentication'
+require 'proxes/helpers/wisper'
 require 'proxes/services/logger'
 
 module ProxES
@@ -12,6 +13,8 @@ module ProxES
 
     include Helpers::Authentication
     include Helpers::Pundit
+    include Helpers::Wisper
+    include Wisper::Publisher
 
     def initialize(app, logger = nil)
       @app = app
@@ -36,6 +39,7 @@ module ProxES
         check_basic
         authorize request
       rescue StandardError => e
+        log_action(:es_request_denied, details: "#{request.request_method.upcase} #{request.fullpath} (#{request.class.name})")
         logger.debug "Access denied by security layer: #{e.message}"
         return error 'Forbidden', 403
       end
