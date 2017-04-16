@@ -5,6 +5,7 @@ module ProxES
     def method_missing(method, *args, &block)
       vals = { action: method }
       vals[:user] = args[0][:user] if (args[0] && args[0].has_key?(:user))
+      vals[:details] = args[0][:details] if (args[0] && args[0].has_key?(:details))
       AuditLog.create vals
     end
 

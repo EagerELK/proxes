@@ -6,6 +6,7 @@
           %tr
             %th User email
             %th Action
+            %th Details
             %th Created at
         %tbody
           -list.each do |entity|
@@ -17,5 +18,7 @@
                   None
               %td
                 = entity.action
+              %td
+                = entity.details
               %td
                 = entity.created_at.strftime('%Y-%m-%d %H:%M:%S')

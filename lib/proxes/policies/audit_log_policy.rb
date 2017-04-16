@@ -24,7 +24,7 @@ module ProxES
     end
 
     def permitted_attributes
-      [:action]
+      [:action, :details]
     end
 
     class Scope < ApplicationPolicy::Scope

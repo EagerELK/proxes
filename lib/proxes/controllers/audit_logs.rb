@@ -7,6 +7,10 @@ module ProxES
   class AuditLogs < Component
     set model_class: AuditLog
 
+    def list
+      super.order(:created_at).reverse
+    end
+
     get '/new' do
       halt 404
     end
