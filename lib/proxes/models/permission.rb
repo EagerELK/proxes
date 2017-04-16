@@ -6,6 +6,12 @@ module ProxES
     many_to_one :role
     many_to_one :user
 
+    dataset_module do
+      def for_user(a_user, action)
+        where(verb: action).where{Sequel.|({role: a_user.roles}, {user_id: a_user.id})}
+      end
+    end
+
     def validate
       validates_presence [:verb, :pattern]
       validates_presence :role_id unless user_id

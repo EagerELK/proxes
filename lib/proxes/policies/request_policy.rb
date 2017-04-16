@@ -30,13 +30,8 @@ module ProxES
       end
     end
 
-    def user_permissions(action)
-      this_user = user
-      Permission.where(verb: action).where{Sequel.|({role: this_user.roles}, {user_id: this_user.id})}
-    end
-
     def index_allowed?
-      patterns = user_permissions('INDEX').map do |permission|
+      patterns = Permission.for_user(user, 'INDEX').map do |permission|
         permission.pattern.gsub(/\{user.(.*)\}/) { |match| user.send(Regexp.last_match[1].to_sym) }
       end
       return filter(record.index, patterns).count.positive?
@@ -44,7 +39,7 @@ module ProxES
 
     def action_allowed?(action)
       # Give me all the user's permissions that match the verb
-      user_permissions(action).each do |permission|
+      Permission.for_user(user, action).each do |permission|
         return true if record.path =~ %r{#{permission.pattern}}
       end
       false
