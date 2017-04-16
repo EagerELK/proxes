@@ -53,5 +53,9 @@ module ProxES
     def index_prefix
       email
     end
+
+    def username
+      identity_dataset.first.username
+    end
   end
 end

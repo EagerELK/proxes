@@ -20,20 +20,34 @@ module ProxES
         return false if user.nil?
 
         if record.indices?
-          patterns = Permission.where(verb: 'INDEX', role: user.roles).map do |permission|
-            permission.pattern.gsub(/\{user.(.*)\}/) { |match| user.send(Regexp.last_match[1].to_sym) }
-          end
-          return filter(record.index, patterns).count.positive?
+          return true if index_allowed?
         else
-          # Give me all the user's permissions that match the verb
-          Permission.where(verb: method_sym[0..-2].upcase, role: user.roles).each do |permission|
-            return true if record.path =~ %r{#{permission.pattern}}
-          end
+          return true if action_allowed? method_sym[0..-2].upcase
         end
         false
       else
         super
       end
+    end
+
+    def user_permissions(action)
+      this_user = user
+      Permission.where(verb: action).where{Sequel.|({role: this_user.roles}, {user_id: this_user.id})}
+    end
+
+    def index_allowed?
+      patterns = user_permissions('INDEX').map do |permission|
+        permission.pattern.gsub(/\{user.(.*)\}/) { |match| user.send(Regexp.last_match[1].to_sym) }
+      end
+      return filter(record.index, patterns).count.positive?
+    end
+
+    def action_allowed?(action)
+      # Give me all the user's permissions that match the verb
+      user_permissions(action).each do |permission|
+        return true if record.path =~ %r{#{permission.pattern}}
+      end
+      false
     end
 
     def respond_to_missing?(name, _include_private = false)

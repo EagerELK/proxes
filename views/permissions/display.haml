@@ -5,7 +5,10 @@
       .panel-body
         %p.description
           %label Role:
-          = entity.role.name
+          = entity.role ? entity.role.name : 'None'
+        %p.description
+          %label User:
+          = entity.user ? entity.user.username : 'None'
         %p.description
           %label Verb:
           = entity.verb
