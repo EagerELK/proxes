@@ -18,3 +18,5 @@
               %td= entity.roles_dataset.map(:name).map(&:titlecase).join(', ')
       .panel-body.text-right
         %a.btn.btn-primary{ href: '/_proxes/users/new' } New User
+
+=pagination(list, base_path)
