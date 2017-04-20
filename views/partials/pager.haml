@@ -1,19 +1,12 @@
-<nav aria-label="Page navigation">
-  <p class="text-center">
-    Showing <%= list.current_page_record_range %> of <%= list.pagination_record_count %> records
-  </p>
-  <ul class="pager">
-    <li>
-      <a href="<%= base_path %>?page=1&count=<%= list.page_size %>">First</a>
-    </li>
-    <li<% if list.first_page? %> class="disabled"<% end %>>
-      <a href="<%= prev_link %>">Previous</a>
-    </li>
-    <li<% if list.last_page? %> class="disabled"<% end %>>
-      <a href="<%= next_link %>">Next</a>
-    </li>
-    <li>
-      <a href="<%= base_path %>?page=<%= list.page_count %>&count=<%= list.page_size %>">Last</a>
-    </li>
-  </ul>
-</nav>
+%nav{"aria-label" => "Page navigation"}
+  %p.text-center
+    Showing #{list.current_page_record_range} of #{list.pagination_record_count} records
+  %ul.pager
+    %li
+      %a{href: "#{base_path}?page=1&count=#{list.page_size}"} First
+    %li{class: ("disabled" if list.first_page?)}
+      %a{href: prev_link} Previous
+    %li{class: ("disabled" if list.last_page?)}
+      %a{href: next_link} Next
+    %li
+      %a{href: "#{base_path}?page=#{list.page_count}&count=#{list.page_size}"} Last
