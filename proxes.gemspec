@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activesupport'
   spec.add_dependency 'rake', '~> 10.0'
   spec.add_dependency 'rack-contrib'
-  spec.add_dependency 'sinatra'
+  spec.add_dependency 'sinatra', '~> 1.0'
   spec.add_dependency 'sinatra-flash'
   spec.add_dependency 'sinatra-contrib'
   spec.add_dependency 'elasticsearch'
