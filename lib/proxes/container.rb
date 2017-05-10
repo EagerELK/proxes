@@ -96,13 +96,19 @@ module ProxES
           def navigation
             Plugins.plugins.map do |_key, plugin|
               plugin.nav_items if plugin.respond_to?(:nav_items)
-            end.flatten.sort_by { |h| h[:order] }
+            end.compact.flatten.sort_by { |h| h[:order] }
           end
 
           def migrations
             Plugins.plugins.map do |_key, plugin|
               plugin.migration_folder if plugin.respond_to?(:migration_folder)
-            end
+            end.compact
+          end
+
+          def seeders
+            Plugins.plugins.map do |_key, plugin|
+              plugin.seeder if plugin.respond_to?(:seeder)
+            end.compact
           end
         end
 
