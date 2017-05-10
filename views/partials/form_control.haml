@@ -13,8 +13,7 @@
           - options.each do |k,v| k ||= v;  v ||= k;
             %option{ value: k, selected: (k.to_s == model[field].to_s)}= v
     - elsif type == 'textarea'
-      %textarea{attributes}
-        = model[field]
+      %textarea{attributes}= preserve(model[field])
     - else
       %input{attributes, type: type, value: model[field]}
     - if model.errors[field]
