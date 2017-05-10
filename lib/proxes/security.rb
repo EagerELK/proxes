@@ -38,9 +38,9 @@ module ProxES
       begin
         check_basic
         authorize request
-      rescue StandardError => e
+      rescue StandardError
         log_action(:es_request_denied, details: "#{request.request_method.upcase} #{request.fullpath} (#{request.class.name})")
-        logger.debug "Access denied by security layer: #{e.message}"
+        logger.debug "Access denied for #{current_user ? current_user.email : 'Anonymous User'} by security layer: #{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
         return error 'Forbidden', 403
       end
       request.index = policy_scope(request) if request.indices?
