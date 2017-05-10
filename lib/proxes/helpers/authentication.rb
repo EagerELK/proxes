@@ -4,7 +4,8 @@ module ProxES
     module Authentication
       def current_user
         return nil unless env['rack.session'] && env['rack.session']['user_id']
-        @user ||= User[env['rack.session']['user_id']]
+        @users ||= Hash.new {|h,k| h[k] = User[k]}
+        @users[env['rack.session']['user_id']]
       end
 
       def current_user=(user)
