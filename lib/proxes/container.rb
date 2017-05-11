@@ -110,6 +110,12 @@ module ProxES
               plugin.seeder if plugin.respond_to?(:seeder)
             end.compact
           end
+
+          def workers
+            Plugins.plugins.map do |_key, plugin|
+              plugin.run_workers if plugin.respond_to?(:run_workers)
+            end
+          end
         end
 
         module InstanceMethods
