@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'proxes/models/base'
 
 module ProxES
@@ -8,7 +9,7 @@ module ProxES
 
     dataset_module do
       def for_user(a_user, action)
-        where(verb: action).where{Sequel.|({role: a_user.roles}, {user_id: a_user.id})}
+        where(verb: action).where { Sequel.|({ role: a_user.roles }, { user_id: a_user.id }) }
       end
     end
 
@@ -20,7 +21,7 @@ module ProxES
     end
 
     def self.verbs
-      ['GET', 'POST', 'PUT', 'DELETE', 'HEAD', 'OPTIONS', 'TRACE', 'INDEX']
+      %w[GET POST PUT DELETE HEAD OPTIONS TRACE INDEX]
     end
   end
 end

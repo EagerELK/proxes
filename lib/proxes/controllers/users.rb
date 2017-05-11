@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'proxes/controllers/component'
 require 'proxes/models/user'
 require 'proxes/policies/user_policy'
@@ -121,7 +122,7 @@ module ProxES
       identity.set values
       if identity.valid? && identity.save
         log_action("#{dehumanized}_update_password".to_sym) if settings.track_actions
-        flash[:success] = "Password Updated"
+        flash[:success] = 'Password Updated'
         redirect '/_proxes/users/profile'
       else
         haml :"#{view_location}/profile", locals: { entity: entity, identity: identity, title: heading }

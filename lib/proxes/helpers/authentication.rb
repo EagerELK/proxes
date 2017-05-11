@@ -1,10 +1,11 @@
 # frozen_string_literal: true
+
 module ProxES
   module Helpers
     module Authentication
       def current_user
         return nil unless env['rack.session'] && env['rack.session']['user_id']
-        @users ||= Hash.new {|h,k| h[k] = User[k]}
+        @users ||= Hash.new { |h, k| h[k] = User[k] }
         @users[env['rack.session']['user_id']]
       end
 

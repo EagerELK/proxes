@@ -18,23 +18,23 @@ module ProxES
         '/users' => ::ProxES::Users,
         '/roles' => ::ProxES::Roles,
         '/permissions' => ::ProxES::Permissions,
-        '/audit-logs' => ::ProxES::AuditLogs,
+        '/audit-logs' => ::ProxES::AuditLogs
       }
     end
 
     def self.nav_items
       [
-        { order: 0, link:'/users/', text: 'Users', target: User, icon: 'user' },
-        { order: 1, link:'/roles/', text: 'Roles', target: Role, icon: 'group' },
-        { order: 2, link:'/permissions/', text: 'Permissions', target: Permission, icon: 'check-square' },
+        { order: 0, link: '/users/', text: 'Users', target: User, icon: 'user' },
+        { order: 1, link: '/roles/', text: 'Roles', target: Role, icon: 'group' },
+        { order: 2, link: '/permissions/', text: 'Permissions', target: Permission, icon: 'check-square' }
       ]
     end
 
     def self.seeder
-      Proc.new do
+      proc do
         ::ProxES::Role.find_or_create(name: 'user')
         sa = ::ProxES::Role.find_or_create(name: 'super_admin')
-        %w(GET POST PUT DELETE HEAD OPTIONS INDEX).each do |verb|
+        %w[GET POST PUT DELETE HEAD OPTIONS INDEX].each do |verb|
           ::ProxES::Permission.find_or_create(role: sa, verb: verb, pattern: '.*')
         end
       end

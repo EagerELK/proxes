@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'proxes/controllers/application'
 
 module ProxES

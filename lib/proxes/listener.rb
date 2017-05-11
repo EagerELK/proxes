@@ -6,14 +6,14 @@ module ProxES
       @mutex = Mutex.new
     end
 
-    def method_missing(method, *args, &block)
+    def method_missing(method, *args)
       vals = { action: method }
-      vals[:user] = args[0][:user] if (args[0] && args[0].has_key?(:user))
-      vals[:details] = args[0][:details] if (args[0] && args[0].has_key?(:details))
+      vals[:user] = args[0][:user] if args[0] && args[0].key?(:user)
+      vals[:details] = args[0][:details] if args[0] && args[0].key?(:details)
       @mutex.synchronize { AuditLog.create vals }
     end
 
-    def respond_to_missing?(method, include_private = false)
+    def respond_to_missing?(_method, _include_private = false)
       true
     end
   end

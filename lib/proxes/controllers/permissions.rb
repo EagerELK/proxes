@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'proxes/controllers/component'
 require 'proxes/models/permission'
 require 'proxes/policies/permission_policy'
