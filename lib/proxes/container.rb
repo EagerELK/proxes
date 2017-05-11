@@ -91,7 +91,8 @@ module ProxES
             end
           end
 
-          # Return an ordered list of navigation items: `[{order:0, link:'/users/', text:'Users'}, {order:1, link:'/roles/', text:'Roles'}]
+          # Return an ordered list of navigation items:
+          # `[{order:0, link:'/users/', text:'Users'}, {order:1, link:'/roles/', text:'Roles'}]
           def navigation
             Plugins.plugins.map do |_key, plugin|
               plugin.nav_items if plugin.respond_to?(:nav_items)
@@ -113,7 +114,7 @@ module ProxES
           def workers
             Plugins.plugins.map do |_key, plugin|
               plugin.run_workers if plugin.respond_to?(:run_workers)
-            end
+            end.compact
           end
         end
 

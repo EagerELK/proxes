@@ -8,7 +8,7 @@ module ProxES
 
         answer = []
         against.each do |pattern|
-          answer.concat asked.select { |idx| idx =~ /#{pattern}/ }
+          answer.concat(asked.select { |idx| idx =~ /#{pattern}/ })
         end
         answer
       end

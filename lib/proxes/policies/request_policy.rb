@@ -17,18 +17,11 @@ module ProxES
     end
 
     def method_missing(method_sym, *arguments, &block)
-      if method_sym.to_s[-1] == '?'
-        return false if user.nil?
+      return super if method_sym.to_s[-1] != '?'
 
-        if record.indices?
-          return true if index_allowed?
-        else
-          return true if action_allowed? method_sym[0..-2].upcase
-        end
-        false
-      else
-        super
-      end
+      return false if user.nil?
+      return true if record.indices? && index_allowed?
+      action_allowed? method_sym[0..-2].upcase
     end
 
     def index_allowed?

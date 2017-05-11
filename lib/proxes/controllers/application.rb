@@ -53,7 +53,7 @@ module ProxES
       redirect '/auth/identity'
     end
 
-    before (/.*/) do
+    before(/.*/) do
       if request.url =~ /.json/
         request.accept.unshift('application/json')
         request.path_info = request.path_info.gsub(/.json/, '')
