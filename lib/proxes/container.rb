@@ -86,7 +86,7 @@ module ProxES
 
           # Return a hash of controllers with their routes as keys: `{ '/users' => ProxES::Controllers::Users }`
           def routes
-            Plugins.plugins.each_with_object({}) do |plugin, memo|
+            Plugins.plugins.inject({}) do |memo, plugin|
               memo.merge!(plugin[1].route_mappings) if plugin[1].respond_to?(:route_mappings)
             end
           end
