@@ -31,7 +31,7 @@ module ProxES
     class << self
       def normalize_headers(headers)
         mapped = headers.map do |k, v|
-          [k, v.is_a? Array ? v.join("\n") : v]
+          [k, v.is_a?(Array) ? v.join("\n") : v]
         end
         Rack::Utils::HeaderHash.new Hash[mapped]
       end
