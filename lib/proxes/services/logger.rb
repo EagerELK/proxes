@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'logger'
 require 'yaml'
 require 'singleton'
@@ -12,7 +13,7 @@ module ProxES
     class Logger
       include Singleton
 
-      CONFIG = './config/logger.yml'
+      CONFIG = './config/logger.yml'.freeze
       attr_reader :loggers
 
       def initialize
@@ -32,7 +33,7 @@ module ProxES
         loggers.each { |logger| logger.send(method, *args, &block) }
       end
 
-      def respond_to_missing?(method, include_private = false)
+      def respond_to_missing?(method, _include_private = false)
         loggers.any? { |logger| logger.respond_to?(method) }
       end
 

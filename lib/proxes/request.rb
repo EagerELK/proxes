@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'rack'
 
 module ProxES
@@ -15,7 +16,7 @@ module ProxES
         require 'proxes/request/' + endpoint.downcase
         Request.const_get(endpoint).new(env)
       rescue LoadError
-        self.new(env)
+        new(env)
       end
     end
 

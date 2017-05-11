@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'proxes/models/base'
 require 'omniauth-identity'
 require 'active_support'

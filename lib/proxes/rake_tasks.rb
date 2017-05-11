@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'rake'
 require 'rake/tasklib'
 
@@ -22,7 +23,7 @@ module ProxES
 
         desc 'Prepare ProxES migrations'
         task :prep do
-          Dir.mkdir 'migrations' unless File.exists?('migrations')
+          Dir.mkdir 'migrations' unless File.exist?('migrations')
           ::ProxES::Container.migrations.each do |path|
             FileUtils.cp_r "#{path}/.", 'migrations'
           end

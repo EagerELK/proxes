@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'wisper'
 require 'sinatra/base'
 require 'sinatra/flash'
@@ -53,9 +54,9 @@ module ProxES
     end
 
     before (/.*/) do
-      if request.url.match(/.json/)
+      if request.url =~ /.json/
         request.accept.unshift('application/json')
-        request.path_info = request.path_info.gsub(/.json/,'')
+        request.path_info = request.path_info.gsub(/.json/, '')
       end
     end
   end

@@ -14,20 +14,20 @@ module ProxES
 
       # Make getting value from underlying hash thread safe.
       def [](key)
-        @mutex.synchronize{@hash[key]}
+        @mutex.synchronize { @hash[key] }
       end
 
       # Make setting value in underlying hash thread safe.
       def []=(key, value)
-        @mutex.synchronize{@hash[key] = value}
+        @mutex.synchronize { @hash[key] = value }
       end
 
       def map(&block)
-        @mutex.synchronize{@hash.map(&block)}
+        @mutex.synchronize { @hash.map(&block) }
       end
 
       def inject(memo, &block)
-        @mutex.synchronize{@hash.inject(memo, &block)}
+        @mutex.synchronize { @hash.inject(memo, &block) }
       end
     end
 
@@ -70,7 +70,7 @@ module ProxES
           #   Container.plugin PluginModule
           #   Container.plugin :csrf
           def plugin(plugin, *args, &block)
-            raise ContainerError, "Cannot add a plugin to a frozen Container class" if frozen?
+            raise ContainerError, 'Cannot add a plugin to a frozen Container class' if frozen?
             plugin = Plugins.load_plugin(plugin) if plugin.is_a?(Symbol)
             plugin.load_dependencies(self, *args, &block) if plugin.respond_to?(:load_dependencies)
             include(plugin::InstanceMethods) if defined?(plugin::InstanceMethods)
@@ -86,9 +86,8 @@ module ProxES
 
           # Return a hash of controllers with their routes as keys: `{ '/users' => ProxES::Controllers::Users }`
           def routes
-            Plugins.plugins.inject({}) do |memo, plugin|
+            Plugins.plugins.each_with_object({}) do |plugin, memo|
               memo.merge!(plugin[1].route_mappings) if plugin[1].respond_to?(:route_mappings)
-              memo
             end
           end
 

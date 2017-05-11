@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'proxes/db'
 require 'proxes/models/permission'
 require 'proxes/services/logger'
@@ -32,15 +33,15 @@ module ProxES
 
     def index_allowed?
       patterns = Permission.for_user(user, 'INDEX').map do |permission|
-        permission.pattern.gsub(/\{user.(.*)\}/) { |match| user.send(Regexp.last_match[1].to_sym) }
+        permission.pattern.gsub(/\{user.(.*)\}/) { |_match| user.send(Regexp.last_match[1].to_sym) }
       end
-      return filter(record.index, patterns).count.positive?
+      filter(record.index, patterns).count.positive?
     end
 
     def action_allowed?(action)
       # Give me all the user's permissions that match the verb
       Permission.for_user(user, action).each do |permission|
-        return true if record.path =~ %r{#{permission.pattern}}
+        return true if record.path =~ /#{permission.pattern}/
       end
       false
     end

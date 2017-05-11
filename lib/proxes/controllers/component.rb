@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'proxes/controllers/application'
 require 'proxes/helpers/component'
 
@@ -21,11 +22,11 @@ module ProxES
       respond_to do |format|
         format.html do
           haml :"#{view_location}/index",
-            locals: { list: list, title: heading(:list), actions: actions }
+               locals: { list: list, title: heading(:list), actions: actions }
         end
         format.json do
           {
-            'items' => list.map { |entity| entity.values },
+            'items' => list.map(&:values),
             'page' => params[:page],
             'count' => params[:count],
             'total' => list.to_a.size
@@ -79,7 +80,7 @@ module ProxES
       respond_to do |format|
         format.html do
           haml :"#{view_location}/display",
-            locals: { entity: entity, title: heading, actions: actions }
+               locals: { entity: entity, title: heading, actions: actions }
         end
         format.json { entity.values.to_json }
       end

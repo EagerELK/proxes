@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'proxes/controllers/component'
 require 'proxes/models/audit_log'
 require 'proxes/policies/audit_log_policy'
