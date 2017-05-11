@@ -18,11 +18,11 @@ module ProxES
       end
 
       def authenticated?
-        !env['rack.session']['user_id'].nil?
+        current_user.nil?
       end
 
       def authenticate!
-        raise NotAuthenticated unless env['rack.session']['user_id']
+        raise NotAuthenticated unless current_user
         true
       end
 
