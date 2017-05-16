@@ -26,11 +26,17 @@
     #wrapper
       = haml :'partials/navbar', locals: { title: (defined?(title) ? title : 'ProxES') }
       #page-wrapper
+        - if cluster_health.nil?
+          %table.table
+            %tbody
+              %tr.danger
+                %td.text-center Cannot Connect to Cluster
         .row
           .col-md-12
             -if defined? title
               %h1.page-header= title
             = haml :'partials/notifications'
+
         = yield
         %footer.footer.text-muted.text-center
           %hr

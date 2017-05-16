@@ -17,6 +17,17 @@ module ProxES
     helpers Wisper::Publisher, Helpers::Wisper
     helpers Helpers::Pundit, Helpers::Views, Helpers::Authentication
 
+    helpers do
+      def cluster_health
+        @health ||= begin
+          client = Elasticsearch::Client.new
+          client.cluster.health
+        end
+      rescue
+        nil
+      end
+    end
+
     register Sinatra::Flash, Sinatra::RespondWith
 
     use Rack::PostBodyContentTypeParser

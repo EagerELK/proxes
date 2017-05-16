@@ -19,3 +19,23 @@
       %a{ href: '/auth/identity/register' }
         %i.fa.fa-pencil-square-o.fa-fw
         Register
+
+- if defined?(current_user) && current_user
+  - if cluster_health
+    %table.table
+      %tbody
+        %tr
+          %th
+            Cluster:
+          %td
+            = cluster_health['cluster_name']
+        %tr
+          %th
+            Status:
+          %td
+            = cluster_health['status']
+        %tr
+          %th
+            Nodes:
+          %td
+            = cluster_health['number_of_nodes']
