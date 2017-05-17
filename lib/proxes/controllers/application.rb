@@ -8,7 +8,9 @@ require 'proxes/helpers/views'
 require 'proxes/helpers/pundit'
 require 'proxes/helpers/wisper'
 require 'proxes/helpers/authentication'
+require 'proxes/services/logger'
 require 'rack/contrib'
+require 'elasticsearch'
 
 module ProxES
   class Application < Sinatra::Base
@@ -20,10 +22,11 @@ module ProxES
     helpers do
       def cluster_health
         @health ||= begin
-          client = Elasticsearch::Client.new
+          client = ::Elasticsearch::Client.new host: ENV['ELASTICSEARCH_URL']
           client.cluster.health
         end
-      rescue
+      rescue => e
+        ::ProxES::Services::Logger.instance.warn "Could not connect to ES Cluster: #{e.message}"
         nil
       end
     end
