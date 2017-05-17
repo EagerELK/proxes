@@ -26,7 +26,8 @@ module ProxES
       [
         { order: 0, link: '/users/', text: 'Users', target: User, icon: 'user' },
         { order: 1, link: '/roles/', text: 'Roles', target: Role, icon: 'group' },
-        { order: 2, link: '/permissions/', text: 'Permissions', target: Permission, icon: 'check-square' }
+        { order: 2, link: '/permissions/', text: 'Permissions', target: Permission, icon: 'check-square' },
+        { order: 3, link: '/audit-logs/', text: 'Audit Logs', target: AuditLog, icon: 'history' },
       ]
     end
 
