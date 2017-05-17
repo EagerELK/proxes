@@ -13,7 +13,8 @@
                 %a{ href: "/_proxes/roles/#{entity.id}" }= entity.name
               %td
                 = entity.permissions_dataset.count
-      .panel-body.text-right
-        %a.btn.btn-primary{ href: '/_proxes/roles/new' } New Role
+      - if policy(::ProxES::Role).create?
+        .panel-body.text-right
+          %a.btn.btn-primary{ href: '/_proxes/roles/new' } New Role
 
 =pagination(list, base_path)

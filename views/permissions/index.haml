@@ -10,7 +10,8 @@
                 %a.btn-block{ href: "/_proxes/permissions/#{entity.id}" }
                   = entity.verb
                   = entity.pattern
-      .panel-body.text-right
-        %a.btn.btn-primary{ href: '/_proxes/permissions/new' } New Permission
+      - if policy(::ProxES::Permission).create?
+        .panel-body.text-right
+          %a.btn.btn-primary{ href: '/_proxes/permissions/new' } New Permission
 
 =pagination(list, base_path)
