@@ -3,7 +3,7 @@
   .col-md-8
     .panel.panel-default
       .panel-body
-        %form.form-horizontal{ method: 'post', action: "/_proxes/users/#{entity.id}" }
+        %form.form-horizontal{ method: 'post', action: "#{base_path}/#{entity.id}" }
           %input{ name: '_method', value: 'PUT', type: 'hidden' }
           = haml :'users/user', locals: { user: entity }
           %button.btn.btn-primary{ type: 'submit' }

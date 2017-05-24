@@ -9,10 +9,10 @@
 
         .row
           .col-md-6
-            %a.btn.btn-default{ href: "/_proxes/roles/#{entity.id}/edit" } Edit
+            %a.btn.btn-default{ href: "#{base_path}/#{entity.id}/edit" } Edit
           .col-md-6.text-right
             - if policy(entity).delete?
-              %form{ method: 'post', action: "/_proxes/roles/#{entity.id}" }
+              %form{ method: 'post', action: "#{base_path}/#{entity.id}" }
                 %input{ name: '_method', value: 'DELETE', type: 'hidden' }
                 %button.btn.btn-warning{ type: 'submit' } Delete
   .col-md-2
@@ -22,12 +22,17 @@
   .col-md-8
     .panel.panel-default
       .panel-heading
-        %h3 Permissions
+        %h4 Permissions
       %table.table
-        - entity.permissions.each do |permission|
+        - if entity.permissions.count.positive?
+          - entity.permissions.each do |permission|
+            %tr
+              %td
+                %a.btn-block{ href: "/_proxes/permissions/#{entity.id}" }
+                  = permission.verb
+                  = permission.pattern
+        - else
           %tr
-            %td
-              %a.btn-block{ href: "/_proxes/permissions/#{entity.id}" }
-                = permission.verb
-                = permission.pattern
+            %td{ colspan: 2 } No Permissions
+
   .col-md-2

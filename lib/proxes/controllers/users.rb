@@ -123,7 +123,7 @@ module ProxES
       if identity.valid? && identity.save
         log_action("#{dehumanized}_update_password".to_sym) if settings.track_actions
         flash[:success] = 'Password Updated'
-        redirect '/_proxes/users/profile'
+        redirect back
       else
         haml :"#{view_location}/profile", locals: { entity: entity, identity: identity, title: heading }
       end
@@ -156,7 +156,6 @@ module ProxES
     # Profile
     get '/profile' do
       entity = current_user
-      halt 404 unless entity
       authorize entity, :read
 
       haml :"#{view_location}/profile", locals: { entity: entity, identity: entity.identity.first, title: 'My Account' }

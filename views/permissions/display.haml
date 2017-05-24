@@ -18,10 +18,10 @@
 
         .row
           .col-md-6
-            %a.btn.btn-default{ href: "/_proxes/permissions/#{entity.id}/edit" } Edit
+            %a.btn.btn-default{ href: "#{base_path}/#{entity.id}/edit" } Edit
           .col-md-6.text-right
             - if policy(entity).delete?
-              %form{ method: 'post', action: "/_proxes/permissions/#{entity.id}" }
+              %form{ method: 'post', action: "#{base_path}/#{entity.id}" }
                 %input{ name: '_method', value: 'DELETE', type: 'hidden' }
                 %button.btn.btn-warning{ type: 'submit' } Delete
   .col-md-2

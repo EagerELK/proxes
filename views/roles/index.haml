@@ -10,11 +10,11 @@
           -list.each do |entity|
             %tr
               %td
-                %a{ href: "/_proxes/roles/#{entity.id}" }= entity.name
+                %a{ href: "#{base_path}/#{entity.id}" }= entity.name
               %td
                 = entity.permissions_dataset.count
       - if policy(::ProxES::Role).create?
         .panel-body.text-right
-          %a.btn.btn-primary{ href: '/_proxes/roles/new' } New Role
+          %a.btn.btn-primary{ href: "#{base_path}/new" } New Role
 
 =pagination(list, base_path)

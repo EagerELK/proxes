@@ -3,7 +3,7 @@
   .col-md-8
     .panel.panel-default
       .panel-heading
-        ProxES Registration
+        %h4 ProxES Registration
       .panel-body
         %form.form-horizontal{ method: 'post', action: '/_proxes/auth/identity/new' }
           = form_control(:username, identity, label: 'Email', placeholder: 'Your email address')

@@ -12,12 +12,12 @@
           -list.each do |entity|
             %tr
               %td
-                %a{ href: "/_proxes/users/#{entity.id}" }= entity.email
+                %a{ href: "#{base_path}/#{entity.id}" }= entity.email
               %td= entity.name
               %td= entity.surname
               %td= entity.roles_dataset.map(:name).map(&:titlecase).join(', ')
       - if policy(::ProxES::User).create?
         .panel-body.text-right
-          %a.btn.btn-primary{ href: '/_proxes/users/new' } New User
+          %a.btn.btn-primary{ href: "#{base_path}/new" } New User
 
 =pagination(list, base_path)

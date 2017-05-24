@@ -7,7 +7,6 @@ require 'proxes/policies/audit_log_policy'
 module ProxES
   class AuditLogs < Component
     set model_class: AuditLog
-    set base_path: '/_proxes/audit-logs'
 
     def list
       super.order(:created_at).reverse

@@ -1,17 +1,25 @@
 .row
   .col-md-12
     .panel.panel-default
-      .panel-heading VERB Pattern
       %table.table.table-striped
+        %thead
+          %tr
+            %th Role
+            %th User
+            %th Permission
         %tbody
           -list.each do |entity|
             %tr
               %td
-                %a.btn-block{ href: "/_proxes/permissions/#{entity.id}" }
+                = entity.role ? entity.role.name : 'None'
+              %td
+                = entity.user ? entity.user.username : 'None'
+              %td
+                %a.btn-block{ href: "#{base_path}/#{entity.id}" }
                   = entity.verb
                   = entity.pattern
       - if policy(::ProxES::Permission).create?
         .panel-body.text-right
-          %a.btn.btn-primary{ href: '/_proxes/permissions/new' } New Permission
+          %a.btn.btn-primary{ href: "#{base_path}/new" } New Permission
 
 =pagination(list, base_path)
