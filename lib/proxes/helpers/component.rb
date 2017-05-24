@@ -6,6 +6,8 @@ require 'active_support/inflector'
 module ProxES
   module Helpers
     module Component
+      include ActiveSupport::Inflector
+
       def dataset
         policy_scope(settings.model_class)
       end
@@ -19,10 +21,10 @@ module ProxES
 
       def heading(action = nil)
         @headings ||= begin
-          heading = ActiveSupport::Inflector.demodulize settings.model_class
+          heading = titleize(demodulize(settings.model_class))
           h = Hash.new(heading)
           h[:new] = "New #{heading}"
-          h[:list] = ActiveSupport::Inflector.pluralize heading
+          h[:list] = pluralize heading
           h[:edit] = "Edit #{heading}"
           h
         end
@@ -30,15 +32,15 @@ module ProxES
       end
 
       def dehumanized
-        settings.dehumanized || ActiveSupport::Inflector.underscore(heading)
+        settings.dehumanized || underscore(heading)
       end
 
       def base_path
-        settings.base_path || "/_proxes/#{heading(:list).downcase}"
+        settings.base_path || "/_proxes/#{dasherize(view_location)}"
       end
 
       def view_location
-        settings.view_location || heading(:list).underscore.to_s
+        settings.view_location || underscore(pluralize(demodulize(settings.model_class)))
       end
     end
   end
