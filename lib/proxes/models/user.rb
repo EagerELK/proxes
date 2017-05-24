@@ -11,6 +11,7 @@ module ProxES
   class User < Base
     one_to_many :identity
     many_to_many :roles
+    one_to_many :permissions
     one_to_many :audit_logs
 
     def role?(check)
