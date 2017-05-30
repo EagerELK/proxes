@@ -42,5 +42,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'omniauth-identity'
   spec.add_dependency 'haml', '~> 4.0'
   spec.add_dependency 'wisper'
+  spec.add_dependency 'highline'
   spec.add_dependency 'tilt', '>= 2'
 end
