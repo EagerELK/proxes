@@ -2,5 +2,5 @@
 
 require 'proxes/version'
 require 'proxes/container'
-require 'proxes/db'
+require 'proxes/db' if ENV['DATABASE_URL']
 require 'proxes/listener'
