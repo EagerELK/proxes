@@ -3,6 +3,7 @@
 require 'rake'
 require 'rake/tasklib'
 require 'highline'
+require 'yaml'
 
 module ProxES
   class Tasks < ::Rake::TaskLib
@@ -57,7 +58,46 @@ module ProxES
           File.open(CONFIG_PATH, 'w') {|f| f.write config.to_yaml }
         end
 
-        task :setup do
+        task :setup_redhat do
+          cli = HighLine.new
+          config = YAML.load_file(CONFIG_PATH)
+          # Redis
+          if cli.ask('Install Redis Server? (y/n)') {|q| q.in = ['y', 'n']; q.default = ENV['REDIS_URL'].nil? ? 'y' : 'n' } == 'y'
+            system 'sudo yum install epel-release'
+            system 'sudo yum update'
+            system 'sudo yum install -y redis'
+            system 'sudo systemctl start redis'
+            system 'sudo systemctl enable redis'
+          end
+
+          # Postgres
+          if cli.ask('Install PostgreSQL Server? (y/n)') {|q| q.in = ['y', 'n']; q.default = ENV['REDIS_URL'].nil? ? 'y' : 'n'} == 'y'
+            system 'sudo yum install -y postgresql-server postgresql-contrib'
+          end
+
+          if cli.ask('Setup the PostgreSQL User & DB? (y/n)') {|q| q.in = ['y', 'n']; q.default = 'y'} == 'y'
+            system "sudo -u postgres createuser #{config['db_username']}"
+            system "sudo -u postgres createdb -O #{config['db_username']} #{config['db_name']}"
+            system "sudo -u postgres psql -c \"alter user #{config['db_username']} with encrypted password '#{config['db_password']}';\""
+            system "sudo -u postgres psql -c \"grant all privileges on database #{config['db_name']} to #{config['db_username']};\""
+          end
+
+          # Certs
+          if cli.ask('Get a cert through Lets Encrypt? (y/n)') {|q| q.in = ['y', 'n']; q.default = 'y'} == 'y'
+            system 'sudo yum install epel-release'
+            system 'sudo apt-get update'
+            system 'sudo apt-get install -y certbot'
+            system "sudo certbot -n certonly --standalone -d #{config['proxes_hostname']}"
+            config['ssl_key_path'] = "/etc/letsencrypt/live/#{config['proxes_hostname']}/privkey.pem"
+            config['ssl_cert_path'] = "/etc/letsencrypt/live/#{config['proxes_hostname']}/fullchain.pem"
+          end
+
+          # TODO: Write the .env file
+
+          File.open(CONFIG_PATH, 'w') {|f| f.write config.to_yaml }
+        end
+
+        task :setup_debian do
           cli = HighLine.new
           config = YAML.load_file(CONFIG_PATH)
 
@@ -68,7 +108,7 @@ module ProxES
 
           # Postgres
           if cli.ask('Install PostgreSQL Server? (y/n)') {|q| q.in = ['y', 'n']; q.default = ENV['REDIS_URL'].nil? ? 'y' : 'n'} == 'y'
-            system 'apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ACCC4CF8'
+            system 'sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ACCC4CF8'
             unless File.file? '/etc/apt/sources.list.d/pgdg.list'
               system 'sudo sh -c \'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list\''
             end
@@ -92,6 +132,8 @@ module ProxES
             config['ssl_key_path'] = "/etc/letsencrypt/live/#{config['proxes_hostname']}/privkey.pem"
             config['ssl_cert_path'] = "/etc/letsencrypt/live/#{config['proxes_hostname']}/fullchain.pem"
           end
+
+          # TODO: Write the .env file
 
           File.open(CONFIG_PATH, 'w') {|f| f.write config.to_yaml }
         end
@@ -127,27 +169,30 @@ module ProxES
         end
 
         namespace :migrate do
-          require_relative './db'
-          Sequel.extension :migration
+          require_relative './db' if ENV['DATABASE_URL']
           folder = 'migrations'
 
           desc 'Check if the migration is current'
           task :check do
+            Sequel.extension :migration
             Sequel::Migrator.check_current(DB, folder)
           end
 
           desc 'Migrate ProxES database to latest version'
           task :up do
+            Sequel.extension :migration
             Sequel::Migrator.apply(DB, folder)
           end
 
           desc 'Roll back the ProxES database'
           task :down do
+            Sequel.extension :migration
             Sequel::Migrator.apply(DB, folder, 0)
           end
 
           desc 'Reset the ProxES database'
           task :bounce do
+            Sequel.extension :migration
             Sequel::Migrator.apply(DB, folder, 0)
             Sequel::Migrator.apply(DB, folder)
           end
