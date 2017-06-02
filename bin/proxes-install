@@ -1,5 +1,5 @@
 #!/bin/bash
-sudo apt-get install wget git libpq-dev python-psycopg2 ca-certificates
+sudo apt-get install -y wget git libpq-dev python-psycopg2 ca-certificates
 wget https://gitlab.com/snippets/1663435/raw -O Gemfile
 wget https://gitlab.com/snippets/1663436/raw -O Rakefile
 wget https://gitlab.com/snippets/1663438/raw -O config.ru
