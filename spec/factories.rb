@@ -12,6 +12,10 @@ FactoryGirl.define do
   factory :user, class: ProxES::User, aliases: [:'ProxES::User'] do
     email
 
+    after(:create) do |user, _evaluator|
+      create(:identity, user: user)
+    end
+
     factory :super_admin_user do
       after(:create) do |user, _evaluator|
         user.add_role(ProxES::Role.find_or_create(name: 'super_admin'))
