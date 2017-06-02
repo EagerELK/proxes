@@ -18,6 +18,7 @@ require 'rspec'
 require 'rack/test'
 require 'factory_girl'
 require 'database_cleaner'
+require 'timecop'
 
 RSpec.configure do |config|
   config.include Rack::Test::Methods
@@ -29,8 +30,8 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
-
     FactoryGirl.find_definitions
+    Timecop.freeze
   end
 
   config.around(:each) do |example|

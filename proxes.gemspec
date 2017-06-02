@@ -26,6 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rack-test'
   spec.add_development_dependency 'database_cleaner'
   spec.add_development_dependency 'factory_girl'
+  spec.add_development_dependency 'timecop'
 
   spec.add_dependency 'activesupport'
   spec.add_dependency 'rake', '~> 10.0'
