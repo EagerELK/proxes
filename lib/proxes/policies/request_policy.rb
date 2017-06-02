@@ -64,6 +64,7 @@ module ProxES
   end
 end
 
+require 'proxes/policies/request/cat_policy'
 require 'proxes/policies/request/root_policy'
 require 'proxes/policies/request/stats_policy'
 require 'proxes/policies/request/search_policy'
