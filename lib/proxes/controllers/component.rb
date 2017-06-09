@@ -11,6 +11,10 @@ module ProxES
     set view_location: nil
     set track_actions: false
 
+    before do
+      check_basic
+    end
+
     # List
     get '/', provides: [:html, :json] do
       authorize settings.model_class, :list
@@ -25,8 +29,9 @@ module ProxES
                locals: { list: list, title: heading(:list), actions: actions }
         end
         format.json do
+          # TODO: Add links defined by actions (New #{heading})
           {
-            'items' => list.map(&:values),
+            'items' => list.map(&:for_json),
             'page' => params[:page],
             'count' => params[:count],
             'total' => list.to_a.size
@@ -82,7 +87,10 @@ module ProxES
           haml :"#{view_location}/display",
                locals: { entity: entity, title: heading, actions: actions }
         end
-        format.json { entity.values.to_json }
+        format.json do
+          # TODO: Add links defined by actions (Edit #{heading})
+          entity.for_json.to_json
+        end
       end
     end
 
