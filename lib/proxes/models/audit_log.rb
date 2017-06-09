@@ -3,7 +3,8 @@
 require 'proxes/models/base'
 
 module ProxES
-  class AuditLog < Base
+  class AuditLog < Sequel::Model
+    include Base
     many_to_one :user
 
     def validate

@@ -6,7 +6,8 @@ require 'active_support'
 require 'active_support/core_ext/object/blank'
 
 module ProxES
-  class Identity < Base
+  class Identity < Sequel::Model
+    include Base
     many_to_one :user
 
     attr_accessor :password, :password_confirmation

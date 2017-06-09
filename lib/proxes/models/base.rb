@@ -1,3 +1,9 @@
 require 'sequel'
 
-ProxES::Base = Class.new(Sequel::Model)
+module ProxES
+  module Base
+    def for_json
+      values
+    end
+  end
+end

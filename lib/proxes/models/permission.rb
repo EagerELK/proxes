@@ -3,7 +3,9 @@
 require 'proxes/models/base'
 
 module ProxES
-  class Permission < Base
+  class Permission < Sequel::Model
+    include Base
+
     many_to_one :role
     many_to_one :user
 
