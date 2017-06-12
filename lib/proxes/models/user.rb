@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'proxes/models/base'
-require 'bcrypt'
 require 'digest/md5'
 require 'active_support'
 require 'active_support/core_ext/object/blank'
