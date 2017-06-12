@@ -23,7 +23,7 @@ module ProxES
     end
 
     def error(message, code = 500)
-      [code, { 'Content-Type' => 'application/json' }, ['{"error":"' + message + '}']]
+      [code, { 'Content-Type' => 'application/json' }, ['{"error":"' + message + '"}']]
     end
 
     def call(env)
@@ -52,7 +52,10 @@ module ProxES
       logger.debug '================================================================================'
 
       begin
-        @app.call request.env
+        start = Time.now.to_f
+        result = @app.call request.env
+        broadcast(:call_completed, endpoint: request.endpoint, duration: Time.now.to_f - start)
+        result
       rescue Errno::EHOSTUNREACH
         error 'Could not reach Elasticsearch at ' + ENV['ELASTICSEARCH_URL']
       rescue Errno::ECONNREFUSED
