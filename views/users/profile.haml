@@ -31,7 +31,8 @@
       .panel-body
         %form.form-horizontal{ method: 'post', action: "#{base_path}/#{entity.id}/identity" }
           %input{ name: '_method', value: 'PUT', type: 'hidden' }
-          = form_control(:password, identity, type: 'password', placeholder: 'Your password')
+          = form_control(:old_password, identity, type: 'password', placeholder: 'Your current password')
+          = form_control(:password, identity, type: 'password', placeholder: 'Your new password')
           = form_control(:password_confirmation, identity, type: 'password', label: 'Confirm Password', placeholder: 'Confirm your password')
           %button.btn.btn-primary{ type: 'submit' }
             Change Password

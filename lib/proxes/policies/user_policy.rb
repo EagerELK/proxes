@@ -39,7 +39,7 @@ module ProxES
         if user && user.super_admin?
           scope
         else
-          scope.where(id: -1)
+          scope.where(id: user.id)
         end
       end
     end
