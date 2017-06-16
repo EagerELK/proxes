@@ -33,8 +33,8 @@ module ProxES
           {
             'items' => list.map(&:for_json),
             'page' => params[:page],
-            'count' => params[:count],
-            'total' => list.to_a.size
+            'count' => list.count,
+            'total' => dataset.count
           }.to_json
         end
       end
