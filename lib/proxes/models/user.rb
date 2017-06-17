@@ -8,7 +8,7 @@ require 'active_support/core_ext/object/blank'
 # Why not store this in Elasticsearch?
 module ProxES
   class User < Sequel::Model
-    include ProxES::Base
+    include ::ProxES::Base
 
     one_to_many :identity
     many_to_many :roles
