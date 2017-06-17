@@ -4,7 +4,8 @@ require 'proxes/models/base'
 
 module ProxES
   class Role < Sequel::Model
-    include Base
+    include ProxES::Base
+
     many_to_many :users
     one_to_many :permissions
 

@@ -8,6 +8,7 @@ module ProxES
 
     def method_missing(method, *args)
       vals = { action: method }
+      return unless args[0].is_a? Hash
       vals[:user] = args[0][:user] if args[0] && args[0].key?(:user)
       vals[:details] = args[0][:details] if args[0] && args[0].key?(:details)
       @mutex.synchronize { AuditLog.create vals }
