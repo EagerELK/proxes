@@ -117,13 +117,14 @@ module ProxES
       authorize entity, :update
 
       identity = entity.identity.first
+      identity_params = params['identity']
 
-      unless params['password'] == params['password_confirmation']
+      unless identity_params['password'] == identity_params['password_confirmation']
         flash[:warning] = 'Password didn\'t match'
         return redirect back
       end
 
-      unless current_user.super_admin? || identity.authenticate(params['old_password'])
+      unless current_user.super_admin? || identity.authenticate(identity_params['old_password'])
         log_action("#{dehumanized}_update_password_failed".to_sym) if settings.track_actions
         flash[:danger] = 'Old Password didn\'t match'
         return redirect back
@@ -134,7 +135,7 @@ module ProxES
       if identity.valid? && identity.save
         log_action("#{dehumanized}_update_password".to_sym) if settings.track_actions
         flash[:success] = 'Password Updated'
-        redirect back
+        redirect "#{base_path}/#{entity.id}"
       elsif current_user.super_admin?
         haml :"#{view_location}/display", locals: { entity: entity, identity: identity, title: heading }
       else
