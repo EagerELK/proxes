@@ -30,7 +30,7 @@ module ProxES
       end
 
       def indices?
-        true
+        type != ['scroll']
       end
     end
   end
