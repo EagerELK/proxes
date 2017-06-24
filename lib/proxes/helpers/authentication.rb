@@ -36,6 +36,7 @@ module ProxES
         return unless auth.basic?
 
         identity = ::ProxES::Identity.find(username: auth.credentials[0])
+        identity = ::ProxES::Identity.find(username: URI.unescape(auth.credentials[0])) unless identity
         raise NotAuthenticated unless identity
         self.current_user = identity.user if identity.authenticate(auth.credentials[1])
       end
