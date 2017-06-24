@@ -32,7 +32,7 @@ module ProxES
       request = Request.from_env(env)
 
       logger.debug '==========================BEFORE================================================'
-      logger.debug '= ' + "Request: #{request.fullpath}".ljust(76) + ' ='
+      logger.debug '= ' + "Request: #{request.request_method} #{request.fullpath}".ljust(76) + ' ='
       logger.debug '= ' + "Endpoint: #{request.endpoint}".ljust(76) + ' ='
       logger.debug '================================================================================'
 
@@ -47,7 +47,7 @@ module ProxES
       request.index = policy_scope(request) if request.indices?
 
       logger.debug '==========================AFTER================================================='
-      logger.debug '= ' + "Request: #{request.fullpath}".ljust(76) + ' ='
+      logger.debug '= ' + "Request: #{request.request_method} #{request.fullpath}".ljust(76) + ' ='
       logger.debug '= ' + "Endpoint: #{request.endpoint}".ljust(76) + ' ='
       logger.debug '================================================================================'
 
