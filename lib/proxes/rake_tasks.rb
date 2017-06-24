@@ -143,8 +143,8 @@ module ProxES
         task :generate_tokens do
           puts 'Generating the ProxES tokens'
           require 'securerandom'
-          File.write('.session_secret', SecureRandom.random_bytes(40))
-          File.write('.token_secret', SecureRandom.random_bytes(40))
+          File.write('.session_secret', SecureRandom.random_bytes(40)) unless File.file?('.session_secret')
+          File.write('.token_secret', SecureRandom.random_bytes(40)) unless File.file?('.token_secret')
         end
 
         desc 'Seed the ProxES database'
