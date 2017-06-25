@@ -174,27 +174,27 @@ module ProxES
 
           desc 'Check if the migration is current'
           task :check do
-            Sequel.extension :migration
-            Sequel::Migrator.check_current(DB, folder)
+            ::Sequel.extension :migration
+            ::Sequel::Migrator.check_current(DB, folder)
           end
 
           desc 'Migrate ProxES database to latest version'
           task :up do
-            Sequel.extension :migration
-            Sequel::Migrator.apply(DB, folder)
+            ::Sequel.extension :migration
+            ::Sequel::Migrator.apply(DB, folder)
           end
 
           desc 'Roll back the ProxES database'
           task :down do
-            Sequel.extension :migration
-            Sequel::Migrator.apply(DB, folder, 0)
+            ::Sequel.extension :migration
+            ::Sequel::Migrator.apply(DB, folder, 0)
           end
 
           desc 'Reset the ProxES database'
           task :bounce do
-            Sequel.extension :migration
-            Sequel::Migrator.apply(DB, folder, 0)
-            Sequel::Migrator.apply(DB, folder)
+            ::Sequel.extension :migration
+            ::Sequel::Migrator.apply(DB, folder, 0)
+            ::Sequel::Migrator.apply(DB, folder)
           end
         end
       end
