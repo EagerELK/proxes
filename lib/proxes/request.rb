@@ -17,12 +17,14 @@ module ProxES
     end
 
     def self.path_endpoint(path)
+      return 'root' if ['', nil, '/'].include? path
       path_parts = path[1..-1].split('/')
-      return 'root' if path_parts.length == 0
       return path_parts[-1] if ID_ENDPOINTS.include? path_parts[-1]
       return path_parts[-2] if path_parts[-1] == 'count' && path_parts[-2] == '_percolate'
       return path_parts[-2] if path_parts[-1] == 'scroll' && path_parts[-2] == '_search'
-      path_parts[0]
+      path_parts.each do |part|
+        return part if part[0] == '_'
+      end
     end
 
     def initialize(env)
