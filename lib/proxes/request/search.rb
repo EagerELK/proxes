@@ -20,6 +20,7 @@ module ProxES
       end
 
       def parse
+        p path_parts
         @index ||= check_part(path_parts[0])
         @type  ||= check_part(path_parts[1])
         @id    ||= check_part(path_parts[2])
