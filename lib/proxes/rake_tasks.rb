@@ -155,6 +155,9 @@ module ProxES
 
         desc 'Prepare ProxES migrations'
         task :prep do
+          puts 'Prepare the ProxES folders'
+          Dir.mkdir 'pids' unless File.exist?('pids')
+
           puts 'Preparing the ProxES migrations folder'
           Dir.mkdir 'migrations' unless File.exist?('migrations')
           ::ProxES::Container.migrations.each do |path|
@@ -174,24 +177,32 @@ module ProxES
 
           desc 'Check if the migration is current'
           task :check do
+            require 'sequel'
+            puts 'Running ProxES Migrations check'
             ::Sequel.extension :migration
             ::Sequel::Migrator.check_current(DB, folder)
           end
 
           desc 'Migrate ProxES database to latest version'
           task :up do
+            require 'sequel'
+            puts 'Running ProxES Migrations up'
             ::Sequel.extension :migration
             ::Sequel::Migrator.apply(DB, folder)
           end
 
           desc 'Roll back the ProxES database'
           task :down do
+            require 'sequel'
+            puts 'Running ProxES Migrations down'
             ::Sequel.extension :migration
             ::Sequel::Migrator.apply(DB, folder, 0)
           end
 
           desc 'Reset the ProxES database'
           task :bounce do
+            require 'sequel'
+            puts 'Running ProxES Migrations bounce'
             ::Sequel.extension :migration
             ::Sequel::Migrator.apply(DB, folder, 0)
             ::Sequel::Migrator.apply(DB, folder)
