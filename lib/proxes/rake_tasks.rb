@@ -180,7 +180,7 @@ module ProxES
             require 'sequel'
             puts 'Running ProxES Migrations check'
             ::Sequel.extension :migration
-            ::Sequel::Migrator.check_current(DB, folder)
+            ::Sequel::Migrator.check_current(::DB, folder)
           end
 
           desc 'Migrate ProxES database to latest version'
@@ -188,7 +188,7 @@ module ProxES
             require 'sequel'
             puts 'Running ProxES Migrations up'
             ::Sequel.extension :migration
-            ::Sequel::Migrator.apply(DB, folder)
+            ::Sequel::Migrator.apply(::DB, folder)
           end
 
           desc 'Roll back the ProxES database'
@@ -196,7 +196,7 @@ module ProxES
             require 'sequel'
             puts 'Running ProxES Migrations down'
             ::Sequel.extension :migration
-            ::Sequel::Migrator.apply(DB, folder, 0)
+            ::Sequel::Migrator.apply(::DB, folder, 0)
           end
 
           desc 'Reset the ProxES database'
@@ -204,8 +204,8 @@ module ProxES
             require 'sequel'
             puts 'Running ProxES Migrations bounce'
             ::Sequel.extension :migration
-            ::Sequel::Migrator.apply(DB, folder, 0)
-            ::Sequel::Migrator.apply(DB, folder)
+            ::Sequel::Migrator.apply(::DB, folder, 0)
+            ::Sequel::Migrator.apply(::DB, folder)
           end
         end
       end
