@@ -7,12 +7,8 @@ module ProxES
     end
 
     def self.route_mappings
-      require 'proxes/app'
-      require 'proxes/controllers/users'
-      require 'proxes/controllers/roles'
-      require 'proxes/controllers/permissions'
-      require 'proxes/controllers/audit_logs'
-
+      controllers = File.expand_path('../controllers', __FILE__)
+      Dir.glob("#{controllers}/*.rb").each { |f| require f }
       {
         '/' => ::ProxES::App,
         '/users' => ::ProxES::Users,

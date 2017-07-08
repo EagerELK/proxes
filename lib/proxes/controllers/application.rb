@@ -15,6 +15,8 @@ require 'elasticsearch'
 module ProxES
   class Application < Sinatra::Base
     set :root, ::File.expand_path(::File.dirname(__FILE__) + '/../../../')
+    set :view_location, nil
+    set :model_class, nil
     # The order here is important, since Wisper has a deprecated method respond_with method
     helpers Wisper::Publisher, Helpers::Wisper
     helpers Helpers::Pundit, Helpers::Views, Helpers::Authentication
@@ -59,15 +61,16 @@ module ProxES
 
     error Helpers::NotAuthenticated do
       flash[:warning] = 'Please log in first.'
-      redirect '/auth/identity'
+      redirect '/_proxes/auth/identity'
     end
 
     error ::Pundit::NotAuthorizedError do
       flash[:warning] = 'Please log in first.'
-      redirect '/auth/identity'
+      redirect '/_proxes/auth/identity'
     end
 
     before(/.*/) do
+      ::ProxES::Services::Logger.instance.debug "Running with #{self.class}"
       if request.url =~ /.json/
         request.accept.unshift('application/json')
         request.path_info = request.path_info.gsub(/.json/, '')
