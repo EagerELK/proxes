@@ -22,9 +22,7 @@ module ProxES
       return path_parts[-1] if ID_ENDPOINTS.include? path_parts[-1]
       return path_parts[-2] if path_parts[-1] == 'count' && path_parts[-2] == '_percolate'
       return path_parts[-2] if path_parts[-1] == 'scroll' && path_parts[-2] == '_search'
-      path_parts.each do |part|
-        return part if part[0] == '_'
-      end
+      path_parts.find { |part| part[0] == '_' }
     end
 
     def initialize(env)

@@ -13,6 +13,4 @@ DB.extension(:pagination)
 
 Sequel::Model.plugin :auto_validations
 Sequel::Model.plugin :update_or_create
-# Sequel::Model.plugin :prepared_statements
-# Sequel::Model.plugin :prepared_statements_associations
 Sequel::Model.plugin :timestamps, update_on_create: true
