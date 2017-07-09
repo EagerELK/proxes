@@ -22,9 +22,9 @@ describe ProxES::Request do
 
   context '#endpoint' do
     it 'interprets no path as a root endpoint' do
-      expect(described_class.path_endpoint('/')).to eq 'root'
-      expect(described_class.path_endpoint('')).to eq 'root'
-      expect(described_class.path_endpoint(nil)).to eq 'root'
+      expect(described_class.path_endpoint('/')).to eq '_root'
+      expect(described_class.path_endpoint('')).to eq '_root'
+      expect(described_class.path_endpoint(nil)).to eq '_root'
     end
 
     it 'interprets /_search as a search endpoint' do
