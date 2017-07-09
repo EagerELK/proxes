@@ -15,7 +15,7 @@ module ProxES
       full_path = source_request.fullpath == '' ? URI.parse(env['REQUEST_URI']).request_uri : source_request.fullpath
       target_request = Net::HTTP.const_get(source_request.request_method.capitalize).new(full_path)
 
-      if target_request.request_body_permitted? && source_request.body
+      if source_request.body
         target_request.body_stream    = source_request.body
         target_request.content_length = source_request.content_length.to_i
         target_request.content_type   = source_request.content_type if source_request.content_type
