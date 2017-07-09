@@ -7,17 +7,19 @@ module ProxES
     ID_ENDPOINTS = %w[_create _explain _mlt _percolate _source _termvector _update]
 
     def self.from_env(env)
-      endpoint = path_endpoint(env['REQUEST_PATH'])[1..-1]
+      endpoint = path_endpoint(env['REQUEST_PATH'])
+      return new(env) if endpoint.nil?
+      endpoint_class = endpoint[1..-1]
       begin
-        require 'proxes/request/' + endpoint.downcase
-        Request.const_get(endpoint.titlecase).new(env)
+        require 'proxes/request/' + endpoint_class.downcase
+        Request.const_get(endpoint_class.titlecase).new(env)
       rescue LoadError
         new(env)
       end
     end
 
     def self.path_endpoint(path)
-      return 'root' if ['', nil, '/'].include? path
+      return '_root' if ['', nil, '/'].include? path
       path_parts = path[1..-1].split('/')
       return path_parts[-1] if ID_ENDPOINTS.include? path_parts[-1]
       return path_parts[-2] if path_parts[-1] == 'count' && path_parts[-2] == '_percolate'
