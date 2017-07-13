@@ -8,6 +8,11 @@ module ProxES
   class AuditLogs < Component
     set model_class: AuditLog
 
+    def find_template(views, name, engine, &block)
+      super(views, name, engine, &block) # Root
+      super(::ProxES::ProxES.view_folder, name, engine, &block) # Basic Plugin
+    end
+
     def list
       super.order(:created_at).reverse
     end

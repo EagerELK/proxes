@@ -14,7 +14,7 @@ require 'elasticsearch'
 
 module ProxES
   class Application < Sinatra::Base
-    set :root, ::File.expand_path(::File.dirname(__FILE__) + '/../../../')
+    set :root, ENV['APP_ROOT'] || ::File.expand_path(::File.dirname(__FILE__) + '/../../../')
     set :view_location, nil
     set :model_class, nil
     # The order here is important, since Wisper has a deprecated method respond_with method

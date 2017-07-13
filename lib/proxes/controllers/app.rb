@@ -4,10 +4,15 @@ require 'proxes/controllers/application'
 
 module ProxES
   class App < Application
+    def find_template(views, name, engine, &block)
+      super(views, name, engine, &block) # Root
+      super(::ProxES::ProxES.view_folder, name, engine, &block) # Basic Plugin
+    end
+
     # Home Page
     get '/' do
       authenticate!
-      haml :index, locals: { title: 'Dashboard' }
+      haml :index, locals: { title: 'Home' }
     end
 
     # OmniAuth Identity Stuff

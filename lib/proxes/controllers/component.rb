@@ -12,6 +12,11 @@ module ProxES
     set view_location: nil
     set track_actions: false
 
+    def find_template(views, name, engine, &block)
+      super(views, name, engine, &block) # Root
+      super(::ProxES::ProxES.view_folder, name, engine, &block) # Basic Plugin
+    end
+
     before do
       check_basic
     end

@@ -11,6 +11,11 @@ module ProxES
     set model_class: User
     set track_actions: true
 
+    def find_template(views, name, engine, &block)
+      super(views, name, engine, &block) # Root
+      super(::ProxES::ProxES.view_folder, name, engine, &block) # Basic Plugin
+    end
+
     # New
     get '/new' do
       authorize settings.model_class, :create

@@ -6,6 +6,10 @@ module ProxES
       File.expand_path('../../../migrate', __FILE__)
     end
 
+    def self.view_folder
+      File.expand_path('../../../views', __FILE__)
+    end
+
     def self.route_mappings
       controllers = File.expand_path('../controllers', __FILE__)
       Dir.glob("#{controllers}/*.rb").each { |f| require f }
@@ -23,7 +27,7 @@ module ProxES
         { order: 0, link: '/users/', text: 'Users', target: User, icon: 'user' },
         { order: 1, link: '/roles/', text: 'Roles', target: Role, icon: 'group' },
         { order: 2, link: '/permissions/', text: 'Permissions', target: Permission, icon: 'check-square' },
-        { order: 3, link: '/audit-logs/', text: 'Audit Logs', target: AuditLog, icon: 'history' },
+        { order: 3, link: '/audit-logs/', text: 'Audit Logs', target: AuditLog, icon: 'history' }
       ]
     end
 
