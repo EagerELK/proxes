@@ -10,6 +10,7 @@ module ProxES
       end
 
       def current_user=(user)
+        env['rack.session'] = {} if env['rack.session'].nil?
         env['rack.session']['user_id'] = user.id
       end
 
@@ -32,8 +33,7 @@ module ProxES
 
       def check_basic
         auth = Rack::Auth::Basic::Request.new(env)
-        return unless auth.provided?
-        return unless auth.basic?
+        raise NotAuthenticated unless auth.provided? && auth.basic?
 
         identity = ::ProxES::Identity.find(username: auth.credentials[0])
         identity = ::ProxES::Identity.find(username: URI.unescape(auth.credentials[0])) unless identity
