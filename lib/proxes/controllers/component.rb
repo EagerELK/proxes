@@ -18,7 +18,7 @@ module ProxES
     end
 
     before do
-      check_basic
+      check_basic unless request.accept?('text/html')
     end
 
     # List
