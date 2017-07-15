@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'proxes/models/identity'
 require 'proxes/services/logger'
 require 'proxes/request'
 require 'proxes/policies/request_policy'
@@ -39,9 +40,13 @@ module ProxES
       begin
         check_basic
         authorize request
-      rescue StandardError
+      rescue Pundit::NotAuthorizedError
         log_action(:es_request_denied, details: "#{request.request_method.upcase} #{request.fullpath} (#{request.class.name})")
         logger.debug "Access denied for #{current_user ? current_user.email : 'Anonymous User'} by security layer: #{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
+        return error 'Forbidden', 403
+      rescue StanrdardError => e
+        logger.error "Access denied for #{current_user ? current_user.email : 'Anonymous User'} by security exception: #{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
+        logger.error e
         return error 'Forbidden', 403
       end
       request.index = policy_scope(request) if request.indices?
