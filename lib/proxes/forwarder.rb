@@ -10,16 +10,24 @@ module ProxES
       @backend = URI(opts[:backend]) if opts[:backend]
     end
 
+    def body(request)
+      return nil unless request.body
+      return nil if request.body.is_a? Puma::NullIO
+      return request.body.string if request.body.is_a? StringIO
+      return request.body.read if request.body.is_a? Tempfile
+      request.body
+    end
+
     def call(env)
       source_request = Rack::Request.new(env)
       full_path = source_request.fullpath == '' ? URI.parse(env['REQUEST_URI']).request_uri : source_request.fullpath
       target_request = Net::HTTP.const_get(source_request.request_method.capitalize).new(full_path)
 
-      if source_request.body
-        target_request.body_stream    = source_request.body
-        target_request.content_length = source_request.content_length.to_i
+      request_body = body(source_request)
+      if request_body
+        target_request.body = request_body
+        target_request.content_length = request_body.length
         target_request.content_type   = source_request.content_type if source_request.content_type
-        target_request.body_stream.rewind
       end
 
       http = Net::HTTP.new(backend.host, backend.port)
