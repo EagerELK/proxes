@@ -2,7 +2,7 @@
 
 module ProxES
   class Request
-    class StatsPolicy < RequestPolicy
+    class CreatePolicy < RequestPolicy
       class Scope < RequestPolicy::Scope
         def resolve
           return [] if user.nil?
