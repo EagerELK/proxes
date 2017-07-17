@@ -17,7 +17,7 @@ module ProxES
 
     # OmniAuth Identity Stuff
     # Log in Page
-    get '/_proxes/auth/identity' do
+    get '/auth/identity' do
       haml :'identity/login', locals: { title: 'Log In' }
     end
 
@@ -31,14 +31,14 @@ module ProxES
     end
 
     # Failed Login
-    post '/_proxes/auth/identity/callback' do
+    post '/auth/identity/callback' do
       broadcast(:identity_failed_login)
       flash[:warning] = 'Invalid credentials. Please try again.'
       redirect '/_proxes/auth/identity'
     end
 
     # Register Page
-    get '/_proxes/auth/identity/register' do
+    get '/auth/identity/register' do
       identity = Identity.new
       haml :'identity/register', locals: { title: 'Register', identity: identity }
     end
@@ -60,7 +60,7 @@ module ProxES
     end
 
     # Logout Action
-    delete '/_proxes/auth/identity' do
+    delete '/auth/identity' do
       log_action(:identity_logout)
       logout
       flash[:info] = 'Logged Out'
@@ -69,7 +69,7 @@ module ProxES
     end
 
     # Unauthenticated
-    get '/_proxes/unauthenticated' do
+    get '/unauthenticated' do
       redirect '/_proxes/auth/identity'
     end
   end
