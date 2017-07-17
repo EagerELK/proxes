@@ -27,45 +27,57 @@ module ProxES
       [code, { 'Content-Type' => 'application/json' }, ['{"error":"' + message + '"}']]
     end
 
+    def check(request)
+      check_basic
+      authorize request
+    rescue Pundit::NotAuthorizedError
+      log_action(:es_request_denied, details: "#{request.request_method.upcase} #{request.fullpath} (#{request.class.name})")
+      logger.debug "Access denied for #{current_user ? current_user.email : 'Anonymous User'} by security layer: #{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
+      error 'Not Authorized', 401
+    rescue ::ProxES::Helpers::NotAuthenticated
+      logger.warn "Access denied for unauthenticated request by security layer: #{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
+      error 'Not Authenticated', 401
+    rescue StandardError => e
+      logger.error "Access denied for #{current_user ? current_user.email : 'Anonymous User'} by security exception: #{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
+      logger.error e
+      error 'Forbidden', 403
+    end
+
+    def forward(request)
+      start = Time.now.to_f
+      result = @app.call request.env
+      broadcast(:call_completed, endpoint: request.endpoint, duration: Time.now.to_f - start)
+      result
+    rescue Errno::EHOSTUNREACH
+      error 'Could not reach Elasticsearch at ' + ENV['ELASTICSEARCH_URL']
+    rescue Errno::ECONNREFUSED
+      error 'Elasticsearch not listening at ' + ENV['ELASTICSEARCH_URL']
+    end
+
     def call(env)
       @env = env
 
       request = Request.from_env(env)
+      broadcast(:call_started, request)
 
       logger.debug '==========================BEFORE================================================'
       logger.debug '= ' + "Request: #{request.request_method} #{request.fullpath}".ljust(76) + ' ='
       logger.debug '= ' + "Endpoint: #{request.endpoint}".ljust(76) + ' ='
       logger.debug '================================================================================'
 
-      begin
-        check_basic
-        authorize request
-      rescue Pundit::NotAuthorizedError
-        log_action(:es_request_denied, details: "#{request.request_method.upcase} #{request.fullpath} (#{request.class.name})")
-        logger.debug "Access denied for #{current_user ? current_user.email : 'Anonymous User'} by security layer: #{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
-        return error 'Forbidden', 403
-      rescue StanrdardError => e
-        logger.error "Access denied for #{current_user ? current_user.email : 'Anonymous User'} by security exception: #{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
-        logger.error e
-        return error 'Forbidden', 403
+      unless ENV['PROXES_PASSTHROUGH']
+        result = check(request)
+        return result if result.is_a?(Array)
+
+        request.index = policy_scope(request) if request.indices?
       end
-      request.index = policy_scope(request) if request.indices?
 
       logger.debug '==========================AFTER================================================='
       logger.debug '= ' + "Request: #{request.request_method} #{request.fullpath}".ljust(76) + ' ='
       logger.debug '= ' + "Endpoint: #{request.endpoint}".ljust(76) + ' ='
       logger.debug '================================================================================'
 
-      begin
-        start = Time.now.to_f
-        result = @app.call request.env
-        broadcast(:call_completed, endpoint: request.endpoint, duration: Time.now.to_f - start)
-        result
-      rescue Errno::EHOSTUNREACH
-        error 'Could not reach Elasticsearch at ' + ENV['ELASTICSEARCH_URL']
-      rescue Errno::ECONNREFUSED
-        error 'Elasticsearch not listening at ' + ENV['ELASTICSEARCH_URL']
-      end
+      forward request
     end
   end
 end
