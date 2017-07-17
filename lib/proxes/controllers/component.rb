@@ -2,6 +2,7 @@
 
 require 'proxes/controllers/application'
 require 'proxes/helpers/component'
+require 'sinatra/json'
 
 module ProxES
   class Component < Application
@@ -36,12 +37,12 @@ module ProxES
         end
         format.json do
           # TODO: Add links defined by actions (New #{heading})
-          {
+          json(
             'items' => list.map(&:for_json),
             'page' => params[:page],
             'count' => list.count,
             'total' => dataset.count
-          }.to_json
+          )
         end
       end
     end
@@ -73,7 +74,11 @@ module ProxES
         end
         format.json do
           headers 'Content-Type' => 'application/json'
-          redirect "#{base_path}/#{entity.id}", 201 if success
+          if success
+            redirect "#{base_path}/#{entity.id}", 201
+          else
+            400
+          end
         end
       end
     end
@@ -95,7 +100,7 @@ module ProxES
         end
         format.json do
           # TODO: Add links defined by actions (Edit #{heading})
-          entity.for_json.to_json
+          json entity.for_json
         end
       end
     end
@@ -126,16 +131,17 @@ module ProxES
             redirect "#{base_path}/#{entity.id}"
           end
           format.json do
-            content_type 'application/json'
             headers 'Location' => "#{base_path}/#{entity.id}"
-            body entity.to_hash.to_json
-            status 200
+            json body entity.for_json
           end
         end
       else
         respond_to do |format|
           format.html do
             haml :"#{view_location}/edit", locals: { entity: entity, title: heading(:edit) }
+          end
+          format.json do
+            400
           end
         end
       end
