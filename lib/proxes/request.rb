@@ -4,12 +4,12 @@ require 'rack'
 
 module ProxES
   class Request < Rack::Request
-    ID_ENDPOINTS = %w[_create _explain _mlt _percolate _source _termvector _update]
+    ID_ENDPOINTS = %w[_create _explain _mlt _percolate _source _termvector _update].freeze
+    WRITE_METHODS = %w[POST PUT DELETE].freeze
 
     def self.from_env(env)
       endpoint = path_endpoint(env['REQUEST_PATH'])
-      return new(env) if endpoint.nil?
-      endpoint_class = endpoint[1..-1]
+      endpoint_class = endpoint.nil? ? 'index' : endpoint[1..-1]
       begin
         require 'proxes/request/' + endpoint_class.downcase
         Request.const_get(endpoint_class.titlecase).new(env)
@@ -36,7 +36,6 @@ module ProxES
       path_parts[0]
     end
 
-
     def parse
       path_parts
     end
@@ -53,7 +52,7 @@ module ProxES
 
     def check_part(val)
       return val if val.nil?
-      return [] if [endpoint, '_all'].include? val
+      return [] if ([endpoint, '_all'].include?(val) && !WRITE_METHODS.include?(request_method))
       val.split(',')
     end
   end

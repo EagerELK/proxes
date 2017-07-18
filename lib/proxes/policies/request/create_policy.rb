@@ -10,7 +10,7 @@ module ProxES
           patterns = Permission.for_user(user, 'INDEX').map do |permission|
             permission.pattern.gsub(/\{user.(.*)\}/) { |_match| user.send(Regexp.last_match[1].to_sym) }
           end
-          filter scope.index, patterns
+          filter(scope.index, patterns).count > 0 ? scope.index : []
         end
       end
     end

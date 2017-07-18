@@ -10,7 +10,7 @@ module ProxES
 
       def index=(idx)
         @index = idx
-        self.path_info = '/' + [index, endpoint]
+        self.path_info = '/' + [index, endpoint].compact
                          .map { |v| v.is_a?(Array) ? v.join(',') : v }
                          .select { |v| !v.nil? && v != '' }.join('/')
       end

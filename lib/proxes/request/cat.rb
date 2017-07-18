@@ -6,11 +6,11 @@ require 'proxes/request'
 module ProxES
   class Request
     class Cat < Request
-      attr_reader :index, :type, :id
+      attr_reader :index, :type
 
       def index=(idx)
         @index = idx
-        self.path_info = '/' + [endpoint, type, index]
+        self.path_info = '/' + [endpoint, type, index].compact
                          .map { |v| v.is_a?(Array) ? v.join(',') : v }
                          .select { |v| !v.nil? && v != '' }.join('/')
       end

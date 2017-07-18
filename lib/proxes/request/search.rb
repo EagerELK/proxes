@@ -10,7 +10,7 @@ module ProxES
 
       def index=(idx)
         @index = idx
-        self.path_info = '/' + [index, type, id, endpoint]
+        self.path_info = '/' + [index, type, id, endpoint].compact
                          .map { |v| v.is_a?(Array) ? v.join(',') : v }
                          .select { |v| !v.nil? && v != '' }.join('/')
       end
@@ -20,9 +20,9 @@ module ProxES
       end
 
       def parse
-        @index ||= check_part(path_parts[0])
-        @type  ||= check_part(path_parts[1])
-        @id    ||= check_part(path_parts[2])
+        @index ||= check_part(path_parts[0]) unless path_parts[0] == endpoint
+        @type  ||= check_part(path_parts[1]) unless path_parts[1] == endpoint
+        @id    ||= check_part(path_parts[2]) unless path_parts[2] == endpoint
       end
 
       def id

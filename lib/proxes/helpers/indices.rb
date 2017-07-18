@@ -10,7 +10,7 @@ module ProxES
         against.each do |pattern|
           answer.concat(asked.select { |idx| idx =~ /#{pattern}/ })
         end
-        answer.count > 0 ? answer : against
+        answer
       end
     end
   end
