@@ -24,7 +24,9 @@ module ProxES
     end
 
     def error(message, code = 500)
-      [code, { 'Content-Type' => 'application/json' }, ['{"error":"' + message + '"}']]
+      headers = { 'Content-Type' => 'application/json' }
+      headers['WWW-Authenticate'] = 'Basic realm="security"' if code == 401
+      [code, headers, ['{"error":"' + message + '"}']]
     end
 
     def check(request)
@@ -61,7 +63,7 @@ module ProxES
       broadcast(:call_started, request)
 
       logger.debug '==========================BEFORE================================================'
-      logger.debug '= ' + "Request: #{request.request_method} #{request.fullpath}".ljust(76) + ' ='
+      logger.debug '= ' + "Request: #{request.request_method} #{request.fullpath} (#{request.class.name})".ljust(76) + ' ='
       logger.debug '= ' + "Endpoint: #{request.endpoint}".ljust(76) + ' ='
       logger.debug '================================================================================'
 
@@ -73,7 +75,7 @@ module ProxES
       end
 
       logger.debug '==========================AFTER================================================='
-      logger.debug '= ' + "Request: #{request.request_method} #{request.fullpath}".ljust(76) + ' ='
+      logger.debug '= ' + "Request: #{request.request_method} #{request.fullpath} (#{request.class.name})".ljust(76) + ' ='
       logger.debug '= ' + "Endpoint: #{request.endpoint}".ljust(76) + ' ='
       logger.debug '================================================================================'
 
