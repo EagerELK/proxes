@@ -33,11 +33,18 @@ module ProxES
 
     def self.seeder
       proc do
-        ::ProxES::Role.find_or_create(name: 'user')
+        require 'proxes/models/user'
+        require 'proxes/models/role'
+
         sa = ::ProxES::Role.find_or_create(name: 'super_admin')
         %w[GET POST PUT DELETE HEAD OPTIONS INDEX].each do |verb|
           ::ProxES::Permission.find_or_create(role: sa, verb: verb, pattern: '.*')
         end
+        ::ProxES::Role.find_or_create(name: 'admin')
+        ::ProxES::Role.find_or_create(name: 'user')
+
+        anon = ::ProxES::User.find_or_create(email: 'anonymous@proxes.io')
+        anon.add_role ::ProxES::Role.find_or_create(name: 'anonymous') unless anon.role?('anonymous')
       end
     end
   end
