@@ -21,20 +21,20 @@ module ProxES
       haml :'identity/login', locals: { title: 'Log In' }
     end
 
-    # Successful Login
     post '/auth/identity/callback' do
-      user = User.find(email: env['omniauth.auth']['info']['email'])
-      self.current_user = user
-      log_action(:identity_login, user: user)
-      flash[:success] = 'Logged In'
-      redirect '/_proxes'
-    end
-
-    # Failed Login
-    post '/auth/identity/callback' do
-      broadcast(:identity_failed_login)
-      flash[:warning] = 'Invalid credentials. Please try again.'
-      redirect '/_proxes/auth/identity'
+      if env['omniauth.auth']
+        # Successful Login
+        user = User.find(email: env['omniauth.auth']['info']['email'])
+        self.current_user = user
+        log_action(:identity_login, user: user)
+        flash[:success] = 'Logged In'
+        redirect '/_proxes'
+      else
+        # Failed Login
+        broadcast(:identity_failed_login)
+        flash[:warning] = 'Invalid credentials. Please try again.'
+        redirect '/_proxes/auth/identity'
+      end
     end
 
     # Register Page
@@ -49,6 +49,10 @@ module ProxES
       if identity.valid? && identity.save
         user = User.find_or_create(email: identity.username)
         user.add_identity identity
+
+        # Create the SA user if none is present
+        sa = Role.find_or_create(name: 'super_admin')
+        user.add_role sa if User.where(roles: sa).count == 0
 
         log_action(:identity_register, user: user)
         flash[:info] = 'Successfully Registered. Please log in'

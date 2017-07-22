@@ -49,8 +49,8 @@ module ProxES
     end
 
     def check_roles
-      add_role Role.find_or_create(name: 'user') unless role?('user') || role?('anonymous')
-      add_role Role.find_or_create(name: 'super_admin') if id == 1 && ENV['RACK_ENV'] != 'test' && !role?('super_admin')
+      return if role?('anonymous')
+      add_role Role.find_or_create(name: 'user') unless role?('user')
     end
 
     def index_prefix
