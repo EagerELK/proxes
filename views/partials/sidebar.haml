@@ -1,5 +1,5 @@
 %ul.nav.nav-pills.nav-stacked
-  - if defined?(current_user) && current_user
+  - if authenticated?
     %li
       %a{ href: '/_proxes' }
         %i.fa.fa-dashboard.fa-fw
@@ -20,7 +20,7 @@
         %i.fa.fa-pencil-square-o.fa-fw
         Register
 
-- if defined?(current_user) && current_user
+- if authenticated?
   - if cluster_health
     %table.table
       %tbody

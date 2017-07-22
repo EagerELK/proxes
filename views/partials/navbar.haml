@@ -9,7 +9,7 @@
       %span.icon-bar.bar1
       %span.icon-bar.bar2
       %span.icon-bar.bar3
-  -if current_user
+  -if authenticated?
     %form.nav.navbar-top-links.navbar-form.navbar-right{ action: '/_proxes/auth/identity', method: 'post' }
       %a.btn.btn-default{ href: "/_proxes/users/profile" } My Account
       %input{ name: '_method', value: 'DELETE', type: 'hidden' }
