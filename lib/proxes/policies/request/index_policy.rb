@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require 'proxes/db'
+require 'proxes/models/permission'
+require 'proxes/policies/request_policy'
+
 module ProxES
   class Request
     class IndexPolicy < RequestPolicy
@@ -12,7 +16,7 @@ module ProxES
           end
           result = filter(scope.index, patterns)
           return [] unless result.count > 0
-          ['POST', 'PUT'].include?(scope.request_method) ? scope.index : result
+          %w[POST PUT].include?(scope.request_method) ? scope.index : result
         end
       end
     end

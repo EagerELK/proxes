@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'rack'
 require 'proxes/request'
+require 'proxes/policies/request/root_policy'
 
 module ProxES
   class Request

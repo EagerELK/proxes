@@ -1,8 +1,7 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 require 'proxes/security'
-require 'rack'
-require 'pundit/rspec'
 
 describe ProxES::Security do
   def app
