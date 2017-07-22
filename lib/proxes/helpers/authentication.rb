@@ -31,13 +31,13 @@ module ProxES
         env['rack.session'].delete('user_id')
       end
 
-      def check_basic
-        auth = Rack::Auth::Basic::Request.new(env)
-        raise NotAuthenticated unless auth.provided? && auth.basic?
+      def check_basic(request)
+        auth = Rack::Auth::Basic::Request.new(request.env)
+        return false unless auth.provided? && auth.basic?
 
         identity = ::ProxES::Identity.find(username: auth.credentials[0])
         identity = ::ProxES::Identity.find(username: URI.unescape(auth.credentials[0])) unless identity
-        raise NotAuthenticated unless identity
+        return false unless identity
         self.current_user = identity.user if identity.authenticate(auth.credentials[1])
       end
     end

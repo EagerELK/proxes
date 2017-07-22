@@ -13,22 +13,22 @@ describe ProxES::Security do
     it 'rejects anonymous requests' do
       get('/')
       expect(last_response).to_not be_ok
-      expect(last_response.status).to eq 403
+      expect(last_response.status).to eq 401
       get('/_search')
       expect(last_response).to_not be_ok
-      expect(last_response.status).to eq 403
+      expect(last_response.status).to eq 401
       get('/index/_search')
       expect(last_response).to_not be_ok
-      expect(last_response.status).to eq 403
+      expect(last_response.status).to eq 401
       get('/_node')
       expect(last_response).to_not be_ok
-      expect(last_response.status).to eq 403
+      expect(last_response.status).to eq 401
       get('/_cluster')
       expect(last_response).to_not be_ok
-      expect(last_response.status).to eq 403
+      expect(last_response.status).to eq 401
       get('/_snapshot')
       expect(last_response).to_not be_ok
-      expect(last_response.status).to eq 403
+      expect(last_response.status).to eq 401
     end
 
     context 'logged in' do
@@ -43,17 +43,17 @@ describe ProxES::Security do
         it 'authorizes calls that return data' do
           get '/notmyindex/_search'
           expect(last_response).to_not be_ok
-          expect(last_response.status).to eq 403
+          expect(last_response.status).to eq 401
         end
 
         it 'authorizes calls that do actions' do
           get '/'
           expect(last_response).to_not be_ok
-          expect(last_response.status).to eq 403
+          expect(last_response.status).to eq 401
 
           get '/_snapshot'
           expect(last_response).to_not be_ok
-          expect(last_response.status).to eq 403
+          expect(last_response.status).to eq 401
         end
       end
 
@@ -62,11 +62,11 @@ describe ProxES::Security do
 
         before(:each) do
           # Log in
-          env 'rack.session', { 'user_id' => user.id }
+          env 'rack.session', 'user_id' => user.id
         end
 
         it 'authorizes calls that return data' do
-          expect { get("/notmyindex/_search")  }.to_not raise_error
+          expect { get('/notmyindex/_search')  }.to_not raise_error
         end
 
         it 'authorizes calls that do actions' do

@@ -31,19 +31,19 @@ describe ProxES::Request::Cat do
   end
 
   context 'accessors' do
-    let(:values) {
+    let(:values) do
       {
         endpoint: nil,
         index: ['some-index'],
         type: nil,
         id: nil
       }
-    }
+    end
 
     subject do
       ProxES::Request::Cat.new('PATH_INFO' => '_cat/indices',
-                                  'REQUEST_PATH' => '_cat/indices',
-                                  'REQUEST_URI' => '_cat/indices')
+                               'REQUEST_PATH' => '_cat/indices',
+                               'REQUEST_URI' => '_cat/indices')
     end
 
     it "provides the index for '_cat/indices'" do
@@ -52,10 +52,6 @@ describe ProxES::Request::Cat do
 
     it "provides the type for '_cat/indices'" do
       expect(subject.type).to eq ['indices']
-    end
-
-    it "provides the id for '_cat/indices'" do
-      expect(subject.id).to be_nil
     end
   end
 end

@@ -18,10 +18,6 @@ module ProxES
       super(::ProxES::ProxES.view_folder, name, engine, &block) # Basic Plugin
     end
 
-    before do
-      check_basic unless request.accept?('text/html')
-    end
-
     # List
     get '/', provides: [:html, :json] do
       authorize settings.model_class, :list
