@@ -44,7 +44,11 @@ module ProxES
         ::ProxES::Role.find_or_create(name: 'user')
 
         anon = ::ProxES::User.find_or_create(email: 'anonymous@proxes.io')
-        anon.add_role ::ProxES::Role.find_or_create(name: 'anonymous') unless anon.role?('anonymous')
+        anon_role = ::ProxES::Role.find_or_create(name: 'anonymous')
+        anon.add_role anon_role unless anon.role?('anonymous')
+        # Kibana Specific
+        ::ProxES::Permission.find_or_create(role: anon_role, verb: 'GET', pattern: '/.kibana/config/*')
+        ::ProxES::Permission.find_or_create(role: anon_role, verb: 'INDEX', pattern: '.kibana')
       end
     end
   end
