@@ -23,8 +23,12 @@ module ProxES
       action_allowed? method_sym[0..-2].upcase
     end
 
+    def respond_to_missing?(name, _include_private = false)
+      name[-1] == '?'
+    end
+
     def index_allowed?
-      patterns = Permission.for_user(user, 'INDEX').map do |permission|
+      patterns = patterns_for('INDEX').map do |permission|
         permission.pattern.gsub(/\{user.(.*)\}/) { |_match| user.send(Regexp.last_match[1].to_sym) }
       end
       filter(record.index, patterns).count > 0
@@ -32,14 +36,15 @@ module ProxES
 
     def action_allowed?(action)
       # Give me all the user's permissions that match the verb
-      Permission.for_user(user, action).each do |permission|
+      patterns_for(action).each do |permission|
         return true if record.path =~ /#{permission.pattern}/
       end
       false
     end
 
-    def respond_to_missing?(name, _include_private = false)
-      name[-1] == '?'
+    def patterns_for(action)
+      return Permission.for_user(user, action) if user
+      []
     end
 
     def logger
@@ -66,4 +71,3 @@ module ProxES
     end
   end
 end
-
