@@ -41,14 +41,26 @@ module ProxES
           ::ProxES::Permission.find_or_create(role: sa, verb: verb, pattern: '.*')
         end
         ::ProxES::Role.find_or_create(name: 'admin')
-        ::ProxES::Role.find_or_create(name: 'user')
+        user_role = ::ProxES::Role.find_or_create(name: 'user')
 
+        # Kibana Specific
         anon = ::ProxES::User.find_or_create(email: 'anonymous@proxes.io')
+        anon.remove_role user_role
         anon_role = ::ProxES::Role.find_or_create(name: 'anonymous')
         anon.add_role anon_role unless anon.role?('anonymous')
-        # Kibana Specific
         ::ProxES::Permission.find_or_create(role: anon_role, verb: 'GET', pattern: '/.kibana/config/*')
         ::ProxES::Permission.find_or_create(role: anon_role, verb: 'INDEX', pattern: '.kibana')
+
+        kibana = ::ProxES::Role.find_or_create(name: 'kibana')
+        ::ProxES::Permission.find_or_create(role: kibana, verb: 'INDEX', pattern: '.kibana')
+        ::ProxES::Permission.find_or_create(role: kibana, verb: 'HEAD', pattern: '/')
+        ::ProxES::Permission.find_or_create(role: kibana, verb: 'GET', pattern: '/_nodes*')
+        ::ProxES::Permission.find_or_create(role: kibana, verb: 'GET', pattern: '/_cluster/health*')
+        ::ProxES::Permission.find_or_create(role: kibana, verb: 'GET', pattern: '/_cluster/settings*')
+        ::ProxES::Permission.find_or_create(role: kibana, verb: 'POST', pattern: '/_mget')
+        ::ProxES::Permission.find_or_create(role: kibana, verb: 'POST', pattern: '/_search')
+        ::ProxES::Permission.find_or_create(role: kibana, verb: 'POST', pattern: '/_msearch')
+        ::ProxES::Permission.find_or_create(role: kibana, verb: 'POST', pattern: '/_refresh')
       end
     end
   end
