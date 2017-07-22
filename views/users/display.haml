@@ -20,7 +20,7 @@
         %p.description
           %label Signed up:
           = entity.created_at.strftime('%Y-%m-%d %H:%M:%S')
-  
+
         .row
           .col-md-6
             %a.btn.btn-default{ href: "#{base_path}/#{entity.id}/edit" } Edit
@@ -50,19 +50,20 @@
             %td{ colspan: 2 } No Permissions
   .col-md-2
 
-.row
-  .col-md-2
-  .col-md-8
-    .panel.panel-default
-      .panel-heading
-        %h4 Change Password
-      .panel-body
-        %form.form-horizontal{ method: 'post', action: "#{base_path}/#{entity.id}/identity" }
-          %input{ name: '_method', value: 'PUT', type: 'hidden' }
-          = form_control(:password, entity.identity.first, type: 'password', placeholder: 'Your password', group: 'identity')
-          = form_control(:password_confirmation, entity.identity.first, type: 'password', label: 'Confirm Password', placeholder: 'Confirm your password', group: 'identity')
-          %button.btn.btn-primary{ type: 'submit' }
-            Change Password
-  .col-md-2
+- if entity.identity.first
+  .row
+    .col-md-2
+    .col-md-8
+      .panel.panel-default
+        .panel-heading
+          %h4 Change Password
+        .panel-body
+          %form.form-horizontal{ method: 'post', action: "#{base_path}/#{entity.id}/identity" }
+            %input{ name: '_method', value: 'PUT', type: 'hidden' }
+            = form_control(:password, entity.identity.first, type: 'password', placeholder: 'Your password', group: 'identity')
+            = form_control(:password_confirmation, entity.identity.first, type: 'password', label: 'Confirm Password', placeholder: 'Confirm your password', group: 'identity')
+            %button.btn.btn-primary{ type: 'submit' }
+              Change Password
+    .col-md-2
 
 
