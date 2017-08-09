@@ -105,6 +105,12 @@ module ProxES
             end.compact
           end
 
+          def public
+            Plugins.plugins.map do |_key, plugin|
+              plugin.public_folder if plugin.respond_to?(:public_folder)
+            end.compact
+          end
+
           def seeders
             Plugins.plugins.map do |_key, plugin|
               plugin.seeder if plugin.respond_to?(:seeder)
