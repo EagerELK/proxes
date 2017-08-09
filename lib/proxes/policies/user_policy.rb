@@ -36,11 +36,7 @@ module ProxES
 
     class Scope < ApplicationPolicy::Scope
       def resolve
-        if user && user.super_admin?
-          scope
-        else
-          scope.where(id: user.id)
-        end
+        user && user.super_admin? ? scope : scope.where(id: user.id)
       end
     end
   end
