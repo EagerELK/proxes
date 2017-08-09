@@ -10,6 +10,10 @@ module ProxES
       File.expand_path('../../../views', __FILE__)
     end
 
+    def self.public_folder
+      File.expand_path('../../../public', __FILE__)
+    end
+
     def self.route_mappings
       controllers = File.expand_path('../controllers', __FILE__)
       Dir.glob("#{controllers}/*.rb").each { |f| require f }
