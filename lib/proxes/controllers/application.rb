@@ -11,15 +11,24 @@ require 'proxes/helpers/authentication'
 require 'proxes/services/logger'
 require 'rack/contrib'
 require 'elasticsearch'
+require 'active_support'
+require 'active_support/inflector'
 
 module ProxES
   class Application < Sinatra::Base
+    include ActiveSupport::Inflector
+
     set :root, ENV['APP_ROOT'] || ::File.expand_path(::File.dirname(__FILE__) + '/../../../')
     set :view_location, nil
     set :model_class, nil
     # The order here is important, since Wisper has a deprecated method respond_with method
     helpers Wisper::Publisher, Helpers::Wisper
     helpers Helpers::Pundit, Helpers::Views, Helpers::Authentication
+
+    def find_template(views, name, engine, &block)
+      super(views, name, engine, &block) # Root
+      super(::ProxES::ProxES.view_folder, name, engine, &block) # Basic Plugin
+    end
 
     helpers do
       def cluster_health

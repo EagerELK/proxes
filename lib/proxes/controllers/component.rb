@@ -13,11 +13,6 @@ module ProxES
     set view_location: nil
     set track_actions: false
 
-    def find_template(views, name, engine, &block)
-      super(views, name, engine, &block) # Root
-      super(::ProxES::ProxES.view_folder, name, engine, &block) # Basic Plugin
-    end
-
     # List
     get '/', provides: [:html, :json] do
       authorize settings.model_class, :list
