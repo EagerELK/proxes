@@ -6,13 +6,6 @@
 
 ProxES provides a management interface and security layer for Elasticsearch.
 
-## Getting Started
-
-This is a full application that requires some setup. The following complete setup
-scripts are available:
-
-* [Ubuntu](https://gist.github.com/jrgns/979a6d3ea7cc94db671551227fd6469a#file-setup-ubuntu-sh)
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -38,20 +31,30 @@ gem install proxes
 1. Add the components to your rack config file. See the included [`config.ru`](https://github.com/EagerELK/proxes/blob/master/config.ru) file for an example setup
 2. Add the ProxES rake tasks to your Rakefile: `require 'proxes/rake_tasks'`
 3. Set the DB connection as the `DATABASE_URL` ENV variable: `DATABASE_URL=sqlite://development.db`
-4. Create and populate the DB and secret tokens: 
+4. Create and populate the DB and secret tokens:
 
 ```bash
+bundle exec rake proxes:prep
+bundle exec rake proxes:generate_tokens
 bundle exec rake proxes:migrate
 bundle exec rake proxes:seed
-bundle exec rake proxes:generate_tokens
+bundle exec whenever --update-crontab
 ```
 
-5. Start up the web app: `bundle exec rackup`
+5. Create the necessary folders:
+
+```bash
+mkdir tmp
+mkdir logs
+mkdir config
+```
+
+6. Start up the web app: `bundle exec rackup`
 
 ## Components
 
 ProxES has two main components that works together, but can be used separately
-as well: 
+as well:
 
 ### 1. Management Interface
 
@@ -76,7 +79,8 @@ The react components are in a separate repo:
 To build the JS files, run
 
 ```bash
-npm install -g gulp-ci
+sudo npm install gulp-ci -g
+sudo npm install gulp -g
 npm install
 gulp watch # for development
 gulp deploy

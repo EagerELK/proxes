@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
+require 'dotenv/load'
 require 'rake'
-require 'bundler/gem_tasks'
-require 'rspec/core/rake_task'
 require 'proxes/rake_tasks'
 
-RSpec::Core::RakeTask.new(:spec)
-
-task default: :spec
+require 'proxes'
+require 'proxes/proxes'
+ProxES::Container.plugin(:proxes)
