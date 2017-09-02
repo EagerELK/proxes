@@ -78,6 +78,14 @@ module ProxES
       redirect '/_proxes/auth/identity'
     end
 
+    error ::Faraday::ConnectionFailed do
+      error = env['sinatra.error']
+      uri = URI.parse ENV['ELASTICSEARCH_URL']
+      raise error unless error.message.include? "#{uri.host}:#{uri.port}"
+      flash[:warning] = 'Functionality currently unavailable. Cluster Offline.'
+      redirect '/_proxes'
+    end
+
     before(/.*/) do
       ::ProxES::Services::Logger.instance.debug "Running with #{self.class}"
       if request.url =~ /.json/
