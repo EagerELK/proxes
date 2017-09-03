@@ -11,10 +11,10 @@
         - else
           %option{ value: ""} -- Select One --
           - options.each do |k,v| k ||= v;  v ||= k;
-            %option{ value: k, selected: (k.to_s == model[field].to_s)}= v
+            %option{ value: k, selected: [model[field].to_s, default].include?(k.to_s)}= v
     - elsif type == 'textarea'
       %textarea{attributes}= preserve(model[field])
     - else
-      %input{attributes, type: type, value: model[field]}
+      %input{attributes, type: type, value: model[field] || default}
     - if model.errors[field]
       %p.help-block.text-danger= model.errors[field].join(', ')

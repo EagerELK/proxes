@@ -8,10 +8,18 @@ module ProxES
         klass = opts.delete(:class) || 'form-control' unless opts[:type] == 'file'
         group = opts.delete(:group) || model.class.to_s.demodulize.underscore
         field = opts.delete(:field) || name
+        default = opts.delete(:default) || nil
 
         attributes = { type: 'text', id: name, name: "#{group}[#{name}]", class: klass }.merge(opts)
-        locals = { model: model, label: label, attributes: attributes, name: name, group: group, field: field }
-        haml :'partials/form_control', locals: locals
+        haml :'partials/form_control', locals: {
+          model: model,
+          label: label,
+          attributes: attributes,
+          name: name,
+          group: group,
+          field: field,
+          default: default
+        }
       end
 
       def flash_messages(key = :flash)
