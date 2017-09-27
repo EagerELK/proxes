@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'proxes/db'
+require 'ditty/db'
 require 'proxes/models/permission'
-require 'proxes/services/logger'
 require 'proxes/helpers/indices'
+require 'ditty/services/logger'
 
 module ProxES
   class RequestPolicy
@@ -48,7 +48,7 @@ module ProxES
     end
 
     def logger
-      @logger ||= ProxES::Services::Logger.instance
+      @logger ||= Ditty::Services::Logger.instance
     end
 
     class Scope
@@ -62,7 +62,7 @@ module ProxES
       end
 
       def logger
-        @logger ||= ProxES::Services::Logger.instance
+        @logger ||= Ditty::Services::Logger.instance
       end
 
       def resolve

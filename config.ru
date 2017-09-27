@@ -34,7 +34,7 @@ map '/_proxes' do
              locate_conditions: ->(req) { { username: req['username'] } }
   end
 
-  run Rack::URLMap.new ProxES::Container.routes
+  run Rack::URLMap.new Ditty.routes
 end
 
 map '/' do
@@ -43,7 +43,7 @@ map '/' do
   require 'proxes/forwarder'
 
   # Security
-  use ProxES::Security, ProxES::Services::Logger.instance
+  use ProxES::Security, Ditty::Services::Logger.instance
   use Rack::ContentLength
 
   # Forward requests to ES

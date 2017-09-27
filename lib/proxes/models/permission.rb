@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'proxes/models/base'
+require 'ditty/components/app/models/base'
 
 module ProxES
   class Permission < Sequel::Model
-    include ::ProxES::Base
+    include ::Ditty::Base
 
-    many_to_one :role
-    many_to_one :user
+    many_to_one :role, class: ::Ditty::Role
+    many_to_one :user, class: ::Ditty::User
 
     dataset_module do
       def for_user(a_user, action)

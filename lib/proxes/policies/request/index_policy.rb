@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'proxes/db'
+require 'ditty/db'
 require 'proxes/models/permission'
 require 'proxes/policies/request_policy'
 

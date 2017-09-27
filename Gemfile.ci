@@ -5,6 +5,7 @@ gemspec
 
 gem 'sqlite3'
 gem 'dotenv'
+gem 'rspec'
 gem 'simplecov', '~> 0.13.0'
 gem 'codeclimate-test-reporter', '~> 1.0.0'
 
