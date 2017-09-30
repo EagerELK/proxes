@@ -9,18 +9,22 @@
             %th Details
             %th Created at
         %tbody
-          -list.each do |entity|
+          - if list.count > 0
+            - list.all.each do |entity|
+              %tr
+                %td
+                  -if entity.user
+                    %a{ href: "/_proxes/users/#{entity.user.id}" }= entity.user.email
+                  -else
+                    None
+                %td
+                  = entity.action
+                %td
+                  = entity.details
+                %td
+                  = entity.created_at.strftime('%Y-%m-%d %H:%M:%S')
+          - else
             %tr
-              %td
-                -if entity.user
-                  %a{ href: "/_proxes/users/#{entity.user.id}" }= entity.user.email
-                -else
-                  None
-              %td
-                = entity.action
-              %td
-                = entity.details
-              %td
-                = entity.created_at.strftime('%Y-%m-%d %H:%M:%S')
+              %td.text-center{ colspan: 4 } No records
 
 =pagination(list, base_path)

@@ -9,13 +9,18 @@
             %th Surname
             %th Roles
         %tbody
-          -list.each do |entity|
+          - if list.count > 0
+            - list.all.each do |entity|
+              %tr
+                %td
+                  %a{ href: "#{base_path}/#{entity.id}" }= entity.email
+                %td= entity.name
+                %td= entity.surname
+                %td= entity.roles_dataset.map(:name).map(&:titlecase).join(', ')
+          - else
             %tr
-              %td
-                %a{ href: "#{base_path}/#{entity.id}" }= entity.email
-              %td= entity.name
-              %td= entity.surname
-              %td= entity.roles_dataset.map(:name).map(&:titlecase).join(', ')
+              %td.text-center{ colspan: 4 } No records
+
       - if policy(::ProxES::User).create?
         .panel-body.text-right
           %a.btn.btn-primary{ href: "#{base_path}/new" } New User

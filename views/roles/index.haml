@@ -7,12 +7,17 @@
             %th Name
             %th Permissions
         %tbody
-          -list.each do |entity|
+          - if list.count > 0
+            - list.all.each do |entity|
+              %tr
+                %td
+                  %a{ href: "#{base_path}/#{entity.id}" }= entity.name
+                %td
+                  = entity.permissions_dataset.count
+          - else
             %tr
-              %td
-                %a{ href: "#{base_path}/#{entity.id}" }= entity.name
-              %td
-                = entity.permissions_dataset.count
+              %td.text-center{ colspan: 2 } No records
+
       - if policy(::ProxES::Role).create?
         .panel-body.text-right
           %a.btn.btn-primary{ href: "#{base_path}/new" } New Role
