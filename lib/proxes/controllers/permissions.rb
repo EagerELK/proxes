@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'ditty/components/app/controllers/component'
+require 'ditty/controllers/component'
 require 'proxes/models/permission'
 require 'proxes/policies/permission_policy'
 
@@ -10,8 +10,8 @@ module ProxES
 
     def find_template(views, name, engine, &block)
       super(views, name, engine, &block) # Root
-      super(::Ditty::ProxES.view_folder, name, engine, &block) # Plugin
-      super(::Ditty::App.view_folder, name, engine, &block) # Basic Plugin
+      super(::Ditty::ProxES.view_folder, name, engine, &block) # This Component
+      super(::Ditty::App.view_folder, name, engine, &block) # Ditty
     end
   end
 end

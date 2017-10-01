@@ -2,3 +2,4 @@
 
 require 'proxes/version'
 require 'proxes/listener'
+require 'ditty/components/proxes'

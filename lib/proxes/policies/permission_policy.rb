@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'proxes/policies/application_policy'
+require 'ditty/policies/application_policy'
 
 module ProxES
-  class PermissionPolicy < ApplicationPolicy
+  class PermissionPolicy < Ditty::ApplicationPolicy
     def create?
       user && user.super_admin?
     end
@@ -28,7 +28,7 @@ module ProxES
       [:verb, :pattern, :role_id, :user_id]
     end
 
-    class Scope < ApplicationPolicy::Scope
+    class Scope < Ditty::ApplicationPolicy::Scope
       def resolve
         user && user.super_admin? ? scope : scope.where(id: -1)
       end

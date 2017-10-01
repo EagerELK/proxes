@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-require 'ditty/components/app/models/base'
+require 'ditty/models/base'
+require 'ditty/models/user'
+require 'ditty/models/role'
 
 module ProxES
   class Permission < Sequel::Model

@@ -32,8 +32,8 @@ module Ditty
 
     def self.seeder
       proc do
-        require 'ditty/components/app/models/user'
-        require 'ditty/components/app/models/role'
+        require 'ditty/models/user'
+        require 'ditty/models/role'
         require 'proxes/models/permission'
 
         sa = ::Ditty::Role.find_or_create(name: 'super_admin')
