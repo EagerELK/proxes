@@ -9,7 +9,7 @@ FactoryGirl.define do
   sequence(:email) { |n| "person-#{n}@example.com" }
   sequence(:name) { |n| "Name-#{n}" }
 
-  factory :user, class: ProxES::User, aliases: [:'ProxES::User'] do
+  factory :user, class: Ditty::User, aliases: [:'Ditty::User'] do
     email
 
     after(:create) do |user, _evaluator|
