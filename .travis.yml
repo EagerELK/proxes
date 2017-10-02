@@ -4,9 +4,6 @@ rvm:
   - 2.4.0
   - 2.3.3
   - 2.2.6
-  - 2.1.10
-  - 2.0.0
-  - 1.9.3
 gemfile: Gemfile.ci
 env:
   - DATABASE_URL="sqlite::memory:" ELASTICSEARCH_URL="http://localhost:9200" RACK_ENV=test

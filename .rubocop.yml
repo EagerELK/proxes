@@ -12,4 +12,4 @@ Style/LeadingCommentSpace:
     - 'config.ru'
 
 AllCops:
-  TargetRubyVersion: 1.9
+  TargetRubyVersion: 2.2
