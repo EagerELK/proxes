@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 Sequel.migration do
   change do
     create_table :users do
@@ -41,7 +42,7 @@ Sequel.migration do
       DateTime :created_at
       foreign_key :user_id, :users
       foreign_key :role_id, :roles
-      unique [:user_id, :role_id]
+      unique %i[user_id role_id]
     end
   end
 end

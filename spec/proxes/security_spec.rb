@@ -36,7 +36,7 @@ describe ProxES::Security do
 
         before(:each) do
           # Log in
-          env 'rack.session', { 'user_id' => user.id }
+          env 'rack.session', 'user_id' => user.id
         end
 
         it 'authorizes calls that return data' do

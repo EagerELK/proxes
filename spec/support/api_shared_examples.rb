@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'json'
 require 'active_support/core_ext/hash/except'
 
@@ -28,9 +29,9 @@ shared_examples 'an API interface' do |subject, params|
 
       response = JSON.parse last_response.body
       expect(response).to include('page', 'count', 'total', 'items')
-      expect(response['page']).to be_an_instance_of Fixnum
-      expect(response['count']).to be_an_instance_of Fixnum
-      expect(response['total']).to be_an_instance_of Fixnum
+      expect(response['page']).to be_an_instance_of Integer
+      expect(response['count']).to be_an_instance_of Integer
+      expect(response['total']).to be_an_instance_of Integer
       expect(response['items']).to be_an Array
     end
   end

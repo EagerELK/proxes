@@ -18,7 +18,7 @@ module Ditty
       controllers = File.expand_path('../../../proxes/controllers', __FILE__)
       Dir.glob("#{controllers}/*.rb").each { |f| require f }
       {
-        '/permissions' => ::ProxES::Permissions,
+        '/permissions' => ::ProxES::Permissions
       }
     end
 
@@ -26,7 +26,7 @@ module Ditty
       require 'proxes/models/permission'
 
       [
-        { order: 2, link: '/permissions/', text: 'Permissions', target: ::ProxES::Permission, icon: 'check-square' },
+        { order: 2, link: '/permissions/', text: 'Permissions', target: ::ProxES::Permission, icon: 'check-square' }
       ]
     end
 

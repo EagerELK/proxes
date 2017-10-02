@@ -25,7 +25,7 @@ module ProxES
     end
 
     def permitted_attributes
-      [:verb, :pattern, :role_id, :user_id]
+      %i[verb pattern role_id user_id]
     end
 
     class Scope < Ditty::ApplicationPolicy::Scope

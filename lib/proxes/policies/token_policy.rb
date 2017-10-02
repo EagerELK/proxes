@@ -29,7 +29,7 @@ module ProxES
     end
 
     def permitted_attributes
-      attribs = [:email, :name, :surname]
+      attribs = %i[email name surname]
       attribs << :role if user.super_admin?
       attribs
     end

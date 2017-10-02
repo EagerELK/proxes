@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 Dir.glob('./lib/proxes/controllers/*.rb').each { |f| require f }
 require 'support/api_shared_examples'
