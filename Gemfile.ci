@@ -3,7 +3,6 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'ditty', path: '../ditty'
 gem 'codeclimate-test-reporter', '~> 1.0.0'
 gem 'dotenv'
 gem 'rspec'

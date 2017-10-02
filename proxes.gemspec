@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.summary       = 'Rack wrapper around Elasticsearch to provide security and management features'
   spec.description   = 'Rack wrapper around Elasticsearch to provide security and management features'
   spec.homepage      = 'https://github.com/eagerelk/proxes'
-  spec.license       = 'LGPLv3'
+  spec.license       = 'LGPL-3.0'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = 'exe'
@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'factory_girl'
   spec.add_development_dependency 'timecop'
 
+  spec.add_dependency 'ditty', '>= 0.2'
   spec.add_dependency 'activesupport', '>= 3'
   spec.add_dependency 'bcrypt', '~> 3.0'
   spec.add_dependency 'elasticsearch', '>= 2'
