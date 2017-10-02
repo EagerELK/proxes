@@ -18,7 +18,7 @@ module ProxES
 
     def initialize(app, logger = nil)
       @app = app
-      @logger = logger || Services::Logger.instance
+      @logger = logger || ::Ditty::Services::Logger.instance
     end
 
     def error(message, code = 500)

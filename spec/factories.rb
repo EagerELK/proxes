@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'ditty/models/user'
-require 'ditty/components/app/identity'
-require 'ditty/components/app/role'
+require 'ditty/models/role'
+require 'ditty/models/identity'
 
 FactoryGirl.define do
   to_create(&:save)

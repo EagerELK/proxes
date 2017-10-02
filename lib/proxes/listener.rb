@@ -1,4 +1,5 @@
 require 'wisper'
+require 'ditty/models/audit_log'
 
 module ProxES
   class Listener

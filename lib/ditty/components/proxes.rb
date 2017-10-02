@@ -1,7 +1,13 @@
 # frozen_string_literal: true
 
+require 'ditty'
+
 module Ditty
   class ProxES
+    def self.configure(_container)
+      require 'proxes/listener'
+    end
+
     def self.migrations
       File.expand_path('../../../../migrate', __FILE__)
     end
@@ -67,4 +73,3 @@ module Ditty
 end
 
 Ditty::Components.register_component(:proxes, Ditty::ProxES)
-Ditty.component :proxes
