@@ -1,4 +1,4 @@
-= form_control(:role_id, entity, type: 'select', options: ProxES::Role.to_hash(:id, :name))
-= form_control(:user_id, entity, type: 'select', options: ProxES::User.to_hash(:id, :email))
+= form_control(:role_id, entity, type: 'select', options: Ditty::Role.to_hash(:id, :name))
+= form_control(:user_id, entity, type: 'select', options: Ditty::User.to_hash(:id, :email))
 = form_control(:verb, entity, type: 'select', options: ProxES::Permission.verbs)
 = form_control(:pattern, entity)

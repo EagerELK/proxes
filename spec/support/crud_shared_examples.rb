@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 shared_examples 'a CRUD Controller' do |route|
   context 'GET' do
     it '/doesnotexist' do

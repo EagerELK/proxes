@@ -52,7 +52,7 @@ module ProxES
 
     def check_part(val)
       return val if val.nil?
-      return [] if ([endpoint, '_all'].include?(val) && !WRITE_METHODS.include?(request_method))
+      return [] if [endpoint, '_all'].include?(val) && !WRITE_METHODS.include?(request_method)
       val.split(',')
     end
   end

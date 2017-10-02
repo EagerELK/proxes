@@ -3,10 +3,12 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'sqlite3'
-gem 'dotenv'
-gem 'simplecov', '~> 0.13.0'
 gem 'codeclimate-test-reporter', '~> 1.0.0'
+gem 'dotenv'
+gem 'rspec'
+gem 'rubocop'
+gem 'simplecov', '~> 0.13.0'
+gem 'sqlite3'
 
 if RUBY_VERSION < '2.1'
   gem 'sidekiq', '3.0.0'

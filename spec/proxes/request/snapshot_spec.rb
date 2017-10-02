@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 require 'proxes/request/snapshot'
 
@@ -44,7 +45,7 @@ describe ProxES::Request::Snapshot do
 
     it 'returns an array of repositories if more than one is specified' do
       request = described_class.new(get_env('GET /_snapshot/one,two'))
-      expect(request.repository).to eq(%w(one two))
+      expect(request.repository).to eq(%w[one two])
     end
   end
 end

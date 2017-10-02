@@ -1,26 +1,24 @@
 # frozen_string_literal: true
 
-require 'proxes/models/identity'
-require 'proxes/services/logger'
 require 'proxes/request'
 require 'proxes/policies/request_policy'
-require 'proxes/helpers/pundit'
-require 'proxes/helpers/authentication'
-require 'proxes/helpers/wisper'
-require 'proxes/services/logger'
+require 'ditty/services/logger'
+require 'ditty/helpers/pundit'
+require 'ditty/helpers/authentication'
+require 'ditty/helpers/wisper'
 
 module ProxES
   class Security
     attr_reader :env, :logger
 
-    include Helpers::Authentication
-    include Helpers::Pundit
-    include Helpers::Wisper
+    include Ditty::Helpers::Authentication
+    include Ditty::Helpers::Pundit
+    include Ditty::Helpers::Wisper
     include Wisper::Publisher
 
     def initialize(app, logger = nil)
       @app = app
-      @logger = logger || Services::Logger.instance
+      @logger = logger || ::Ditty::Services::Logger.instance
     end
 
     def error(message, code = 500)
@@ -31,12 +29,12 @@ module ProxES
 
     def check(request)
       check_basic request
-      authorize request
+      authorize request, request.request_method.downcase
     rescue Pundit::NotAuthorizedError
       log_action(:es_request_denied, details: "#{request.request_method.upcase} #{request.fullpath} (#{request.class.name})")
       logger.debug "Access denied for #{current_user ? current_user.email : 'Anonymous User'} by security layer: #{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
       error 'Not Authorized', 401
-    rescue ::ProxES::Helpers::NotAuthenticated
+    rescue ::Ditty::Helpers::NotAuthenticated
       logger.warn "Access denied for unauthenticated request by security layer: #{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
       error 'Not Authenticated', 401
     rescue StandardError => e

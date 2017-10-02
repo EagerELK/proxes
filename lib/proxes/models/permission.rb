@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
-require 'proxes/models/base'
+require 'ditty/models/base'
+require 'ditty/models/user'
+require 'ditty/models/role'
 
 module ProxES
   class Permission < Sequel::Model
-    include ::ProxES::Base
+    include ::Ditty::Base
 
-    many_to_one :role
-    many_to_one :user
+    many_to_one :role, class: ::Ditty::Role
+    many_to_one :user, class: ::Ditty::User
 
     dataset_module do
       def for_user(a_user, action)
@@ -16,7 +18,7 @@ module ProxES
     end
 
     def validate
-      validates_presence [:verb, :pattern]
+      validates_presence %i[verb pattern]
       validates_presence :role_id unless user_id
       validates_presence :user_id unless role_id
       validates_includes self.class.verbs, :verb
