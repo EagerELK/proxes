@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'ditty/db'
 require 'proxes/models/permission'
 require 'proxes/helpers/indices'
 require 'ditty/services/logger'
