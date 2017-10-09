@@ -5,7 +5,7 @@ require 'ditty/models/user'
 require 'ditty/models/role'
 
 module ProxES
-  class Permission < Sequel::Model
+  class Permission < ::Sequel::Model
     include ::Ditty::Base
 
     many_to_one :role, class: ::Ditty::Role

@@ -4,6 +4,12 @@ require 'ditty'
 
 module Ditty
   class ProxES
+    def self.load
+      controllers = File.expand_path('../../../proxes/controllers', __FILE__)
+      Dir.glob("#{controllers}/*.rb").each { |f| require f }
+      require 'proxes/models/permission'
+    end
+
     def self.migrations
       File.expand_path('../../../../migrate', __FILE__)
     end
@@ -17,16 +23,14 @@ module Ditty
     end
 
     def self.routes
-      controllers = File.expand_path('../../../proxes/controllers', __FILE__)
-      Dir.glob("#{controllers}/*.rb").each { |f| require f }
+      load
       {
         '/permissions' => ::ProxES::Permissions
       }
     end
 
     def self.navigation
-      require 'proxes/models/permission'
-
+      load
       [
         { order: 2, link: '/permissions/', text: 'Permissions', target: ::ProxES::Permission, icon: 'check-square' }
       ]
