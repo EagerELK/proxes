@@ -27,10 +27,15 @@ module ProxES
       [code, headers, ['{"error":"' + message + '"}']]
     end
 
+    def redirect(destination, code = 302)
+      [code, { 'Location' => destination}, []]
+    end
+
     def check(request)
       check_basic request
       authorize request, request.request_method.downcase
     rescue Pundit::NotAuthorizedError
+      return redirect '/_proxes/' if request.get_header('HTTP_ACCEPT').include? 'text/html'
       log_action(:es_request_denied, details: "#{request.request_method.upcase} #{request.fullpath} (#{request.class.name})")
       logger.debug "Access denied for #{current_user ? current_user.email : 'Anonymous User'} by security layer: #{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
       error 'Not Authorized', 401
@@ -50,9 +55,9 @@ module ProxES
       broadcast(:call_completed, endpoint: request.endpoint, duration: Time.now.to_f - start)
       result
     rescue Errno::EHOSTUNREACH
-      error 'Could not reach Elasticsearch at ' + env['ELASTICSEARCH_URL']
+      error 'Could not reach Elasticsearch at ' + ENV['ELASTICSEARCH_URL']
     rescue Errno::ECONNREFUSED
-      error 'Elasticsearch not listening at ' + env['ELASTICSEARCH_URL']
+      error 'Elasticsearch not listening at ' + ENV['ELASTICSEARCH_URL']
     end
 
     def call(env)
