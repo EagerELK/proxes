@@ -10,37 +10,43 @@ module ProxES
       @backend = URI(opts[:backend]) if opts[:backend]
     end
 
-    def body(request)
-      return nil unless request.body
-      return nil if request.body.is_a? Puma::NullIO
-      return request.body.string if request.body.is_a? StringIO
-      return request.body.read if request.body.is_a? Tempfile
-      request.body
-    end
-
     def call(env)
-      source_request = Rack::Request.new(env)
-      full_path = source_request.fullpath == '' ? URI.parse(env['REQUEST_URI']).request_uri : source_request.fullpath
-      target_request = Net::HTTP.const_get(source_request.request_method.capitalize).new(full_path)
-
-      request_body = body(source_request)
-      if request_body
-        target_request.body = request_body
-        target_request.content_length = request_body.length
-        target_request.content_type   = source_request.content_type if source_request.content_type
-      end
-
       http = Net::HTTP.new(backend.host, backend.port)
-      target_response = http.request(target_request)
+      response = http.request(request_from(env))
 
-      headers = (target_response.respond_to?(:headers) && target_response.headers) || self.class.normalize_headers(target_response.to_hash)
-      body    = target_response.body || ['']
+      headers = (response.respond_to?(:headers) && response.headers) || self.class.normalize_headers(response.to_hash)
+      body    = response.body || ['']
       body    = [body] unless body.respond_to?(:each)
 
       # Not sure where this is coming from, but it causes timeouts on the client
       headers.delete('transfer-encoding')
 
-      [target_response.code, headers, body]
+      # Ensure that the content length rack middleware kicks in
+      headers.delete('content-length')
+
+      [response.code, headers, body]
+    end
+
+    def request_from(env)
+      source = Rack::Request.new(env)
+      full_path = source.fullpath == '' ? URI.parse(env['REQUEST_URI']).request_uri : source.fullpath
+      target = Net::HTTP.const_get(source.request_method.capitalize).new(full_path)
+
+      body = body_from(source)
+      if body
+        target.body = body
+        target.content_length = body.length
+        target.content_type   = source.content_type if source.content_type
+      end
+      target
+    end
+
+    def body_from(request)
+      return nil unless request.body
+      return nil if request.body.is_a? Puma::NullIO
+      return request.body.string if request.body.is_a? StringIO
+      return request.body.read if request.body.is_a? Tempfile
+      request.body
     end
 
     class << self
