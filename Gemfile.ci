@@ -3,8 +3,8 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'ditty', git: 'https://github.com/EagerELK/ditty.git', branch: 'master'
 gem 'codeclimate-test-reporter', '~> 1.0.0'
+gem 'ditty', git: 'https://github.com/EagerELK/ditty.git', branch: 'master'
 gem 'dotenv'
 gem 'rspec'
 gem 'rubocop'
