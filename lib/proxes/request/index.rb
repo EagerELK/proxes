@@ -15,6 +15,10 @@ module ProxES
                                                 .select { |v| !v.nil? && v != '' }.join('/')
       end
 
+      def endpoint
+        nil
+      end
+
       def parse
         @index ||= check_part(path_parts[0])
         @type ||= check_part(path_parts[1])
