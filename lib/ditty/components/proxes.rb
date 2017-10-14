@@ -32,7 +32,7 @@ module Ditty
     def self.navigation
       load
       [
-        { order: 2, link: '/permissions/', text: 'Permissions', target: ::ProxES::Permission, icon: 'check-square' }
+        { order: 15, link: '/permissions/', text: 'Permissions', target: ::ProxES::Permission, icon: 'check-square' }
       ]
     end
 

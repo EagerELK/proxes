@@ -10,9 +10,10 @@ module ProxES
       class Scope < RequestPolicy::Scope
         def resolve
           return [] if user.nil?
-
           patterns = Permission.for_user(user, 'INDEX').map do |permission|
-            permission.pattern.gsub(/\{user.(.*)\}/) { |_match| user.send(Regexp.last_match[1].to_sym) }
+            permission.pattern.gsub(/\{user.(.*)\}/) do |_match|
+              user.send(Regexp.last_match[1].to_sym)
+            end
           end
           result = filter(scope.index, patterns)
           return [] unless result.count > 0
