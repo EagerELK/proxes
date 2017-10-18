@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'ditty', '>= 0.2'
   spec.add_dependency 'activesupport', '>= 3'
-  spec.add_dependency 'bcrypt', '~> 3.0'
+  spec.add_dependency 'bcrypt', '~> 3.1'
   spec.add_dependency 'elasticsearch', '>= 2'
   spec.add_dependency 'haml', '~> 5.0'
   spec.add_dependency 'highline', '~> 1.7'
