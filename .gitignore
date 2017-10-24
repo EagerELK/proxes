@@ -13,3 +13,5 @@
 .vagrant
 *.db
 /Gemfile.dev.lock
+proxes-*.gem
+migrations
