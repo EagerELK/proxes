@@ -30,6 +30,21 @@ describe ProxES::Security do
       expect(last_response.status).to eq 401
     end
 
+    it 'redirects HTML requests to the UI' do
+      header 'Accept', 'text/html'
+      get('/')
+      expect(last_response.status).to eq 302
+    end
+
+    it 'does not redirect non HTML requests to the UI' do
+      get('/')
+      expect(last_response.status).to eq 401
+
+      header 'Accept', 'application/json'
+      get('/')
+      expect(last_response.status).to eq 401
+    end
+
     context 'logged in' do
       context 'normal user' do
         let(:user) { create(:user) }
@@ -70,9 +85,28 @@ describe ProxES::Security do
 
         it 'authorizes calls that do actions' do
           expect { get('/') }.to_not raise_error
+          expect(last_response.status).to eq 200
           expect { get('/_node') }.to_not raise_error
+          expect(last_response.status).to eq 200
           expect { get('/_cluster') }.to_not raise_error
+          expect(last_response.status).to eq 200
           expect { get('/_snapshot') }.to_not raise_error
+          expect(last_response.status).to eq 200
+        end
+
+        it 'does not redirect HTML requests to the UI' do
+          header 'Accept', 'text/html'
+          get('/')
+          expect(last_response.status).to eq 200
+        end
+
+        it 'does not redirect non HTML requests to the UI' do
+          get('/')
+          expect(last_response.status).to eq 200
+
+          header 'Accept', 'application/json'
+          get('/')
+          expect(last_response.status).to eq 200
         end
       end
     end

@@ -35,7 +35,8 @@ module ProxES
       check_basic request
       authorize request, request.request_method.downcase
     rescue Pundit::NotAuthorizedError
-      return redirect '/_proxes/' if request.get_header('HTTP_ACCEPT') && request.get_header('HTTP_ACCEPT').include? 'text/html'
+      return redirect '/_proxes/' if request.get_header('HTTP_ACCEPT') && request.get_header('HTTP_ACCEPT').include?('text/html')
+
       log_action(:es_request_denied, details: "#{request.request_method.upcase} #{request.fullpath} (#{request.class.name})")
       logger.debug "Access denied for #{current_user ? current_user.email : 'Anonymous User'} by security layer: #{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
       error 'Not Authorized', 401

@@ -3,6 +3,7 @@
 require 'ditty/models/user'
 require 'ditty/models/role'
 require 'ditty/models/identity'
+require 'proxes/models/permission'
 
 FactoryGirl.define do
   to_create(&:save)
@@ -20,6 +21,7 @@ FactoryGirl.define do
     factory :super_admin_user do
       after(:create) do |user, _evaluator|
         user.add_role(Ditty::Role.find_or_create(name: 'super_admin'))
+        ProxES::Permission.find_or_create(user: user, verb: 'GET', pattern: '/')
       end
     end
   end
