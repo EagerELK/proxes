@@ -43,7 +43,7 @@ module ProxES
 
     def body_from(request)
       return nil unless request.body
-      return nil if request.body.is_a? Puma::NullIO
+      return nil if Kernel.const_defined?('::Puma::NullIO') && request.body.is_a?(Puma::NullIO)
       return request.body.string if request.body.is_a? StringIO
       return request.body.read if request.body.is_a? Tempfile
       request.body
