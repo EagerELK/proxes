@@ -4,13 +4,17 @@ require 'spec_helper'
 require 'proxes/security'
 require 'proxes/forwarder'
 require 'proxes/models/permission'
+require 'elasticsearch'
 
 describe ProxES do
   def app
     ProxES::Security.new(ProxES::Forwarder.new(backend: ENV['ELASTICSEARCH_URL']))
   end
 
-  #get_env('GET /_search')
+  def client
+    @client ||= Elasticsearch::Client.new log: true
+  end
+
   def get_env(request)
     meth, path = request.split(' ')
     {
@@ -23,7 +27,13 @@ describe ProxES do
 
   def last_indices
     response = JSON.parse last_response.body
-    response['hits']['hits'].map{ |i| i['_index']}.uniq
+    response['hits']['hits'].map { |i| i['_index'] } .uniq
+  end
+
+  before(:all) do
+    client.index index: 'test-user-today', type: 'test', id: 1, body: { 'test': 'doc' }
+    client.index index: 'test-user-yesterday', type: 'test', id: 1, body: { 'test': 'doc' }
+    client.indices.refresh index: 'test-user-today,test-user-yesterday'
   end
 
   context 'user with access' do
@@ -35,15 +45,29 @@ describe ProxES do
       env 'rack.session', 'user_id' => user.id
     end
 
-    fit 'succeeds with only the authorized indices if no index is specified' do
-      get('/_search')
+    it 'succeeds with only the authorized indices if no index is specified' do
+      get('/_search', {}, get_env('GET /_search'))
       expect(last_response).to be_ok
-      expect(last_indices).to include('test-user-today')
+      expect(last_indices).to eq ['test-user-today', 'test-user-yesterday']
     end
 
-    it 'succeeds with only the specified indices if they are authorized'
-    it 'succeeds with only the authorized indices if some specified indices are unauthorized'
-    it 'fails with a not found if all of the specified indices are unauthorized'
+    it 'succeeds with only the specified indices if they are authorized' do
+      get('/test-user-today,test-user-yesterday/_search', {}, get_env('GET /test-user-today,test-user-yesterday/_search'))
+      expect(last_response).to be_ok
+      expect(last_indices).to eq ['test-user-today', 'test-user-yesterday']
+    end
+
+    it 'succeeds with only the authorized indices if some specified indices are unauthorized' do
+      get('/test-user-today,another-user-today/_search', {}, get_env('GET /test-user-today,another-user-today/_search'))
+      expect(last_response).to be_ok
+      expect(last_indices).to eq ['test-user-today']
+    end
+
+    fit 'fails with an invalid call if all of the specified indices are unauthorized' do
+      get('/another-user-today,another-user-yesterday/_search', {}, get_env('GET /another-user-today,another-user-yesterday/_search'))
+      expect(last_response).to_not be_ok
+      expect(last_response.status).to eq(401)
+    end
   end
 
   context 'user without access' do
