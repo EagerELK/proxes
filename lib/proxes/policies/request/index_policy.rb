@@ -15,9 +15,9 @@ module ProxES
               user.send(Regexp.last_match[1].to_sym)
             end
           end
-          result = filter(scope.index, patterns)
+          result = filter(request.index, patterns)
           return [] unless result.count > 0
-          %w[POST PUT].include?(scope.request_method) ? scope.index : result
+          %w[POST PUT].include?(request.request_method) ? request.index : result
         end
       end
     end

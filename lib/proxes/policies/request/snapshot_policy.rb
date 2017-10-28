@@ -7,7 +7,7 @@ module ProxES
     class SnapshotPolicy < RequestPolicy
       class Scope < RequestPolicy::Scope
         def resolve
-          scope
+          request
         end
       end
     end
