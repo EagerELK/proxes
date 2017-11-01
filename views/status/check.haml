@@ -1,0 +1,12 @@
+%table.table
+	%thead
+		%tr
+			%th Check
+			%th Value
+			%th Passed
+	%tbody
+		- checks.each do |check|
+			%tr{ class: check[:passed] ? 'success' : 'warning' }
+				%td= check[:text]
+				%td= check[:value].is_a?(Array) ? check[:value].join('<br>') : check[:value]
+				%td= check[:passed] ? 'Yes' : 'No'

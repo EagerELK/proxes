@@ -25,6 +25,7 @@ module Ditty
     def self.routes
       load
       {
+        '/status' => ::ProxES::Status,
         '/permissions' => ::ProxES::Permissions
       }
     end
@@ -32,6 +33,7 @@ module Ditty
     def self.navigation
       load
       [
+        { order: 0, link: '/status/check', text: 'Status Check', target: ::ProxES::Status, icon: 'dashboard' },
         { order: 15, link: '/permissions/', text: 'Permissions', target: ::ProxES::Permission, icon: 'check-square' }
       ]
     end
