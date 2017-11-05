@@ -12,7 +12,10 @@ module ProxES
 
     def call(env)
       http = Net::HTTP.new(backend.host, backend.port)
-      response = http.request(request_from(env))
+      http.use_ssl = true if backend.is_a? URI::HTTPS
+      request = request_from(env)
+      request.basic_auth backend.user, backend.password
+      response = http.request(request)
 
       headers = (response.respond_to?(:headers) && response.headers) || self.class.normalize_headers(response.to_hash)
       body    = response.body || ['']
