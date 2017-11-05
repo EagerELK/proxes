@@ -53,7 +53,7 @@ module ProxES
     def forward(request)
       start = Time.now.to_f
       result = @app.call request.env
-      broadcast(:call_completed, request, Time.now.to_f - start)
+      broadcast(:call_completed, request, Time.now.to_f - start) if result[0].to_i >= 200 && result[0].to_i < 300
       result
     rescue Errno::EHOSTUNREACH
       error 'Could not reach Elasticsearch at ' + ENV['ELASTICSEARCH_URL']
