@@ -13,9 +13,10 @@ module ProxES
         end
 
         return false if request.index && !index_allowed?
+        return false if request.bulk_indices == ''
 
         patterns.find do |pattern|
-          request.bulk_indices.find { |idx| idx !~ /#{pattern}/}
+          request.bulk_indices.find { |idx| idx !~ /#{pattern}/ }
         end.nil?
       end
 

@@ -32,8 +32,8 @@ module ProxES
 
     def request_from(env)
       source = Rack::Request.new(env)
-      full_path = source.fullpath == '' ? URI.parse(env['REQUEST_URI']).request_uri : source.fullpath
-      target = Net::HTTP.const_get(source.request_method.capitalize).new(full_path)
+      fullpath = source.fullpath == '' ? URI.parse(env['REQUEST_URI']).request_uri : source.fullpath
+      target = Net::HTTP.const_get(source.request_method.capitalize).new(fullpath)
 
       body = body_from(source)
       if body
@@ -46,7 +46,7 @@ module ProxES
 
     def body_from(request)
       return nil if request.body.nil? || (Kernel.const_defined?('::Puma::NullIO') && request.body.is_a?(Puma::NullIO))
-      request.body.read
+      request.body.read.tap { |_r| request.body.rewind }
     end
 
     class << self

@@ -10,12 +10,9 @@ module ProxES
 
       REGEX = /"(index|delete|create|update)".*"_index"\s*:\s*"(.*?)"/
 
-      def bulk_actions
-      end
-
       def bulk_indices
         @bulk_indices ||= begin
-          body.read.scan REGEX
+          body.read.scan(REGEX).tap { |_r| body.rewind }
         end.map { |e| e[1] }.uniq
       end
 
