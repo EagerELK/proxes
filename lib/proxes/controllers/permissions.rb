@@ -2,7 +2,8 @@
 
 require 'ditty/controllers/component'
 require 'proxes/models/permission'
-require 'proxes/policies/user_policy'
+require 'ditty/policies/user_policy'
+require 'ditty/policies/role_policy'
 require 'proxes/policies/permission_policy'
 
 module ProxES
