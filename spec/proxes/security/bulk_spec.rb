@@ -65,9 +65,40 @@ describe ProxES do
       end
     end
 
+    context 'user without INDEX access' do
+      before(:each) do
+        ProxES::Permission.find_or_create(user: user, verb: 'POST', pattern: '/_bulk')
+        env 'rack.session', 'user_id' => user.id
+      end
+
+      it 'fails with an invalid for specified indices' do
+        post('/_bulk', get_fixture('bulk_without_indices.json'), get_env('POST /test-user-today/_bulk'))
+        expect(last_response).to_not be_ok
+        expect(last_response.status).to eq(401)
+      end
+
+      it 'fails with an invalid for unspecified indices' do
+        post('/_bulk', get_fixture('illegal_bulk_with_indices.json'), get_env('POST /_bulk'))
+        expect(last_response).to_not be_ok
+        expect(last_response.status).to eq(401)
+      end
+    end
+
     context 'user without access' do
       before(:each) do
         env 'rack.session', 'user_id' => user.id
+      end
+
+      it 'fails with an invalid for specified indices' do
+        post('/_bulk', get_fixture('bulk_without_indices.json'), get_env('POST /test-user-today/_bulk'))
+        expect(last_response).to_not be_ok
+        expect(last_response.status).to eq(401)
+      end
+
+      it 'fails with an invalid for unspecified indices' do
+        post('/_bulk', get_fixture('illegal_bulk_with_indices.json'), get_env('POST /_bulk'))
+        expect(last_response).to_not be_ok
+        expect(last_response.status).to eq(401)
       end
     end
   end
