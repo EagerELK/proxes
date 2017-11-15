@@ -40,6 +40,7 @@ module ProxES
       fs_values = []
       fs_passed = true
       node_stats['nodes'].each do |name, node|
+        next if node['attributes']['data'] == 'false'
         stats = node['fs']['total']
         left = stats['available_in_bytes'] / stats['total_in_bytes'].to_f * 100
         fs_values << "#{name}: #{'%.02f' % left}% Free"
