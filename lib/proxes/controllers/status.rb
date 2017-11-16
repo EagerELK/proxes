@@ -47,8 +47,9 @@ module ProxES
         cpu_values = []
         cpu_passed = true
         node_stats['nodes'].each do |name, node|
-          cpu_values << "#{name}: #{node['os']['cpu']['percent']}"
-          cpu_passed = false if node['os']['cpu']['percent'].to_i > 70
+          value = (node['os']['cpu_percent'] || node['os']['cpu']['percent'])
+          cpu_values << "#{name}: #{value}"
+          cpu_passed = false if value.to_i > 70
         end
         checks << { text: 'Node CPU Usage', passed: cpu_passed, value: cpu_values }
 
