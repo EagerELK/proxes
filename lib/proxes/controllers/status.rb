@@ -37,6 +37,7 @@ module ProxES
         fs_values = []
         fs_passed = true
         node_stats['nodes'].each do |name, node|
+          next if node['attributes']['data'] == 'false'
           stats = node['fs']['total']
           left = stats['available_in_bytes'] / stats['total_in_bytes'].to_f * 100
           fs_values << "#{name}: #{'%.02f' % left}% Free"
@@ -60,8 +61,8 @@ module ProxES
           memory_passed = false if node['os']['mem']['used_percent'].to_i >= 100
         end
         checks << { text: 'Node Memory Usage', passed: memory_passed, value: memory_values }
-      rescue StandardError
-        checks << { text: 'Cluster Reachable', passed: false}
+      rescue Faraday::Error => e
+        checks << { text: 'Cluster Reachable', passed: false, value: e.message}
       end
 
       status checks.find { |c| c[:passed] == false } ? 500 : 200
