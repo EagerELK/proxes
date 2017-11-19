@@ -13,6 +13,13 @@ module ProxES
     def call(env)
       http = Net::HTTP.new(backend.host, backend.port)
       http.use_ssl = true if backend.is_a? URI::HTTPS
+      if ENV['SSL_VERIFY_NONE'].to_i == 1
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        store = OpenSSL::X509::Store.new
+        store.set_default_paths
+        http.cert_store = store
+      end
+
       request = request_from(env)
       request.basic_auth backend.user, backend.password
       response = http.request(request)
