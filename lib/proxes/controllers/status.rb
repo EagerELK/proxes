@@ -2,12 +2,12 @@
 
 require 'ditty/controllers/component'
 require 'proxes/policies/status_policy'
-require 'proxes/helpers/es'
+require 'proxes/services/es'
 require 'pp'
 
 module ProxES
   class Status < Ditty::Component
-    helpers ProxES::Helpers::ES
+    helpers ProxES::Services::ES
 
     def find_template(views, name, engine, &block)
       super(views, name, engine, &block) # Root
@@ -97,7 +97,7 @@ module ProxES
         end
         checks << { text: 'Node Memory Usage', passed: memory_passed, value: memory_values.sort }
       rescue Faraday::Error => e
-        checks << { text: 'Cluster Reachable', passed: false, value: e.message}
+        checks << { text: 'Cluster Reachable', passed: false, value: e.message }
       end
 
       status checks.find { |c| c[:passed] == false } ? 500 : 200
