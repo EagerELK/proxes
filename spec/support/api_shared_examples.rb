@@ -8,7 +8,8 @@ shared_examples 'an API interface' do |subject, params|
 
   context 'GET /' do
     it 'returns HTML when requested' do
-      get '/', 'Accept' => 'text/html'
+      header 'Accept', 'text/html'
+      get '/'
 
       expect(last_response).to be_ok
       expect(last_response.headers).to include('Content-Type' => 'text/html;charset=utf-8')
