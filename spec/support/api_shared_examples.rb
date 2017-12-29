@@ -220,15 +220,6 @@ shared_examples 'an API interface' do |subject, params|
       expect(last_response.headers).to include('Location')
     end
 
-    it 'returns JSON when requested' do
-      header 'Accept', 'application/json'
-      header 'Content-Type', 'application/json'
-
-      delete "/#{entity.id}"
-
-      expect(last_response.headers).to include('X-Content-Type-Options' => 'nosniff')
-    end
-
     it 'returns a 204 No Content response for a JSON Request' do
       header 'Accept', 'application/json'
       header 'Content-Type', 'application/json'
