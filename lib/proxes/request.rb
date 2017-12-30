@@ -47,7 +47,7 @@ module ProxES
     private
 
     def path_parts
-      @path_parts ||= path[1..-1].split('/')
+      @path_parts ||= path.split('?')[0][1..-1].split('/')
     end
 
     def check_part(val)
