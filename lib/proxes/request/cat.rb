@@ -25,7 +25,7 @@ module ProxES
       end
 
       def indices?
-        true
+        type.first == 'indices'
       end
     end
   end
