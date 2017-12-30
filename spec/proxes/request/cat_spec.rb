@@ -31,11 +31,11 @@ describe ProxES::Request::Cat do
     end
   end
 
-  context 'accessors' do
+  context '_cat/indices' do
     let(:values) do
       {
         endpoint: nil,
-        index: ['some-index'],
+        index: nil,
         type: nil,
         id: nil
       }
@@ -53,6 +53,56 @@ describe ProxES::Request::Cat do
 
     it "provides the type for '_cat/indices'" do
       expect(subject.type).to eq ['indices']
+    end
+  end
+
+  context '_cat/indices/some-index' do
+    let(:values) do
+      {
+        endpoint: nil,
+        index: 'some-index',
+        type: nil,
+        id: nil
+      }
+    end
+
+    subject do
+      ProxES::Request::Cat.new('PATH_INFO' => '_cat/indices/some-index',
+                               'REQUEST_PATH' => '_cat/indices/some-index',
+                               'REQUEST_URI' => '_cat/indices/some-index')
+    end
+
+    it "provides the index for '_cat/indices'" do
+      expect(subject.index).to eq ['some-index']
+    end
+
+    it "provides the type for '_cat/indices'" do
+      expect(subject.type).to eq ['indices']
+    end
+  end
+
+  context '_cat/nodes' do
+    let(:values) do
+      {
+        endpoint: nil,
+        index: nil,
+        type: nil,
+        id: nil
+      }
+    end
+
+    subject do
+      ProxES::Request::Cat.new('PATH_INFO' => '_cat/nodes',
+                               'REQUEST_PATH' => '_cat/nodes',
+                               'REQUEST_URI' => '_cat/nodes')
+    end
+
+    it "provides the index for '_cat/nodes'" do
+      expect(subject.index).to be_nil
+    end
+
+    it "provides the type for '_cat/nodes'" do
+      expect(subject.type).to eq ['nodes']
     end
   end
 end
