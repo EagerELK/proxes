@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'database_cleaner'
   spec.add_development_dependency 'factory_girl'
   spec.add_development_dependency 'timecop'
+  spec.add_development_dependency 'webmock'
 
   spec.add_dependency 'ditty', '>= 0.2'
   spec.add_dependency 'activesupport', '>= 3'

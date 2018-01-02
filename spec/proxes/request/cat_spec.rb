@@ -14,13 +14,6 @@ describe ProxES::Request::Cat do
     }
   end
 
-  context '#indices?' do
-    it 'does have indices' do
-      request = described_class.new(get_env('GET /_cat/indices'))
-      expect(request.indices?).to be true
-    end
-  end
-
   context '.from_env' do
     it 'returns a Cat request' do
       expect(ProxES::Request.from_env(get_env('GET /_cat'))).to be_a(described_class)
@@ -32,15 +25,6 @@ describe ProxES::Request::Cat do
   end
 
   context '_cat/indices' do
-    let(:values) do
-      {
-        endpoint: nil,
-        index: nil,
-        type: nil,
-        id: nil
-      }
-    end
-
     subject do
       ProxES::Request::Cat.new('PATH_INFO' => '_cat/indices',
                                'REQUEST_PATH' => '_cat/indices',
@@ -54,43 +38,30 @@ describe ProxES::Request::Cat do
     it "provides the type for '_cat/indices'" do
       expect(subject.type).to eq ['indices']
     end
-  end
 
-  context '_cat/indices/some-index' do
-    let(:values) do
-      {
-        endpoint: nil,
-        index: 'some-index',
-        type: nil,
-        id: nil
-      }
+    it 'does have indices' do
+      request = described_class.new(get_env('GET /_cat/indices'))
+      expect(request.indices?).to be true
     end
 
-    subject do
-      ProxES::Request::Cat.new('PATH_INFO' => '_cat/indices/some-index',
-                               'REQUEST_PATH' => '_cat/indices/some-index',
-                               'REQUEST_URI' => '_cat/indices/some-index')
-    end
+    context '/some-index' do
+      subject do
+        ProxES::Request::Cat.new('PATH_INFO' => '_cat/indices/some-index',
+                                 'REQUEST_PATH' => '_cat/indices/some-index',
+                                 'REQUEST_URI' => '_cat/indices/some-index')
+      end
 
-    it "provides the index for '_cat/indices'" do
-      expect(subject.index).to eq ['some-index']
-    end
+      it "provides the index for '_cat/indices'" do
+        expect(subject.index).to eq ['some-index']
+      end
 
-    it "provides the type for '_cat/indices'" do
-      expect(subject.type).to eq ['indices']
+      it "provides the type for '_cat/indices'" do
+        expect(subject.type).to eq ['indices']
+      end
     end
   end
 
   context '_cat/nodes' do
-    let(:values) do
-      {
-        endpoint: nil,
-        index: nil,
-        type: nil,
-        id: nil
-      }
-    end
-
     subject do
       ProxES::Request::Cat.new('PATH_INFO' => '_cat/nodes',
                                'REQUEST_PATH' => '_cat/nodes',
@@ -103,6 +74,39 @@ describe ProxES::Request::Cat do
 
     it "provides the type for '_cat/nodes'" do
       expect(subject.type).to eq ['nodes']
+    end
+
+    it 'does not have indices' do
+      request = described_class.new(get_env('GET /_cat/nodes'))
+      expect(request.indices?).to be false
+    end
+  end
+
+  context '_cat/shards' do
+    it 'does have indices' do
+      request = described_class.new(get_env('GET /_cat/shards'))
+      expect(request.indices?).to be true
+    end
+  end
+
+  context '_cat/segments' do
+    it 'does have indices' do
+      request = described_class.new(get_env('GET /_cat/segments'))
+      expect(request.indices?).to be true
+    end
+  end
+
+  context '_cat/count' do
+    it 'does have indices' do
+      request = described_class.new(get_env('GET /_cat/count'))
+      expect(request.indices?).to be true
+    end
+  end
+
+  context '_cat/recovery' do
+    it 'does have indices' do
+      request = described_class.new(get_env('GET /_cat/recovery'))
+      expect(request.indices?).to be true
     end
   end
 end
