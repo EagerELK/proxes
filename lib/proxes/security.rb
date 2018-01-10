@@ -61,28 +61,27 @@ module ProxES
       error 'Elasticsearch not listening at ' + ENV['ELASTICSEARCH_URL']
     end
 
+    def log(request, stage)
+      logger.debug '============' + stage.ljust(56) + '============'
+      logger.debug '= ' + "Request: #{request.request_method} #{request.fullpath} (#{request.class.name})".ljust(76) + ' ='
+      logger.debug '= ' + "Endpoint: #{request.endpoint}".ljust(76) + ' ='
+      logger.debug '================================================================================'
+    end
+
     def call(env)
       @env = env
 
       request = Request.from_env(env)
       broadcast(:call_started, request)
 
-      logger.debug '==========================BEFORE================================================'
-      logger.debug '= ' + "Request: #{request.request_method} #{request.fullpath} (#{request.class.name})".ljust(76) + ' ='
-      logger.debug '= ' + "Endpoint: #{request.endpoint}".ljust(76) + ' ='
-      logger.debug '================================================================================'
-
+      log(request, 'BEFORE')
       unless env['PROXES_PASSTHROUGH']
         result = check(request)
         return result if result.is_a?(Array) # Rack Response
 
         request.index = policy_scope(request) if request.indices?
+        log(request, 'AFTER')
       end
-
-      logger.debug '==========================AFTER================================================='
-      logger.debug '= ' + "Request: #{request.request_method} #{request.fullpath} (#{request.class.name})".ljust(76) + ' ='
-      logger.debug '= ' + "Endpoint: #{request.endpoint}".ljust(76) + ' ='
-      logger.debug '================================================================================'
 
       forward request
     end
