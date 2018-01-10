@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
-require 'ditty/controllers/component'
+require 'ditty/controllers/application'
 require 'proxes/policies/status_policy'
 require 'proxes/services/es'
-require 'pp'
 
 module ProxES
-  class Status < Ditty::Component
+  class Status < Ditty::Application
     helpers ProxES::Services::ES
 
     def find_template(views, name, engine, &block)
