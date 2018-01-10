@@ -28,28 +28,19 @@ gem install proxes
 
 ## Usage
 
-1. Add the components to your rack config file. See the included [`config.ru`](https://github.com/EagerELK/proxes/blob/master/config.ru) file for an example setup
-2. Add the ProxES rake tasks to your Rakefile: `require 'proxes/rake_tasks'`
-3. Set the DB connection as the `DATABASE_URL` ENV variable: `DATABASE_URL=sqlite://development.db`
-4. Create and populate the DB and secret tokens:
+### As part of another project
+
+ProxES has two [components](https://github.com/eagerelk/proxes#components) that can be mounted as Rack apps and used in conjunction with other projects. Check the supplied files on how to add proxes to another project.
+
+
+### Docker
+
+ProxES can be run in a Docker container:
+
 
 ```bash
-bundle exec rake proxes:prep
-bundle exec rake proxes:generate_tokens
-bundle exec rake proxes:migrate
-bundle exec rake proxes:seed
-bundle exec whenever --update-crontab
+docker run -e ELASTICSEARCH_URL=http://elasticsearch -e DATABASE_URL=postgres://username:password@database:5432/proxes --add-host=database:10.0.2.15 --add-host=elasticearch:10.0.2.15 eagerelk/proxes web-proxes
 ```
-
-5. Create the necessary folders:
-
-```bash
-mkdir tmp
-mkdir logs
-mkdir config
-```
-
-6. Start up the web app: `bundle exec rackup`
 
 ## Components
 
