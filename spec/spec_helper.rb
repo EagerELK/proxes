@@ -14,8 +14,6 @@ require 'rack/test'
 require 'factory_girl'
 require 'database_cleaner'
 require 'timecop'
-require 'webmock/rspec'
-WebMock.disable!
 
 if ENV['DATABASE_URL'] == 'sqlite::memory:'
   folder = File.expand_path(File.dirname(__FILE__) + '/../migrations')
