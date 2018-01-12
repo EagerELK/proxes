@@ -11,7 +11,6 @@ then
   bundle exec rake ditty:generate_tokens
   bundle exec rake ditty:migrate
   bundle exec rake ditty:seed
-  bundle exec whenever --update-crontab
   crond
   exec bundle exec pumactl start "$@"
 fi
