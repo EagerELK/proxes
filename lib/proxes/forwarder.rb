@@ -11,17 +11,18 @@ module ProxES
     end
 
     def call(env)
-      http = Net::HTTP.new(backend.host, backend.port)
-      http.use_ssl = true if backend.is_a? URI::HTTPS
-      if ENV['SSL_VERIFY_NONE'].to_i == 1
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-        store = OpenSSL::X509::Store.new
-        store.set_default_paths
-        http.cert_store = store
-      end
-
       request = request_from(env)
       request.basic_auth backend.user, backend.password
+
+      begin
+        forward(request)
+      rescue SocketError
+        headers = { 'Content-Type' => 'application/json' }
+        [500, headers, ['{"error":"Could not connect to Elasticsearch"}']]
+      end
+    end
+
+    def forward(request)
       response = http.request(request)
 
       headers = (response.respond_to?(:headers) && response.headers) || self.class.normalize_headers(response.to_hash)
@@ -35,6 +36,20 @@ module ProxES
       headers.delete('content-length')
 
       [response.code, headers, body]
+    end
+
+    def http
+      @http ||= begin
+        http = Net::HTTP.new(backend.host, backend.port)
+        http.use_ssl = true if backend.is_a? URI::HTTPS
+        if ENV['SSL_VERIFY_NONE'].to_i == 1
+          http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+          store = OpenSSL::X509::Store.new
+          store.set_default_paths
+          http.cert_store = store
+        end
+        http
+      end
     end
 
     def request_from(env)
