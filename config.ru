@@ -51,11 +51,6 @@ map '/_proxes' do
   run Rack::URLMap.new Ditty::Components.routes
 end
 
-require 'sidekiq/web'
-map '/_sidekiq' do
-  run Sidekiq::Web
-end
-
 map '/' do
   # Proxy all Elasticsearch requests
   require 'proxes/security'
