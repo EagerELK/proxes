@@ -7,16 +7,22 @@ rvm:
 - 2.2.9
 gemfile: Gemfile.ci
 env:
-- DATABASE_URL="sqlite::memory:" ELASTICSEARCH_URL="http://localhost:9200" RACK_ENV=test
+  global:
+    - CC_TEST_REPORTER_ID=289860573c6284a8e277de86848caba84d840be49e35f3601bcd672ab40d1e35
+  matrix:
+    - DATABASE_URL="sqlite::memory:" ELASTICSEARCH_URL="http://localhost:9200" RACK_ENV=test
 services:
-- elasticsearch
+  - elasticsearch
+before_install:
+  - gem install bundler -v 1.12.5
 before_script:
-- sleep 10
-- bundle exec rake ditty:prep
-before_install: gem install bundler -v 1.12.5
-addons:
-  code_climate:
-    repo_token: 1f562305f75e169f5f5eca3b738fee879550c98e50099c2b9cd6ae71478007a0
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+  - sleep 10
+  - bundle exec rake ditty:prep
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 deploy:
   provider: rubygems
   api_key:
@@ -26,4 +32,4 @@ deploy:
     tags: true
     repo: EagerELK/proxes
 after_success:
-- bundle exec codeclimate-test-reporter
+  - bundle exec codeclimate-test-reporter
