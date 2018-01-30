@@ -8,7 +8,7 @@ rvm:
 gemfile: Gemfile.ci
 env:
   global:
-    - CC_TEST_REPORTER_ID=289860573c6284a8e277de86848caba84d840be49e35f3601bcd672ab40d1e35
+    - CC_TEST_REPORTER_ID=1f562305f75e169f5f5eca3b738fee879550c98e50099c2b9cd6ae71478007a0
   matrix:
     - DATABASE_URL="sqlite::memory:" ELASTICSEARCH_URL="http://localhost:9200" RACK_ENV=test
 services:
