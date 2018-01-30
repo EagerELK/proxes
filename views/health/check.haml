@@ -1,0 +1,21 @@
+.row
+  .col-md-12
+    .card
+      .header
+        %h4.title Cluster Health
+      .content.table-responsive.table-full-width
+        %table.table.table-striped.table-hover
+          %thead
+            %tr
+              %th Description
+              %th Result
+              %th Time Taken
+              %th Message
+          %tbody
+            -result[:examples].each do |example|
+              %tr{ class: example[:status] == 'passed' ? 'success' : 'warning' }
+                %td= example[:full_description]
+                %td= example[:status]
+                %td= example[:run_time]
+                %td= example[:exception] ? example[:exception][:message] : 'None'
+                / %td= example

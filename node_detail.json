@@ -1,0 +1,428 @@
+{
+  "cluster_name" : "elasticsearch",
+  "nodes" : {
+    "HDft-nxTQxS5qXTA6LoObg" : {
+      "timestamp" : 1483777494259,
+      "name" : "Capricorn",
+      "transport_address" : "10.0.2.15:9300",
+      "host" : "10.0.2.15",
+      "ip" : [ "10.0.2.15:9300", "NONE" ],
+      "indices" : {
+        "docs" : {
+          "count" : 1440966,
+          "deleted" : 0
+        },
+        "store" : {
+          "size_in_bytes" : 356058381,
+          "throttle_time_in_millis" : 0
+        },
+        "indexing" : {
+          "index_total" : 0,
+          "index_time_in_millis" : 0,
+          "index_current" : 0,
+          "index_failed" : 0,
+          "delete_total" : 0,
+          "delete_time_in_millis" : 0,
+          "delete_current" : 0,
+          "noop_update_total" : 0,
+          "is_throttled" : false,
+          "throttle_time_in_millis" : 0
+        },
+        "get" : {
+          "total" : 0,
+          "time_in_millis" : 0,
+          "exists_total" : 0,
+          "exists_time_in_millis" : 0,
+          "missing_total" : 0,
+          "missing_time_in_millis" : 0,
+          "current" : 0
+        },
+        "search" : {
+          "open_contexts" : 0,
+          "query_total" : 0,
+          "query_time_in_millis" : 0,
+          "query_current" : 0,
+          "fetch_total" : 0,
+          "fetch_time_in_millis" : 0,
+          "fetch_current" : 0,
+          "scroll_total" : 0,
+          "scroll_time_in_millis" : 0,
+          "scroll_current" : 0
+        },
+        "merges" : {
+          "current" : 0,
+          "current_docs" : 0,
+          "current_size_in_bytes" : 0,
+          "total" : 0,
+          "total_time_in_millis" : 0,
+          "total_docs" : 0,
+          "total_size_in_bytes" : 0,
+          "total_stopped_time_in_millis" : 0,
+          "total_throttled_time_in_millis" : 0,
+          "total_auto_throttle_in_bytes" : 629145600
+        },
+        "refresh" : {
+          "total" : 30,
+          "total_time_in_millis" : 27
+        },
+        "flush" : {
+          "total" : 30,
+          "total_time_in_millis" : 90
+        },
+        "warmer" : {
+          "current" : 0,
+          "total" : 112,
+          "total_time_in_millis" : 250
+        },
+        "query_cache" : {
+          "memory_size_in_bytes" : 0,
+          "total_count" : 0,
+          "hit_count" : 0,
+          "miss_count" : 0,
+          "cache_size" : 0,
+          "cache_count" : 0,
+          "evictions" : 0
+        },
+        "fielddata" : {
+          "memory_size_in_bytes" : 0,
+          "evictions" : 0
+        },
+        "percolate" : {
+          "total" : 0,
+          "time_in_millis" : 0,
+          "current" : 0,
+          "memory_size_in_bytes" : -1,
+          "memory_size" : "-1b",
+          "queries" : 0
+        },
+        "completion" : {
+          "size_in_bytes" : 0
+        },
+        "segments" : {
+          "count" : 138,
+          "memory_in_bytes" : 3091398,
+          "terms_memory_in_bytes" : 2112830,
+          "stored_fields_memory_in_bytes" : 147216,
+          "term_vectors_memory_in_bytes" : 0,
+          "norms_memory_in_bytes" : 95936,
+          "doc_values_memory_in_bytes" : 735416,
+          "index_writer_memory_in_bytes" : 0,
+          "index_writer_max_memory_in_bytes" : 15360000,
+          "version_map_memory_in_bytes" : 0,
+          "fixed_bit_set_memory_in_bytes" : 0
+        },
+        "translog" : {
+          "operations" : 0,
+          "size_in_bytes" : 1290
+        },
+        "suggest" : {
+          "total" : 0,
+          "time_in_millis" : 0,
+          "current" : 0
+        },
+        "request_cache" : {
+          "memory_size_in_bytes" : 0,
+          "evictions" : 0,
+          "hit_count" : 0,
+          "miss_count" : 0
+        },
+        "recovery" : {
+          "current_as_source" : 0,
+          "current_as_target" : 0,
+          "throttle_time_in_millis" : 0
+        }
+      },
+      "os" : {
+        "timestamp" : 1483777494331,
+        "cpu_percent" : 0,
+        "load_average" : 0.0,
+        "mem" : {
+          "total_in_bytes" : 2099163136,
+          "free_in_bytes" : 891293696,
+          "used_in_bytes" : 1207869440,
+          "free_percent" : 42,
+          "used_percent" : 58
+        },
+        "swap" : {
+          "total_in_bytes" : 0,
+          "free_in_bytes" : 0,
+          "used_in_bytes" : 0
+        }
+      },
+      "process" : {
+        "timestamp" : 1483777494331,
+        "open_file_descriptors" : 354,
+        "max_file_descriptors" : 65536,
+        "cpu" : {
+          "percent" : 0,
+          "total_in_millis" : 220920
+        },
+        "mem" : {
+          "total_virtual_in_bytes" : 3241746432
+        }
+      },
+      "jvm" : {
+        "timestamp" : 1483777494331,
+        "uptime_in_millis" : 11554185,
+        "mem" : {
+          "heap_used_in_bytes" : 278611432,
+          "heap_used_percent" : 26,
+          "heap_committed_in_bytes" : 1065025536,
+          "heap_max_in_bytes" : 1065025536,
+          "non_heap_used_in_bytes" : 64680528,
+          "non_heap_committed_in_bytes" : 65765376,
+          "pools" : {
+            "young" : {
+              "used_in_bytes" : 59396872,
+              "max_in_bytes" : 69795840,
+              "peak_used_in_bytes" : 69795840,
+              "peak_max_in_bytes" : 69795840
+            },
+            "survivor" : {
+              "used_in_bytes" : 729264,
+              "max_in_bytes" : 8716288,
+              "peak_used_in_bytes" : 8716288,
+              "peak_max_in_bytes" : 8716288
+            },
+            "old" : {
+              "used_in_bytes" : 218485296,
+              "max_in_bytes" : 986513408,
+              "peak_used_in_bytes" : 218485296,
+              "peak_max_in_bytes" : 986513408
+            }
+          }
+        },
+        "threads" : {
+          "count" : 28,
+          "peak_count" : 40
+        },
+        "gc" : {
+          "collectors" : {
+            "young" : {
+              "collection_count" : 88,
+              "collection_time_in_millis" : 3412
+            },
+            "old" : {
+              "collection_count" : 2,
+              "collection_time_in_millis" : 124
+            }
+          }
+        },
+        "buffer_pools" : {
+          "direct" : {
+            "count" : 22,
+            "used_in_bytes" : 3174966,
+            "total_capacity_in_bytes" : 3174966
+          },
+          "mapped" : {
+            "count" : 60,
+            "used_in_bytes" : 46298638,
+            "total_capacity_in_bytes" : 46298638
+          }
+        },
+        "classes" : {
+          "current_loaded_count" : 7742,
+          "total_loaded_count" : 7745,
+          "total_unloaded_count" : 3
+        }
+      },
+      "thread_pool" : {
+        "bulk" : {
+          "threads" : 0,
+          "queue" : 0,
+          "active" : 0,
+          "rejected" : 0,
+          "largest" : 0,
+          "completed" : 0
+        },
+        "fetch_shard_started" : {
+          "threads" : 1,
+          "queue" : 0,
+          "active" : 0,
+          "rejected" : 0,
+          "largest" : 2,
+          "completed" : 30
+        },
+        "fetch_shard_store" : {
+          "threads" : 0,
+          "queue" : 0,
+          "active" : 0,
+          "rejected" : 0,
+          "largest" : 0,
+          "completed" : 0
+        },
+        "flush" : {
+          "threads" : 1,
+          "queue" : 0,
+          "active" : 0,
+          "rejected" : 0,
+          "largest" : 1,
+          "completed" : 117
+        },
+        "force_merge" : {
+          "threads" : 0,
+          "queue" : 0,
+          "active" : 0,
+          "rejected" : 0,
+          "largest" : 0,
+          "completed" : 0
+        },
+        "generic" : {
+          "threads" : 1,
+          "queue" : 0,
+          "active" : 0,
+          "rejected" : 0,
+          "largest" : 6,
+          "completed" : 1218
+        },
+        "get" : {
+          "threads" : 0,
+          "queue" : 0,
+          "active" : 0,
+          "rejected" : 0,
+          "largest" : 0,
+          "completed" : 0
+        },
+        "index" : {
+          "threads" : 0,
+          "queue" : 0,
+          "active" : 0,
+          "rejected" : 0,
+          "largest" : 0,
+          "completed" : 0
+        },
+        "listener" : {
+          "threads" : 1,
+          "queue" : 0,
+          "active" : 0,
+          "rejected" : 0,
+          "largest" : 1,
+          "completed" : 3
+        },
+        "management" : {
+          "threads" : 3,
+          "queue" : 0,
+          "active" : 1,
+          "rejected" : 0,
+          "largest" : 3,
+          "completed" : 1157
+        },
+        "percolate" : {
+          "threads" : 0,
+          "queue" : 0,
+          "active" : 0,
+          "rejected" : 0,
+          "largest" : 0,
+          "completed" : 0
+        },
+        "refresh" : {
+          "threads" : 1,
+          "queue" : 0,
+          "active" : 0,
+          "rejected" : 0,
+          "largest" : 1,
+          "completed" : 39
+        },
+        "search" : {
+          "threads" : 0,
+          "queue" : 0,
+          "active" : 0,
+          "rejected" : 0,
+          "largest" : 0,
+          "completed" : 0
+        },
+        "snapshot" : {
+          "threads" : 0,
+          "queue" : 0,
+          "active" : 0,
+          "rejected" : 0,
+          "largest" : 0,
+          "completed" : 0
+        },
+        "suggest" : {
+          "threads" : 0,
+          "queue" : 0,
+          "active" : 0,
+          "rejected" : 0,
+          "largest" : 0,
+          "completed" : 0
+        },
+        "warmer" : {
+          "threads" : 1,
+          "queue" : 0,
+          "active" : 0,
+          "rejected" : 0,
+          "largest" : 1,
+          "completed" : 41
+        }
+      },
+      "fs" : {
+        "timestamp" : 1483777494332,
+        "total" : {
+          "total_in_bytes" : 42241163264,
+          "free_in_bytes" : 39029952512,
+          "available_in_bytes" : 37252378624,
+          "spins" : "true"
+        },
+        "data" : [ {
+          "path" : "/var/lib/elasticsearch/elasticsearch/nodes/0",
+          "mount" : "/ (/dev/sda1)",
+          "type" : "ext4",
+          "total_in_bytes" : 42241163264,
+          "free_in_bytes" : 39029952512,
+          "available_in_bytes" : 37252378624,
+          "spins" : "true"
+        } ]
+      },
+      "transport" : {
+        "server_open" : 0,
+        "rx_count" : 12,
+        "rx_size_in_bytes" : 4392,
+        "tx_count" : 12,
+        "tx_size_in_bytes" : 4392
+      },
+      "http" : {
+        "current_open" : 1,
+        "total_opened" : 11
+      },
+      "breakers" : {
+        "request" : {
+          "limit_size_in_bytes" : 426010214,
+          "limit_size" : "406.2mb",
+          "estimated_size_in_bytes" : 0,
+          "estimated_size" : "0b",
+          "overhead" : 1.0,
+          "tripped" : 0
+        },
+        "fielddata" : {
+          "limit_size_in_bytes" : 639015321,
+          "limit_size" : "609.4mb",
+          "estimated_size_in_bytes" : 0,
+          "estimated_size" : "0b",
+          "overhead" : 1.03,
+          "tripped" : 0
+        },
+        "in_flight_requests" : {
+          "limit_size_in_bytes" : 1065025536,
+          "limit_size" : "1015.6mb",
+          "estimated_size_in_bytes" : 0,
+          "estimated_size" : "0b",
+          "overhead" : 1.0,
+          "tripped" : 0
+        },
+        "parent" : {
+          "limit_size_in_bytes" : 745517875,
+          "limit_size" : "710.9mb",
+          "estimated_size_in_bytes" : 0,
+          "estimated_size" : "0b",
+          "overhead" : 1.0,
+          "tripped" : 0
+        }
+      },
+      "script" : {
+        "compilations" : 0,
+        "cache_evictions" : 0
+      }
+    }
+  }
+}

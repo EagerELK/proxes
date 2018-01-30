@@ -1,0 +1,214 @@
+{
+  "cluster_name" : "elasticsearch",
+  "nodes" : {
+    "HDft-nxTQxS5qXTA6LoObg" : {
+      "name" : "Capricorn",
+      "transport_address" : "10.0.2.15:9300",
+      "host" : "10.0.2.15",
+      "ip" : "10.0.2.15",
+      "version" : "2.4.3",
+      "build" : "d38a34e",
+      "http_address" : "10.0.2.15:9200",
+      "settings" : {
+        "pidfile" : "/var/run/elasticsearch/elasticsearch.pid",
+        "cluster" : {
+          "name" : "elasticsearch"
+        },
+        "path" : {
+          "conf" : "/etc/elasticsearch",
+          "data" : "/var/lib/elasticsearch",
+          "logs" : "/var/log/elasticsearch",
+          "home" : "/usr/share/elasticsearch"
+        },
+        "name" : "Capricorn",
+        "client" : {
+          "type" : "node"
+        },
+        "http" : {
+          "cors" : {
+            "allow-origin" : "*",
+            "enabled" : "true"
+          }
+        },
+        "foreground" : "false",
+        "config" : {
+          "ignore_system_properties" : "true"
+        },
+        "network" : {
+          "host" : "0.0.0.0"
+        }
+      },
+      "os" : {
+        "refresh_interval_in_millis" : 1000,
+        "name" : "Linux",
+        "arch" : "amd64",
+        "version" : "3.13.0-105-generic",
+        "available_processors" : 1,
+        "allocated_processors" : 1
+      },
+      "process" : {
+        "refresh_interval_in_millis" : 1000,
+        "id" : 1830,
+        "mlockall" : false
+      },
+      "jvm" : {
+        "pid" : 1830,
+        "version" : "1.8.0_111",
+        "vm_name" : "Java HotSpot(TM) 64-Bit Server VM",
+        "vm_version" : "25.111-b14",
+        "vm_vendor" : "Oracle Corporation",
+        "start_time_in_millis" : 1483707017365,
+        "mem" : {
+          "heap_init_in_bytes" : 1073741824,
+          "heap_max_in_bytes" : 1065025536,
+          "non_heap_init_in_bytes" : 2555904,
+          "non_heap_max_in_bytes" : 0,
+          "direct_max_in_bytes" : 1065025536
+        },
+        "gc_collectors" : [ "ParNew", "ConcurrentMarkSweep" ],
+        "memory_pools" : [ "Code Cache", "Metaspace", "Compressed Class Space", "Par Eden Space", "Par Survivor Space", "CMS Old Gen" ],
+        "using_compressed_ordinary_object_pointers" : "true"
+      },
+      "thread_pool" : {
+        "force_merge" : {
+          "type" : "fixed",
+          "min" : 1,
+          "max" : 1,
+          "queue_size" : -1
+        },
+        "percolate" : {
+          "type" : "fixed",
+          "min" : 1,
+          "max" : 1,
+          "queue_size" : 1000
+        },
+        "fetch_shard_started" : {
+          "type" : "scaling",
+          "min" : 1,
+          "max" : 2,
+          "keep_alive" : "5m",
+          "queue_size" : -1
+        },
+        "listener" : {
+          "type" : "fixed",
+          "min" : 1,
+          "max" : 1,
+          "queue_size" : -1
+        },
+        "index" : {
+          "type" : "fixed",
+          "min" : 1,
+          "max" : 1,
+          "queue_size" : 200
+        },
+        "refresh" : {
+          "type" : "scaling",
+          "min" : 1,
+          "max" : 1,
+          "keep_alive" : "5m",
+          "queue_size" : -1
+        },
+        "suggest" : {
+          "type" : "fixed",
+          "min" : 1,
+          "max" : 1,
+          "queue_size" : 1000
+        },
+        "generic" : {
+          "type" : "cached",
+          "keep_alive" : "30s",
+          "queue_size" : -1
+        },
+        "warmer" : {
+          "type" : "scaling",
+          "min" : 1,
+          "max" : 1,
+          "keep_alive" : "5m",
+          "queue_size" : -1
+        },
+        "search" : {
+          "type" : "fixed",
+          "min" : 2,
+          "max" : 2,
+          "queue_size" : 1000
+        },
+        "flush" : {
+          "type" : "scaling",
+          "min" : 1,
+          "max" : 1,
+          "keep_alive" : "5m",
+          "queue_size" : -1
+        },
+        "fetch_shard_store" : {
+          "type" : "scaling",
+          "min" : 1,
+          "max" : 2,
+          "keep_alive" : "5m",
+          "queue_size" : -1
+        },
+        "management" : {
+          "type" : "scaling",
+          "min" : 1,
+          "max" : 5,
+          "keep_alive" : "5m",
+          "queue_size" : -1
+        },
+        "get" : {
+          "type" : "fixed",
+          "min" : 1,
+          "max" : 1,
+          "queue_size" : 1000
+        },
+        "bulk" : {
+          "type" : "fixed",
+          "min" : 1,
+          "max" : 1,
+          "queue_size" : 50
+        },
+        "snapshot" : {
+          "type" : "scaling",
+          "min" : 1,
+          "max" : 1,
+          "keep_alive" : "5m",
+          "queue_size" : -1
+        }
+      },
+      "transport" : {
+        "bound_address" : [ "[::]:9300" ],
+        "publish_address" : "10.0.2.15:9300",
+        "profiles" : { }
+      },
+      "http" : {
+        "bound_address" : [ "[::]:9200" ],
+        "publish_address" : "10.0.2.15:9200",
+        "max_content_length_in_bytes" : 104857600
+      },
+      "plugins" : [ ],
+      "modules" : [ {
+        "name" : "lang-expression",
+        "version" : "2.4.3",
+        "description" : "Lucene expressions integration for Elasticsearch",
+        "jvm" : true,
+        "classname" : "org.elasticsearch.script.expression.ExpressionPlugin",
+        "isolated" : true,
+        "site" : false
+      }, {
+        "name" : "lang-groovy",
+        "version" : "2.4.3",
+        "description" : "Groovy scripting integration for Elasticsearch",
+        "jvm" : true,
+        "classname" : "org.elasticsearch.script.groovy.GroovyPlugin",
+        "isolated" : true,
+        "site" : false
+      }, {
+        "name" : "reindex",
+        "version" : "2.4.3",
+        "description" : "_reindex and _update_by_query APIs",
+        "jvm" : true,
+        "classname" : "org.elasticsearch.index.reindex.ReindexPlugin",
+        "isolated" : true,
+        "site" : false
+      } ]
+    }
+  }
+}
