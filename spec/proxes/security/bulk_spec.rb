@@ -8,7 +8,7 @@ require 'elasticsearch'
 
 describe ProxES do
   def app
-    ProxES::Security.new(ProxES::Forwarder.new(backend: ENV['ELASTICSEARCH_URL']))
+    ProxES::Security.new(ProxES::Forwarder.instance)
   end
 
   def client
