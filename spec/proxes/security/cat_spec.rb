@@ -57,13 +57,13 @@ describe ProxES do
       it 'succeeds with no indices specified' do
         get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1'))
         expect(last_response).to be_ok
-        expect(last_indices).to eq ['test-user-yesterday', 'test-user-today']
+        expect(last_indices).to include('test-user-yesterday', 'test-user-today')
       end
 
       it 'succeeds with indices the user has access to' do
         get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices/test-user-*?v=1'))
         expect(last_response).to be_ok
-        expect(last_indices).to eq ['test-user-yesterday', 'test-user-today']
+        expect(last_indices).to include('test-user-yesterday', 'test-user-today')
       end
 
       it 'fails with an invalid call if any of the specified indices are unauthorized' do

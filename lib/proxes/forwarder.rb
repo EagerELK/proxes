@@ -7,7 +7,7 @@ module ProxES
   # A lot of code in this comes from Rack::Proxy
   class Forwarder
     include Singleton
-    include Services::ES
+    include ProxES::Services::ES
 
     attr_reader :streaming
 
