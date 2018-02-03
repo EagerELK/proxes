@@ -1,69 +1,53 @@
-require 'net/http'
+require 'proxes/services/es'
+require 'net/http/persistent'
+require 'singleton'
 require 'rack'
 
 module ProxES
   # A lot of code in this comes from Rack::Proxy
   class Forwarder
-    attr_reader :backend, :streaming
+    include Singleton
+    include Services::ES
 
-    def initialize(opts = {})
-      @backend = URI(opts[:backend]) if opts[:backend]
+    attr_reader :streaming
+
+    def backend
+      @backend ||= URI(ENV['ELASTICSEARCH_URL'])
+    end
+
+    def backend=(var)
+      @backend = URI(var)
     end
 
     def call(env)
-      request = request_from(env)
-      request.basic_auth backend.user, backend.password
-
-      begin
-        forward(request)
-      rescue SocketError
-        headers = { 'Content-Type' => 'application/json' }
-        [500, headers, ['{"error":"Could not connect to Elasticsearch"}']]
-      end
+      forward(env)
+    rescue SocketError
+      headers = { 'Content-Type' => 'application/json' }
+      [500, headers, ['{"error":"Could not connect to Elasticsearch"}']]
     end
 
-    def forward(request)
-      response = http.request(request)
+    def forward(env)
+      source = Rack::Request.new(env)
+      conn.basic_auth backend.user, backend.password
+      response = conn.send(source.request_method.downcase) do |req|
+        source_body = body_from(source)
+        req.body = source_body if source_body
+        req.url source.fullpath == '' ? URI.parse(env['REQUEST_URI']).request_uri : source.fullpath
+      end
+      mangle response
+    end
 
+    def mangle(response)
       headers = (response.respond_to?(:headers) && response.headers) || self.class.normalize_headers(response.to_hash)
       body    = response.body || ['']
       body    = [body] unless body.respond_to?(:each)
 
       # Not sure where this is coming from, but it causes timeouts on the client
       headers.delete('transfer-encoding')
-
       # Ensure that the content length rack middleware kicks in
       headers.delete('content-length')
 
-      [response.code, headers, body]
-    end
-
-    def http
-      @http ||= begin
-        http = Net::HTTP.new(backend.host, backend.port)
-        http.use_ssl = true if backend.is_a? URI::HTTPS
-        if ENV['SSL_VERIFY_NONE'].to_i == 1
-          http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-          store = OpenSSL::X509::Store.new
-          store.set_default_paths
-          http.cert_store = store
-        end
-        http
-      end
-    end
-
-    def request_from(env)
-      source = Rack::Request.new(env)
-      fullpath = source.fullpath == '' ? URI.parse(env['REQUEST_URI']).request_uri : source.fullpath
-      target = Net::HTTP.const_get(source.request_method.capitalize).new(fullpath)
-
-      body = body_from(source)
-      if body
-        target.body = body
-        target.content_length = body.length
-        target.content_type   = source.content_type if source.content_type
-      end
-      target
+      [response.status, headers, body]
     end
 
     def body_from(request)
