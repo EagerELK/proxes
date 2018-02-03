@@ -61,5 +61,5 @@ map '/' do
   use Rack::ContentLength
 
   # Forward requests to ES
-  run ProxES::Forwarder.new(backend: ENV['ELASTICSEARCH_URL'])
+  run ProxES::Forwarder.instance
 end
