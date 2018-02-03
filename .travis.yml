@@ -1,35 +1,44 @@
 sudo: false
 language: ruby
 rvm:
-- 2.5.0
-- 2.4.3
-- 2.3.6
-- 2.2.9
+  - 2.5.0
+  - 2.4.3
+  - 2.3.6
+  - 2.2.9
 gemfile: Gemfile.ci
 env:
   global:
     - CC_TEST_REPORTER_ID=1f562305f75e169f5f5eca3b738fee879550c98e50099c2b9cd6ae71478007a0
+    - secure: wTIBP3ZtltfLyIFS6p4XgzPff70EZLxIOpzL4tWCsB2XmEMtCBPdfm9CXLw88yxH4mCJbCVljJHRzrav9N5RimVGb3h5AX5ODpqJYO4PWRZzNYGglXM3f/3QWFXExEdJ97y0m2XytOzlVWtYjShqpCq1V9z88XwmJ2YQtiFMma4n2fjW8+WK30eGwNw60GAf7a2IAA2qMSIymEdM0OcRRVjmyWRtdAslnjANQ/m9lRYeNTfwfG5Xw26BRzv46Urmlw9MZsFGV5bG5bAKRFbp3h00UsPjKlAUL22bqEQ5XmRCuXCMzffoPhfJHDao+3iaVZlViwbCmoHRuuwHnTmUBFvvef/MRSUdLLwBsKBeDVofpGhLEInPX+D/kicNEnidYTtz+O8XZ0Hgur+VN+ayItIVZqFyaw96c9n+2H/KR7TG2lsccdFHNgATTX/fVOCc2AuBI84z3qM1LFYpJibwoTktQS1dnlmX6hwwEg+lJFhY0Spr3+aKOHf/zgqK+Q0jrEDQMo0khDTuPaOy2kznzK6ktrZVizw1tZyH80Eop/Yxpx1bIab8CF49pWlMZAkwmTP3e24qewUtgExyxUK1yBZ23L7QDnYLtfwCFfUbiEScjghJ9Aez1yerMCxNUrSOltyk1XxZw9xMrptA8VgN/0sFFmfICTXTZSqJdIGkfGY=
+    - secure: z4AUz0bssd0C7rfPsh71aH6ki8Zp49WZrYNRhj50MytJympFsEOYRVdVKuuAoq7jaD0cahIioDHrTf1J9bIOqMPc3l2lk9RFWA27Qk46C5zNxspnNBin0disEeO/AENlb5Zwe/Cqamg7Sc/NVpELPqUl8gHfX3FVv4Po3dZZWQb1d/pLXBpl84HGLWgFwz6ku+74XW6aqX1Qzd8G0s9gsqsAgUszwEX3ppltBrai1VdtZyFbv0XCOds3F687Ecyht3FJBQCOaTopPQztdmA8rBTPW+ffhfoZuQWfo8aILqmn9xCGr4vhMjwaOP7cVQdXcPs1ecsFBKFS0XRm5kJKBtBPLDfEc4zl6UIIe5xZBh5m0dysxu78ZoNFVui3QszyUP+dARf3AHsy1m3d8iRXMNEqKTTglKdPIdFKZLnWGoVSf+fidR7NIyJH7MGhr4VC8esGFGazzOXBnqVAX+z1tEse6n7llFcy0dREW0FNMpKMSP6TqN4LRiKXtRdSbeSvHXP3UiH6vPjAE/lHhf7qXSNOLkZDtCWrD0us4kT1ACeL2AV2SArJf7pmGdEL9pUyp4jSuStwxtRPhYJj2kuS6op9MYoU6Q8eyXhIw8Uju4SitGtkTnb8t5L50Xw7vUQT9faEah9ewJwB2kxa2RZxCdIzylwuYssCON4xkdXI1fY=
+    - secure: lUfjVwbIxUBQTGkDTOSMNvSYONBwI5yObn8fCByzGkfleddWPjLEeMPjGBZboOu2CVZ/q/FG3xbn63Hmss7CU83FmWRoV5dMP9Yc7X7cHaGmi31mZcaY2Yah+jgx7PcNIdK8LOAB3/zhxDNOcr8U4O9gqxGZWnV2NLR8SB+KiNTg5Hou3nOeVw7l1Iz+h1hXvZfxkMv7aX/3TLMT8j2JMkfgCN8moMlNRAYnvm/B68FPcVs6UFcaZIwg2mBnq3FrARo127jG1Ozms2SOPTqkPY9y8yoGyo3TYH2iQOKdRxCCECBnkSO8HYRYTL9CUoMk/D4ZTp7TGNRIKxjHtlt+9O1WtfmZB2aevZX5c7ChCZ0wNhQpzlsyPDz0GoIOkms5Bfv7nsvbloejr+vsRxe8YsNaVAVG+9RVZziKxGCWsxTopfnFMfFBK7KIoJ4N60ijhtBr3qcYQbSeoZWviwSd/GCjl9I2d2mTPVI0DsiFVt8lP92ZZitPJEhPRcxHdHu47Wu7oftndcVqzhhgdGnOxMchYKgzccR17VWlactGxffJP+ZIUkHaWCkxVR4etcrE753uaUX9x+M1fMoKKrwvycstX/YWLncgsYM1YensRUN7oW87wk216anlKfHubO2aVeDNnXn+wszK87M12o9gFu1khTBowqZpXsVDaUaa+oc=
   matrix:
-    - DATABASE_URL="sqlite::memory:" ELASTICSEARCH_URL="http://localhost:9200" RACK_ENV=test
+  - DATABASE_URL="sqlite::memory:" ELASTICSEARCH_URL="http://localhost:9200" RACK_ENV=test
 services:
   - elasticsearch
 before_install:
   - gem install bundler -v 1.12.5
 before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+    > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
+  - "./cc-test-reporter before-build"
   - sleep 10
   - bundle exec rake ditty:prep
 after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
 deploy:
-  provider: rubygems
-  api_key:
-    secure: WDO/FSVmUxyz8U6LJyoEEA/Gorw90VbQ8Q4rAu9+L6Lru/PftaVUlcW3ZMATjASHcVX/1KjVJlZNilgMYrV0eayudkeNjWglBozw5FxnhJntgzZAH2Fo/aepF9NHSU29A4SGtl1W0kj8zez9prYn+qcdX/8ei9YMfnP8KkQCKEUeO3/jScHqSZlYZIFI7Ft+QQbJeUTlKc1sJRC5XHG9Oz4lFfSZY0XgZMd5IJsBmwNCGisqgKxBuDEG/9KWwhqops6K6XGPvuhxd8+DFFrDSrI3HR1NsP9RrQxwFc9TnIc+Rzu/FjSF44NJgaiFKKPdZ116w5ChnpY0B59tzOyh/aCwvAl2w7usIqNkhXey0eJ/MZm4S+7l1AoVlxYVujBBl/tRt8PeqlRqjJWAnr1mu/p74cS/jyXhZbHJpNvmv5M7YJzzFIYI12el4Wm05fPo2L605g0c7+pFCW3F+HPAp5qItrjlNx3HoMNNoGDQO+057g3OeVjOivV5Vxjp9IYwZmNCD35IaLFXk+umYD4Jw047rUSGoboc0i/5k6ZYHSBrvIivvRCZNAXSbGi1nLR/lv42Chu2wRCWzMjyPgQQ4I0xGlVwu8kfIQsvPVAM3szNczl9xY8S311eBJforo5prPr6wLaEile0KLmMOai+1n0sr+exy056Z7ttBjwIwoQ=
-  gem: proxes
-  on:
-    tags: true
-    repo: EagerELK/proxes
+  - provider: rubygems
+    api_key:
+      secure: WDO/FSVmUxyz8U6LJyoEEA/Gorw90VbQ8Q4rAu9+L6Lru/PftaVUlcW3ZMATjASHcVX/1KjVJlZNilgMYrV0eayudkeNjWglBozw5FxnhJntgzZAH2Fo/aepF9NHSU29A4SGtl1W0kj8zez9prYn+qcdX/8ei9YMfnP8KkQCKEUeO3/jScHqSZlYZIFI7Ft+QQbJeUTlKc1sJRC5XHG9Oz4lFfSZY0XgZMd5IJsBmwNCGisqgKxBuDEG/9KWwhqops6K6XGPvuhxd8+DFFrDSrI3HR1NsP9RrQxwFc9TnIc+Rzu/FjSF44NJgaiFKKPdZ116w5ChnpY0B59tzOyh/aCwvAl2w7usIqNkhXey0eJ/MZm4S+7l1AoVlxYVujBBl/tRt8PeqlRqjJWAnr1mu/p74cS/jyXhZbHJpNvmv5M7YJzzFIYI12el4Wm05fPo2L605g0c7+pFCW3F+HPAp5qItrjlNx3HoMNNoGDQO+057g3OeVjOivV5Vxjp9IYwZmNCD35IaLFXk+umYD4Jw047rUSGoboc0i/5k6ZYHSBrvIivvRCZNAXSbGi1nLR/lv42Chu2wRCWzMjyPgQQ4I0xGlVwu8kfIQsvPVAM3szNczl9xY8S311eBJforo5prPr6wLaEile0KLmMOai+1n0sr+exy056Z7ttBjwIwoQ=
+    gem: proxes
+    on:
+      tags: true
+      repo: EagerELK/proxes
+  - provider: script
+    script: deploy_docker.sh
+    on:
+      tags: true
+
 after_success:
-  - bundle exec codeclimate-test-reporter
+- bundle exec codeclimate-test-reporter
