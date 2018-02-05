@@ -1,0 +1,17 @@
+version: '3'
+services:
+  web:
+    build: .
+    command: web-proxes
+    ports:
+      - '9292:9292'
+    environment:
+      - DATABASE_URL=postgres://postgres:@db/postgres
+      - ELASTICSEARCH_URL=http://es:9200
+    depends_on:
+      - db
+      - es
+  db:
+    image: postgres
+  es:
+    image: elasticsearch

@@ -37,9 +37,16 @@ ProxES has two [components](https://github.com/eagerelk/proxes#components) that 
 
 ProxES can be run in a Docker container:
 
-
 ```bash
 docker run -e ELASTICSEARCH_URL=http://elasticsearch -e DATABASE_URL=postgres://username:password@database:5432/proxes --add-host=database:10.0.2.15 --add-host=elasticearch:10.0.2.15 eagerelk/proxes web-proxes
+```
+
+### Docker Compose
+
+The project includes a `docker-compose.yml` file that you can use to get it up and running quickly:
+
+```bash
+docker-compose up
 ```
 
 ## Components
