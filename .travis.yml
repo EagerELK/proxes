@@ -1,4 +1,4 @@
-sudo: false
+sudo: true
 language: ruby
 rvm:
   - 2.5.0
@@ -13,9 +13,10 @@ env:
     - secure: z4AUz0bssd0C7rfPsh71aH6ki8Zp49WZrYNRhj50MytJympFsEOYRVdVKuuAoq7jaD0cahIioDHrTf1J9bIOqMPc3l2lk9RFWA27Qk46C5zNxspnNBin0disEeO/AENlb5Zwe/Cqamg7Sc/NVpELPqUl8gHfX3FVv4Po3dZZWQb1d/pLXBpl84HGLWgFwz6ku+74XW6aqX1Qzd8G0s9gsqsAgUszwEX3ppltBrai1VdtZyFbv0XCOds3F687Ecyht3FJBQCOaTopPQztdmA8rBTPW+ffhfoZuQWfo8aILqmn9xCGr4vhMjwaOP7cVQdXcPs1ecsFBKFS0XRm5kJKBtBPLDfEc4zl6UIIe5xZBh5m0dysxu78ZoNFVui3QszyUP+dARf3AHsy1m3d8iRXMNEqKTTglKdPIdFKZLnWGoVSf+fidR7NIyJH7MGhr4VC8esGFGazzOXBnqVAX+z1tEse6n7llFcy0dREW0FNMpKMSP6TqN4LRiKXtRdSbeSvHXP3UiH6vPjAE/lHhf7qXSNOLkZDtCWrD0us4kT1ACeL2AV2SArJf7pmGdEL9pUyp4jSuStwxtRPhYJj2kuS6op9MYoU6Q8eyXhIw8Uju4SitGtkTnb8t5L50Xw7vUQT9faEah9ewJwB2kxa2RZxCdIzylwuYssCON4xkdXI1fY=
     - secure: lUfjVwbIxUBQTGkDTOSMNvSYONBwI5yObn8fCByzGkfleddWPjLEeMPjGBZboOu2CVZ/q/FG3xbn63Hmss7CU83FmWRoV5dMP9Yc7X7cHaGmi31mZcaY2Yah+jgx7PcNIdK8LOAB3/zhxDNOcr8U4O9gqxGZWnV2NLR8SB+KiNTg5Hou3nOeVw7l1Iz+h1hXvZfxkMv7aX/3TLMT8j2JMkfgCN8moMlNRAYnvm/B68FPcVs6UFcaZIwg2mBnq3FrARo127jG1Ozms2SOPTqkPY9y8yoGyo3TYH2iQOKdRxCCECBnkSO8HYRYTL9CUoMk/D4ZTp7TGNRIKxjHtlt+9O1WtfmZB2aevZX5c7ChCZ0wNhQpzlsyPDz0GoIOkms5Bfv7nsvbloejr+vsRxe8YsNaVAVG+9RVZziKxGCWsxTopfnFMfFBK7KIoJ4N60ijhtBr3qcYQbSeoZWviwSd/GCjl9I2d2mTPVI0DsiFVt8lP92ZZitPJEhPRcxHdHu47Wu7oftndcVqzhhgdGnOxMchYKgzccR17VWlactGxffJP+ZIUkHaWCkxVR4etcrE753uaUX9x+M1fMoKKrwvycstX/YWLncgsYM1YensRUN7oW87wk216anlKfHubO2aVeDNnXn+wszK87M12o9gFu1khTBowqZpXsVDaUaa+oc=
   matrix:
-  - DATABASE_URL="sqlite::memory:" ELASTICSEARCH_URL="http://localhost:9200" RACK_ENV=test
+    - DATABASE_URL="sqlite::memory:" ELASTICSEARCH_URL="http://localhost:9200" RACK_ENV=test
 services:
   - elasticsearch
+  - docker
 before_install:
   - gem install bundler -v 1.12.5
 before_script:
@@ -41,4 +42,4 @@ deploy:
       tags: true
 
 after_success:
-- bundle exec codeclimate-test-reporter
+  - bundle exec codeclimate-test-reporter
