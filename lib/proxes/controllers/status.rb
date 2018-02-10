@@ -89,11 +89,12 @@ module ProxES
         checks << { text: 'Node CPU Usage', passed: cpu_passed, value: cpu_values.sort }
 
         memory_values = []
-        memory_passed = true
+        memory_sum = 0
         node_stats['nodes'].values.each do |node|
+          memory_sum += node['os']['mem']['used_percent']
           memory_values << "#{node['name']}: #{node['os']['mem']['used_percent']}"
-          memory_passed = false if node['os']['mem']['used_percent'].to_i >= 100
         end
+        memory_passed = (memory_sum / memory_values.size).to_i < 100
         checks << { text: 'Node Memory Usage', passed: memory_passed, value: memory_values.sort }
       rescue Faraday::Error => e
         checks << { text: 'Cluster Reachable', passed: false, value: e.message }
