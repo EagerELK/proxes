@@ -18,13 +18,12 @@ RUN apk add --update \
   postgresql-dev \
   && rm -rf /var/cache/apk/* \
   && mkdir /root/.ssh \
-  && mkdir /usr/src/app/tmp \
-  && mkdir /usr/src/app/logs \
   && mkdir /usr/src/app/config \
   && touch /var/log/cron.log \
   && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts \
   && gem install bundler
 
+ADD views /usr/src/app/views
 COPY config.ru /usr/src/app/
 COPY config/logger.yml /usr/src/app/config/
 COPY config/puma.rb /usr/src/app/config/

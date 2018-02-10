@@ -1,7 +1,11 @@
 version: '3'
 services:
+  db:
+    image: postgres
+  es:
+    image: elasticsearch
   web:
-    build: .
+    image: eagerelk/proxes:latest
     command: web-proxes
     ports:
       - '9292:9292'
@@ -11,7 +15,3 @@ services:
     depends_on:
       - db
       - es
-  db:
-    image: postgres
-  es:
-    image: elasticsearch

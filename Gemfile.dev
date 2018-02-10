@@ -3,9 +3,9 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in proxes.gemspec
 gemspec
 
-gem 'rerun', git: 'https://github.com/alexch/rerun.git', branch: 'master'
-gem 'sqlite3'
-gem 'simplecov'
-gem 'pry-byebug'
 gem 'dotenv'
-
+gem 'pry-byebug'
+gem 'puma'
+gem 'rerun', git: 'https://github.com/alexch/rerun.git', branch: 'master'
+gem 'simplecov'
+gem 'sqlite3'

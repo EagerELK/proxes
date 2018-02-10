@@ -1,0 +1,60 @@
+!!! 5
+%html{ lang: 'en' }
+  %head
+    %meta{ charset: 'utf-8' }
+    %meta{ 'http-equiv' => 'X-UA-Compatible', 'content' => 'IE=edge,chrome=1' }
+    %meta{ name: 'viewport', content: 'width=device-width, initial-scale=1' }
+    %meta{ name: 'theme-color', content: '#ffffff' }
+    %link{ rel: 'manifest', href: '/_proxes/manifest.json' }
+    %link{ rel: 'icon', type: 'image/png', sizes: '32x32', href: '/_proxes/images/favicon-32x32.png' }
+    %link{ rel: 'icon', type: 'image/png', sizes: '16x16', href: '/_proxes/images/favicon-16x16.png' }
+    %link{ rel: 'apple-touch-icon', sizes: '76x76', href: '/_proxes/images/apple-icon.png' }
+    %link{ rel: 'mask-icon', href: '/_proxes/images/safari-pinned-tab.svg', color: '#5bbad5' }
+
+    %title
+      ProxES
+      - if defined? title
+        = "- #{title}"
+
+    %meta{ name: 'description', content: '' }
+    %meta{ name: 'author', content: '' }
+
+    / Le styles
+    %link{ rel: 'stylesheet', href: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', media: 'screen' }
+    %link{ rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/3.3.7+1/css/sb-admin-2.min.css', media: 'screen' }
+    %link{ rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.5.2/metisMenu.min.css', media: 'screen' }
+    %link{ rel: 'stylesheet', href: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css', media: 'screen' }
+    /[if lt IE 9] <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    /[if lt IE 9] <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+
+    %script{ type: 'text/javascript', src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js' }
+    %script{ type: 'text/javascript', src: 'https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/3.3.7+1/js/sb-admin-2.min.js' }
+    %script{ type: 'text/javascript', src: 'https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.5.2/metisMenu.min.js' }
+  %body
+    #wrapper
+      = haml :'partials/navbar', locals: { title: (defined?(title) ? title : 'ProxES') }
+      #page-wrapper{ style: 'opacity: 0.8' }
+        .row
+          .col-md-12
+            -if defined? title
+              %h1.page-header= title
+            = haml :'partials/notifications'
+
+        = yield
+        %footer.footer.text-muted.text-center
+          %hr
+          .copyright
+            :plain
+              &copy; <script>document.write(new Date().getFullYear())</script>, DataTools.io
+
+
+    / Placed at the end of the document so the pages load faster
+    %script{ type: 'text/javascript', src: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' }
+    %script{ type: 'text/javascript', src: 'https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react.min.js' }
+    %script{ type: 'text/javascript', src: 'https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom.min.js' }
+    %script{ type: 'text/javascript', src: '/_proxes/js/bundle.js' }
+    :javascript
+        $(function() {
+            $('.sidebar-nav').metisMenu();
+        });
+
