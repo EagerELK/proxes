@@ -35,7 +35,10 @@ module ProxES
       check_basic request
       authorize request, request.request_method.downcase
     rescue Pundit::NotAuthorizedError
-      return redirect '/_proxes/' if request.get_header('HTTP_ACCEPT') && request.get_header('HTTP_ACCEPT').include?('text/html')
+      if request.get_header('HTTP_ACCEPT') && request.get_header('HTTP_ACCEPT').include?('text/html')
+        request.env['rack.session']['omniauth.origin'] = request.url
+        return redirect '/_proxes/auth/identity'
+      end
 
       log_action(:es_request_denied, details: "#{request.request_method.upcase} #{request.fullpath} (#{request.class.name})")
       logger.debug "Access denied for #{current_user ? current_user.email : 'Anonymous User'} by security layer: #{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
