@@ -9,16 +9,6 @@ module ProxES
     include Singleton
     include ProxES::Services::ES
 
-    attr_reader :streaming
-
-    def backend
-      @backend ||= URI(ENV['ELASTICSEARCH_URL'])
-    end
-
-    def backend=(var)
-      @backend = URI(var)
-    end
-
     def call(env)
       forward(env)
     rescue SocketError
@@ -28,7 +18,6 @@ module ProxES
 
     def forward(env)
       source = Rack::Request.new(env)
-      conn.basic_auth backend.user, backend.password
       response = conn.send(source.request_method.downcase) do |req|
         source_body = body_from(source)
         req.body = source_body if source_body
