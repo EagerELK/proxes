@@ -101,7 +101,15 @@ module ProxES
       end
 
       status checks.find { |c| c[:passed] == false } ? 500 : 200
-      haml :'status/check', locals: { title: 'Status Check', checks: checks }
+
+      respond_to do |format|
+        format.html do
+          haml :'status/check', locals: { title: 'Status Check', checks: checks }
+        end
+        format.json do
+          json checks
+        end
+      end
     end
   end
 end
