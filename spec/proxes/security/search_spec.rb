@@ -6,9 +6,9 @@ require 'proxes/forwarder'
 require 'proxes/models/permission'
 require 'elasticsearch'
 
-describe ProxES::Security do
+describe ProxES::Middleware::Security do
   def app
-    ProxES::Security.new(ProxES::Forwarder.instance)
+    ProxES::Middleware::Security.new(ProxES::Forwarder.instance)
   end
 
   def client
@@ -67,9 +67,7 @@ describe ProxES::Security do
       end
 
       it 'fails with an invalid call if all of the specified indices are unauthorized' do
-        get('/another-user-today,another-user-yesterday/_search', {}, get_env('GET /another-user-today,another-user-yesterday/_search'))
-        expect(last_response).to_not be_ok
-        expect(last_response.status).to eq(401)
+        expect { get('/another-user-today,another-user-yesterday/_search', {}, get_env('GET /another-user-today,another-user-yesterday/_search')) }.to raise_error Pundit::NotAuthorizedError
       end
     end
 
@@ -79,15 +77,11 @@ describe ProxES::Security do
       end
 
       it 'fails with specified indices' do
-        get('/test-user-today,another-user-yesterday/_search', {}, get_env('GET /test-user-today,another-user-yesterday/_search'))
-        expect(last_response).to_not be_ok
-        expect(last_response.status).to eq(401)
+        expect { get('/test-user-today,another-user-yesterday/_search', {}, get_env('GET /test-user-today,another-user-yesterday/_search')) }.to raise_error Pundit::NotAuthorizedError
       end
 
       it 'fails without specified indices' do
-        get('/_search', {}, get_env('GET /_search'))
-        expect(last_response).to_not be_ok
-        expect(last_response.status).to eq(401)
+        expect { get('/_search', {}, get_env('GET /_search')) }.to raise_error Pundit::NotAuthorizedError
       end
     end
   end

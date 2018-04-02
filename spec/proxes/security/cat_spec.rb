@@ -9,7 +9,7 @@ require 'csv'
 
 describe ProxES do
   def app
-    ProxES::Security.new(ProxES::Forwarder.instance)
+    ProxES::Middleware::Security.new(ProxES::Forwarder.instance)
   end
 
   def client
@@ -67,9 +67,7 @@ describe ProxES do
       end
 
       it 'fails with an invalid call if any of the specified indices are unauthorized' do
-        get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices/other-user-*?v=1'))
-        expect(last_response).to_not be_ok
-        expect(last_response.status).to eq(401)
+        expect { get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices/other-user-*?v=1')) }.to raise_error Pundit::NotAuthorizedError
       end
     end
 
@@ -80,15 +78,11 @@ describe ProxES do
       end
 
       it 'fails with an invalid for specified indices' do
-        get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1'))
-        expect(last_response).to_not be_ok
-        expect(last_response.status).to eq(401)
+        expect { get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1')) }.to raise_error Pundit::NotAuthorizedError
       end
 
       it 'fails with an invalid for unspecified indices' do
-        get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1'))
-        expect(last_response).to_not be_ok
-        expect(last_response.status).to eq(401)
+        expect { get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1')) }.to raise_error Pundit::NotAuthorizedError
       end
     end
 
@@ -98,15 +92,11 @@ describe ProxES do
       end
 
       it 'fails with an invalid for specified indices' do
-        get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1'))
-        expect(last_response).to_not be_ok
-        expect(last_response.status).to eq(401)
+        expect { get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1')) }.to raise_error Pundit::NotAuthorizedError
       end
 
       it 'fails with an invalid for unspecified indices' do
-        get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1'))
-        expect(last_response).to_not be_ok
-        expect(last_response.status).to eq(401)
+        expect { get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1')) }.to raise_error Pundit::NotAuthorizedError
       end
     end
   end

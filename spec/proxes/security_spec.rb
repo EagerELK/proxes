@@ -3,46 +3,19 @@
 require 'spec_helper'
 require 'proxes/middleware/security'
 
-describe ProxES::Security do
+describe ProxES::Middleware::Security do
   def app
-    ProxES::Security.new(proc { [200, {}, ['Hello, world.']] })
+    ProxES::Middleware::Security.new(proc { [200, {}, ['Hello, world.']] })
   end
 
   context '#call' do
     it 'rejects anonymous requests' do
-      get('/')
-      expect(last_response).to_not be_ok
-      expect(last_response.status).to eq 401
-      get('/_search')
-      expect(last_response).to_not be_ok
-      expect(last_response.status).to eq 401
-      get('/index/_search')
-      expect(last_response).to_not be_ok
-      expect(last_response.status).to eq 401
-      get('/_node')
-      expect(last_response).to_not be_ok
-      expect(last_response.status).to eq 401
-      get('/_cluster')
-      expect(last_response).to_not be_ok
-      expect(last_response.status).to eq 401
-      get('/_snapshot')
-      expect(last_response).to_not be_ok
-      expect(last_response.status).to eq 401
-    end
-
-    it 'redirects HTML requests to the UI' do
-      header 'Accept', 'text/html'
-      get('/')
-      expect(last_response.status).to eq 302
-    end
-
-    it 'does not redirect non HTML requests to the UI' do
-      get('/')
-      expect(last_response.status).to eq 401
-
-      header 'Accept', 'application/json'
-      get('/')
-      expect(last_response.status).to eq 401
+      expect { get('/') }.to raise_error Pundit::NotAuthorizedError
+      expect { get('/_search') }.to raise_error Pundit::NotAuthorizedError
+      expect { get('/index/_search') }.to raise_error Pundit::NotAuthorizedError
+      expect { get('/_node') }.to raise_error Pundit::NotAuthorizedError
+      expect { get('/_cluster') }.to raise_error Pundit::NotAuthorizedError
+      expect { get('/_snapshot') }.to raise_error Pundit::NotAuthorizedError
     end
 
     context 'logged in' do
@@ -55,19 +28,13 @@ describe ProxES::Security do
         end
 
         it 'authorizes calls that return data' do
-          get '/notmyindex/_search'
-          expect(last_response).to_not be_ok
-          expect(last_response.status).to eq 401
+          expect { get '/notmyindex/_search' }.to raise_error Pundit::NotAuthorizedError
         end
 
         it 'authorizes calls that do actions' do
-          get '/'
-          expect(last_response).to_not be_ok
-          expect(last_response.status).to eq 401
+          expect { get '/' }.to raise_error Pundit::NotAuthorizedError
 
-          get '/_snapshot'
-          expect(last_response).to_not be_ok
-          expect(last_response.status).to eq 401
+          expect { get '/_snapshot' }.to raise_error Pundit::NotAuthorizedError
         end
       end
 
@@ -91,21 +58,6 @@ describe ProxES::Security do
           expect { get('/_cluster') }.to_not raise_error
           expect(last_response.status).to eq 200
           expect { get('/_snapshot') }.to_not raise_error
-          expect(last_response.status).to eq 200
-        end
-
-        it 'does not redirect HTML requests to the UI' do
-          header 'Accept', 'text/html'
-          get('/')
-          expect(last_response.status).to eq 200
-        end
-
-        it 'does not redirect non HTML requests to the UI' do
-          get('/')
-          expect(last_response.status).to eq 200
-
-          header 'Accept', 'application/json'
-          get('/')
           expect(last_response.status).to eq 200
         end
       end
