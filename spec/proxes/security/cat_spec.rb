@@ -33,7 +33,7 @@ describe ProxES do
 
   def last_indices
     csv_data = CSV.parse(last_response.body, headers: true, col_sep: ' ', header_converters: :symbol)
-    csv_data.map(&:to_hash).map {|e| e[:index] }
+    csv_data.map(&:to_hash).map { |e| e[:index] }
   end
 
   before(:all) do
@@ -67,7 +67,9 @@ describe ProxES do
       end
 
       it 'fails with an invalid call if any of the specified indices are unauthorized' do
-        expect { get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices/other-user-*?v=1')) }.to raise_error Pundit::NotAuthorizedError
+        expect do
+          get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices/other-user-*?v=1'))
+        end.to raise_error Pundit::NotAuthorizedError
       end
     end
 
@@ -78,11 +80,15 @@ describe ProxES do
       end
 
       it 'fails with an invalid for specified indices' do
-        expect { get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1')) }.to raise_error Pundit::NotAuthorizedError
+        expect do
+          get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1'))
+        end.to raise_error Pundit::NotAuthorizedError
       end
 
       it 'fails with an invalid for unspecified indices' do
-        expect { get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1')) }.to raise_error Pundit::NotAuthorizedError
+        expect do
+          get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1'))
+        end.to raise_error Pundit::NotAuthorizedError
       end
     end
 
@@ -92,11 +98,15 @@ describe ProxES do
       end
 
       it 'fails with an invalid for specified indices' do
-        expect { get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1')) }.to raise_error Pundit::NotAuthorizedError
+        expect do
+          get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1'))
+        end.to raise_error Pundit::NotAuthorizedError
       end
 
       it 'fails with an invalid for unspecified indices' do
-        expect { get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1')) }.to raise_error Pundit::NotAuthorizedError
+        expect do
+          get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1'))
+        end.to raise_error Pundit::NotAuthorizedError
       end
     end
   end

@@ -16,7 +16,7 @@ module ProxES
       { name: :verb }
     ].freeze
 
-    SEARCHABLE = %i[pattern]
+    SEARCHABLE = %i[pattern].freeze
 
     helpers do
       def user_options

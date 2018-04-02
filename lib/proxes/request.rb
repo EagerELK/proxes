@@ -55,6 +55,10 @@ module ProxES
       val.split(',')
     end
 
+    def detail
+      "#{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
+    end
+
     class << self
       def from_env(env)
         endpoint = path_endpoint(env['REQUEST_PATH'])

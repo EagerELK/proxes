@@ -51,7 +51,7 @@ module ProxES
 
       def log(request, stage)
         logger.debug '============' + stage.ljust(56) + '============'
-        logger.debug '= ' + "Request: #{request.request_method} #{request.fullpath} (#{request.class.name})".ljust(76) + ' ='
+        logger.debug '= ' + "Request: #{request.detail}".ljust(76) + ' ='
         logger.debug '= ' + "Endpoint: #{request.endpoint}".ljust(76) + ' ='
         logger.debug '================================================================================'
       end

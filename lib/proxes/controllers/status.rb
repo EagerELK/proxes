@@ -28,7 +28,7 @@ module ProxES
         master_nodes = []
         data_nodes = []
         ingestion_nodes = []
-        node_stats['nodes'].values.each do |node|
+        node_stats['nodes'].each_value do |node|
           if node['roles']
             master_nodes << node['name'] if node['roles'].include? 'master'
             data_nodes << node['name'] if node['roles'].include? 'data'
@@ -61,7 +61,7 @@ module ProxES
 
         jvm_values = []
         jvm_passed = true
-        node_stats['nodes'].values.each do |node|
+        node_stats['nodes'].each_value do |node|
           jvm_values << "#{node['name']}: #{node['jvm']['mem']['heap_used_percent']}%"
           jvm_passed = false if node['jvm']['mem']['heap_used_percent'] > 85
         end
@@ -69,19 +69,19 @@ module ProxES
 
         fs_values = []
         fs_passed = true
-        node_stats['nodes'].values.each do |node|
+        node_stats['nodes'].each_value do |node|
           next if node['attributes'] && node['attributes']['data'] == 'false'
           next if node['roles'] && node['roles'].include?('data') == false
           stats = node['fs']['total']
           left = stats['available_in_bytes'] / stats['total_in_bytes'].to_f * 100
-          fs_values << "#{node['name']}: #{'%.02f' % left}% Free"
+          fs_values << "#{node['name']}: #{format('%.02f', left)}% Free"
           fs_passed = false if left < 10
         end
         checks << { text: 'Node File Systems', passed: fs_passed, value: fs_values.sort }
 
         cpu_values = []
         cpu_passed = true
-        node_stats['nodes'].values.each do |node|
+        node_stats['nodes'].each_value do |node|
           value = (node['os']['cpu_percent'] || node['os']['cpu']['percent'])
           cpu_values << "#{node['name']}: #{value}"
           cpu_passed = false if value.to_i > 70
@@ -90,7 +90,7 @@ module ProxES
 
         memory_values = []
         memory_sum = 0
-        node_stats['nodes'].values.each do |node|
+        node_stats['nodes'].each_value do |node|
           memory_sum += node['os']['mem']['used_percent']
           memory_values << "#{node['name']}: #{node['os']['mem']['used_percent']}"
         end

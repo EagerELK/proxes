@@ -28,12 +28,18 @@ module ProxES
           return redirect '/_proxes/auth/identity'
         end
 
-        log_action(:es_request_denied, user: request.user, details: "#{request.request_method.upcase} #{request.fullpath} (#{request.class.name})")
-        logger.debug "Access denied for #{request.user ? request.user.email : 'unauthenticated request'} by security layer: #{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
+        log_action(
+          :es_request_denied,
+          user: request.user,
+          details: "#{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
+        )
+        user = request.user ? request.user.email : 'unauthenticated request'
+        logger.debug "Access denied for #{user} by security layer: #{request.detail}"
         error 'Not Authorized', 401
       rescue StandardError => e
         raise e if env['RACK_ENV'] != 'production'
-        logger.error "Access denied for #{request.user ? request.user.email : 'Anonymous User'} by security exception: #{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
+        user = request.user ? request.user.email : 'unauthenticated request'
+        logger.error "Access denied for #{user} by security exception: #{request.detail}"
         logger.error e
         error 'Forbidden', 403
       end
@@ -46,7 +52,7 @@ module ProxES
       end
 
       def redirect(destination, code = 302)
-        [code, { 'Location' => destination}, []]
+        [code, { 'Location' => destination }, []]
       end
     end
   end

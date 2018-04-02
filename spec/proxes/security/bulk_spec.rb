@@ -59,7 +59,9 @@ describe ProxES do
       end
 
       it 'fails with an invalid call if any of the specified indices are unauthorized' do
-        expect { post('/_bulk', get_fixture('illegal_bulk_with_indices.json'), get_env('POST /_bulk')) }.to raise_error Pundit::NotAuthorizedError
+        expect do
+          post('/_bulk', get_fixture('illegal_bulk_with_indices.json'), get_env('POST /_bulk'))
+        end.to raise_error Pundit::NotAuthorizedError
       end
     end
 
@@ -70,11 +72,15 @@ describe ProxES do
       end
 
       it 'fails with an invalid for specified indices' do
-        expect { post('/_bulk', get_fixture('bulk_without_indices.json'), get_env('POST /test-user-today/_bulk')) }.to raise_error Pundit::NotAuthorizedError
+        expect do
+          post('/_bulk', get_fixture('bulk_without_indices.json'), get_env('POST /test-user-today/_bulk'))
+        end.to raise_error Pundit::NotAuthorizedError
       end
 
       it 'fails with an invalid for unspecified indices' do
-        expect { post('/_bulk', get_fixture('illegal_bulk_with_indices.json'), get_env('POST /_bulk')) }.to raise_error Pundit::NotAuthorizedError
+        expect do
+          post('/_bulk', get_fixture('illegal_bulk_with_indices.json'), get_env('POST /_bulk'))
+        end.to raise_error Pundit::NotAuthorizedError
       end
     end
 
@@ -84,11 +90,15 @@ describe ProxES do
       end
 
       it 'fails with an invalid for specified indices' do
-        expect { post('/_bulk', get_fixture('bulk_without_indices.json'), get_env('POST /test-user-today/_bulk')) }.to raise_error Pundit::NotAuthorizedError
+        expect do
+          post('/_bulk', get_fixture('bulk_without_indices.json'), get_env('POST /test-user-today/_bulk'))
+        end.to raise_error Pundit::NotAuthorizedError
       end
 
       it 'fails with an invalid for unspecified indices' do
-        expect { post('/_bulk', get_fixture('illegal_bulk_with_indices.json'), get_env('POST /_bulk')) }.to raise_error Pundit::NotAuthorizedError
+        expect do
+          post('/_bulk', get_fixture('illegal_bulk_with_indices.json'), get_env('POST /_bulk'))
+        end.to raise_error Pundit::NotAuthorizedError
       end
     end
   end
@@ -102,12 +112,22 @@ describe ProxES do
       end
 
       it 'succeeds with indices the user has access to' do
-        post('/test-user-today/_bulk', get_fixture('legal_bulk_with_indices.json'), get_env('POST /test-user-today/_bulk'))
+        post(
+          '/test-user-today/_bulk',
+          get_fixture('legal_bulk_with_indices.json'),
+          get_env('POST /test-user-today/_bulk')
+        )
         expect(last_response).to be_ok
       end
 
       it 'fails with an invalid call if any of the specified indices are unauthorized' do
-        expect { post('/test-user-today/_bulk', get_fixture('illegal_bulk_with_indices.json'), get_env('POST /test-user-today/_bulk')) }.to raise_error Pundit::NotAuthorizedError
+        expect do
+          post(
+            '/test-user-today/_bulk',
+            get_fixture('illegal_bulk_with_indices.json'),
+            get_env('POST /test-user-today/_bulk')
+          )
+        end.to raise_error Pundit::NotAuthorizedError
       end
 
       it 'succeeds with indices the user has access to in the URL' do
@@ -116,7 +136,13 @@ describe ProxES do
       end
 
       it 'fails with an invalid call if any of the specified indices in the URL are unauthorized' do
-        expect { post('/another-user-today/_bulk', get_fixture('bulk_without_indices.json'), get_env('POST /another-user-today/_bulk')) }.to raise_error Pundit::NotAuthorizedError
+        expect do
+          post(
+            '/another-user-today/_bulk',
+            get_fixture('bulk_without_indices.json'),
+            get_env('POST /another-user-today/_bulk')
+          )
+        end.to raise_error Pundit::NotAuthorizedError
       end
     end
 

@@ -55,19 +55,33 @@ describe ProxES::Middleware::Security do
       end
 
       it 'succeeds with only the specified indices if they are authorized' do
-        get('/test-user-today,test-user-yesterday/_search', {}, get_env('GET /test-user-today,test-user-yesterday/_search'))
+        get(
+          '/test-user-today,test-user-yesterday/_search',
+          {},
+          get_env('GET /test-user-today,test-user-yesterday/_search')
+        )
         expect(last_response).to be_ok
         expect(last_indices).to eq ['test-user-today', 'test-user-yesterday']
       end
 
       it 'succeeds with only the authorized indices if some specified indices are unauthorized' do
-        get('/test-user-today,another-user-today/_search', {}, get_env('GET /test-user-today,another-user-today/_search'))
+        get(
+          '/test-user-today,another-user-today/_search',
+          {},
+          get_env('GET /test-user-today,another-user-today/_search')
+        )
         expect(last_response).to be_ok
         expect(last_indices).to eq ['test-user-today']
       end
 
       it 'fails with an invalid call if all of the specified indices are unauthorized' do
-        expect { get('/another-user-today,another-user-yesterday/_search', {}, get_env('GET /another-user-today,another-user-yesterday/_search')) }.to raise_error Pundit::NotAuthorizedError
+        expect do
+          get(
+            '/another-user-today,another-user-yesterday/_search',
+            {},
+            get_env('GET /another-user-today,another-user-yesterday/_search')
+          )
+        end.to raise_error Pundit::NotAuthorizedError
       end
     end
 
@@ -77,7 +91,13 @@ describe ProxES::Middleware::Security do
       end
 
       it 'fails with specified indices' do
-        expect { get('/test-user-today,another-user-yesterday/_search', {}, get_env('GET /test-user-today,another-user-yesterday/_search')) }.to raise_error Pundit::NotAuthorizedError
+        expect do
+          get(
+            '/test-user-today,another-user-yesterday/_search',
+            {},
+            get_env('GET /test-user-today,another-user-yesterday/_search')
+          )
+        end.to raise_error Pundit::NotAuthorizedError
       end
 
       it 'fails without specified indices' do
