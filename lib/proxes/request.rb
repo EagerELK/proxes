@@ -44,7 +44,7 @@ module ProxES
     end
 
     def detail
-      "#{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
+      "#{request_method.upcase} #{fullpath} (#{self.class.name})"
     end
 
     private
