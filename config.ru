@@ -53,11 +53,15 @@ end
 
 map '/' do
   # Proxy all Elasticsearch requests
-  require 'proxes/security'
+  require 'proxes/middleware/metrics'
+  require 'proxes/middleware/error_handling'
+  require 'proxes/middleware/security'
   require 'proxes/forwarder'
 
   # Security
-  use ProxES::Security, Ditty::Services::Logger.instance
+  use ProxES::Middleware::Metrics
+  use ProxES::Middleware::ErrorHandling
+  use ProxES::Middleware::Security, Ditty::Services::Logger.instance unless ENV['PROXES_PASSTHROUGH']
   use Rack::ContentLength
 
   # Forward requests to ES
