@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'proxes/security'
+require 'proxes/middleware/security'
 require 'proxes/forwarder'
 require 'proxes/models/permission'
 require 'elasticsearch'

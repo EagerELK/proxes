@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'proxes/security'
+require 'proxes/middleware/security'
 
 describe ProxES::Security do
   def app
