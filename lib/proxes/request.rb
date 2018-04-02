@@ -43,6 +43,10 @@ module ProxES
       @user ||= Ditty::User[user_id]
     end
 
+    def detail
+      "#{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
+    end
+
     private
 
     def path_parts
@@ -53,10 +57,6 @@ module ProxES
       return val if val.nil?
       return [] if [endpoint, '_all'].include?(val) && !WRITE_METHODS.include?(request_method)
       val.split(',')
-    end
-
-    def detail
-      "#{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
     end
 
     class << self
