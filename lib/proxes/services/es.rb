@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'openssl'
 require 'elasticsearch'
 require 'ditty/services/logger'
 
@@ -9,7 +10,6 @@ module ProxES
       def client
         @client ||= Elasticsearch::Client.new(
           url: ENV['ELASTICSEARCH_URL'],
-          adapter: :net_http_persistent,
           transport_options: {
             ssl: {
               verify: ENV['SSL_VERIFY_NONE'].to_i != 1,
