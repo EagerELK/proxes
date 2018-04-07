@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require 'active_support'
+require 'active_support/core_ext/object/blank'
+require 'ditty/services/logger'
 require 'proxes/models/permission'
 require 'proxes/helpers/indices'
-require 'ditty/services/logger'
 
 module ProxES
   class RequestPolicy
@@ -29,6 +31,7 @@ module ProxES
 
     def index_allowed?
       patterns = patterns_for('INDEX').map do |permission|
+        return nil if permission.pattern.blank?
         permission.pattern.gsub(/\{user.(.*)\}/) { |_match| user.send(Regexp.last_match[1].to_sym) }
       end
       filter(request.index, patterns).count > 0
@@ -42,13 +45,23 @@ module ProxES
       false
     end
 
-    def patterns_for(action)
-      return Permission.for_user(user, action) if user
-      []
-    end
-
     def logger
       @logger ||= Ditty::Services::Logger.instance
+    end
+
+    private
+
+    def patterns
+      return [] if user.nil?
+      patterns_for('INDEX').map do |permission|
+        return nil if permission.pattern.blank?
+        permission.pattern.gsub(/\{user.(.*)\}/) { |_match| user.send(Regexp.last_match[1].to_sym) }
+      end.compact
+    end
+
+    def patterns_for(action)
+      return [] if user.nil?
+      Permission.for_user(user, action)
     end
 
     class Scope
@@ -67,7 +80,22 @@ module ProxES
       end
 
       def resolve
-        scope
+        return [] if user.nil?
+        filter request.index, patterns
+      end
+
+      private
+
+      def patterns_for(action)
+        return [] if user.nil?
+        Permission.for_user(user, action)
+      end
+
+      def patterns
+        patterns_for('INDEX').map do |permission|
+          return nil if permission.pattern.blank?
+          permission.pattern.gsub(/\{user.(.*)\}/) { |_match| user.send(Regexp.last_match[1].to_sym) }
+        end.compact
       end
     end
   end

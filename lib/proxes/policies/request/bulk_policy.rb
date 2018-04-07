@@ -6,14 +6,9 @@ module ProxES
   class Request
     class BulkPolicy < RequestPolicy
       def post?
-        return false if user.nil?
-
-        patterns = Permission.for_user(user, 'INDEX').map do |permission|
-          permission.pattern.gsub(/\{user.(.*)\}/) { |_match| user.send(Regexp.last_match[1].to_sym) }
-        end
-
-        return false if request.index && !index_allowed?
-        return false if request.bulk_indices == '' || patterns.empty?
+        return false if user.nil? ||
+                        (request.index && !index_allowed?) ||
+                        (request.bulk_indices == '' || patterns.empty?)
 
         patterns.find do |pattern|
           request.bulk_indices.find { |idx| idx !~ /#{pattern}/ }
@@ -21,14 +16,6 @@ module ProxES
       end
 
       class Scope < RequestPolicy::Scope
-        def resolve
-          return false if user.nil?
-
-          patterns = Permission.for_user(user, 'INDEX').map do |permission|
-            permission.pattern.gsub(/\{user.(.*)\}/) { |_match| user.send(Regexp.last_match[1].to_sym) }
-          end
-          filter request.index, patterns
-        end
       end
     end
   end
