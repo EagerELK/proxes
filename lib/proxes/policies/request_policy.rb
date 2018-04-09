@@ -92,6 +92,7 @@ module ProxES
       end
 
       def patterns
+        return [] if user.nil?
         patterns_for('INDEX').map do |permission|
           return nil if permission.pattern.blank?
           permission.pattern.gsub(/\{user.(.*)\}/) { |_match| user.send(Regexp.last_match[1].to_sym) }

@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
+require 'active_support'
+require 'active_support/core_ext/object/blank'
+
 module ProxES
   module Helpers
     module Indices
       def filter(asked, against)
-        return against.map { |a| a.gsub(/\.\*/, '*') } if asked == ['*'] || asked == [] || asked.nil?
+        return against.map { |a| a.gsub(/\.\*/, '*') } if asked == ['*'] || asked.blank?
 
         answer = []
         against.each do |pattern|
