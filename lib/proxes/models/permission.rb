@@ -29,3 +29,9 @@ module ProxES
     end
   end
 end
+
+module Ditty
+  class User < ::Sequel::Model
+    one_to_many :permissions, class: ::ProxES::Permission
+  end
+end
