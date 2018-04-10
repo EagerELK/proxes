@@ -17,7 +17,9 @@ module ProxES
 
       def call(env)
         request = Request.from_env(env)
-        @app.call env
+        code, headers, body = @app.call env
+        return failed(request, 'Endpoint call failed', :es_request_failed, code) unless (200..299).cover? code
+        [code, headers, body]
       rescue Errno::EHOSTUNREACH
         error 'Could not reach Elasticsearch at ' + ENV['ELASTICSEARCH_URL']
       rescue Errno::ECONNREFUSED, Faraday::ConnectionFailed
@@ -28,20 +30,27 @@ module ProxES
           return redirect '/_proxes/auth/identity'
         end
 
-        log_action(
-          :es_request_denied,
-          user: request.user,
-          details: "#{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
-        )
         user = request.user ? request.user.email : 'unauthenticated request'
-        logger.debug "Access denied for #{user} by security layer: #{request.detail}"
-        error 'Not Authorized', 401
+        logger.error "Access denied for #{user} by security layer: #{request.detail}"
+
+        failed request, 'Not Authorized', :es_request_denied, 401
       rescue StandardError => e
         raise e if env['RACK_ENV'] != 'production'
+
         user = request.user ? request.user.email : 'unauthenticated request'
         logger.error "Access denied for #{user} by security exception: #{request.detail}"
         logger.error e
-        error 'Forbidden', 403
+
+        failed request, 'Forbidden', :es_request_denied, 403
+      end
+
+      def failed(request, message, action, code)
+        log_action(
+          action,
+          user: request.user,
+          details: "#{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
+        )
+        error message, code
       end
 
       # Response Helpers
