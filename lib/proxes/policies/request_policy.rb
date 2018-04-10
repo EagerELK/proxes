@@ -45,25 +45,6 @@ module ProxES
       false
     end
 
-    def logger
-      @logger ||= Ditty::Services::Logger.instance
-    end
-
-    private
-
-    def patterns
-      return [] if user.nil?
-      patterns_for('INDEX').map do |permission|
-        return nil if permission.pattern.blank?
-        permission.pattern.gsub(/\{user.(.*)\}/) { |_match| user.send(Regexp.last_match[1].to_sym) }
-      end.compact
-    end
-
-    def patterns_for(action)
-      return [] if user.nil?
-      Permission.for_user(user, action)
-    end
-
     class Scope
       include Helpers::Indices
 
@@ -75,28 +56,9 @@ module ProxES
         @scope = scope
       end
 
-      def logger
-        @logger ||= Ditty::Services::Logger.instance
-      end
-
       def resolve
         return [] if user.nil?
         filter request.index, patterns
-      end
-
-      private
-
-      def patterns_for(action)
-        return [] if user.nil?
-        Permission.for_user(user, action)
-      end
-
-      def patterns
-        return [] if user.nil?
-        patterns_for('INDEX').map do |permission|
-          return nil if permission.pattern.blank?
-          permission.pattern.gsub(/\{user.(.*)\}/) { |_match| user.send(Regexp.last_match[1].to_sym) }
-        end.compact
       end
     end
   end
