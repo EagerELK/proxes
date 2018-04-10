@@ -18,7 +18,13 @@ module ProxES
       def call(env)
         request = Request.from_env(env)
         code, headers, body = @app.call env
-        return failed(request, 'Endpoint call failed', :es_request_failed, code) unless (200..299).cover? code
+        unless (200..299).cover? code
+          log_action(
+            :es_request_failed,
+            user: request.user,
+            details: "#{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
+          )
+        end
         [code, headers, body]
       rescue Errno::EHOSTUNREACH
         error 'Could not reach Elasticsearch at ' + ENV['ELASTICSEARCH_URL']
