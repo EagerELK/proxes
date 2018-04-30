@@ -5,6 +5,8 @@ $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 
 require 'dotenv/load'
 
+require 'ditty/services/logger'
+use Rack::CommonLogger, Ditty::Services::Logger.instance
 # Session
 use Rack::Session::Cookie,
     key: '_ProxES_session',
