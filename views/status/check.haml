@@ -13,21 +13,16 @@
 	}
 
 	.status-table i.fa {
-		display: inline-block;
-		border-radius: 60px;
-		padding: 0.5em 0.6em;
+		/* marked important to override style from bootstrap (.table>tbody>tr>td) */
+		line-height: 1.2em !important;
 	}
 
 	.status-table i.fa.success {
-		box-shadow: 0px 0px 2px #3c763d;
 		color: #3c763d;
-		background-color: #dff0d8;
 	}
 
 	.status-table i.fa.warning {
-		box-shadow: 0px 0px 2px #a94442;
 		color: #a94442;
-		background-color: #f2dede;
 	}
 
 %table.table.status-table
@@ -40,7 +35,7 @@
 		- checks.each do |check|
 			%tr
 				%td.icon
-					%i.fa{ class: check[:passed] ? 'success fa-check' : 'warning fa-times'}
+					%i.fa.fa-2x{ class: check[:passed] ? 'success fa-check-circle' : 'warning fa-times-circle'}
 				%td.font-weight-bold= check[:text]
 				%td= check[:value].is_a?(Array) ? check[:value].join('<br>') : check[:value]
 
