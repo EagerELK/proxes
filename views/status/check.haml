@@ -1,12 +1,50 @@
-%table.table
+:css
+	.font-weight-bold {
+		font-weight: bold;
+	}
+
+	.status-table td {
+		/* marked important to override style from bootstrap (.table>tbody>tr>td) */
+		line-height: 2.5em !important;
+	}
+
+	.status-table td.icon {
+		width: 4em
+	}
+
+	.status-table i.fa {
+		display: inline-block;
+		border-radius: 60px;
+		padding: 0.5em 0.6em;
+	}
+
+	.status-table i.fa.success {
+		box-shadow: 0px 0px 2px #3c763d;
+		color: #3c763d;
+		background-color: #dff0d8;
+	}
+
+	.status-table i.fa.warning {
+		box-shadow: 0px 0px 2px #a94442;
+		color: #a94442;
+		background-color: #f2dede;
+	}
+
+%table.table.status-table
 	%thead
 		%tr
+			%th
 			%th Check
 			%th Value
-			%th Passed
 	%tbody
 		- checks.each do |check|
-			%tr{ class: check[:passed] ? 'success' : 'warning' }
-				%td= check[:text]
+			%tr
+				%td.icon
+					%i.fa{ class: check[:passed] ? 'success fa-check' : 'warning fa-times'}
+				%td.font-weight-bold= check[:text]
 				%td= check[:value].is_a?(Array) ? check[:value].join('<br>') : check[:value]
-				%td= check[:passed] ? 'Yes' : 'No'
+
+
+-# would prefer something like 'Refreshed 55 minutes ago' but would need to get haml to call into momentjs
+%p.pull-right.text-muted Last refreshed at #{Time.now.strftime("%Y-%m-%d %H:%M:%S")}
+%div.clearfix
