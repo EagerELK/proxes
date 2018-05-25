@@ -1,4 +1,4 @@
-FROM ruby:2.4-alpine
+FROM ruby:2.4-alpine3.4
 MAINTAINER Jurgens du Toit <jurgens@datatools.io>
 
 EXPOSE 9292
