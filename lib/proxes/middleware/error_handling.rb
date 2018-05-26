@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
-require 'ditty/helpers/wisper'
-
 module ProxES
   module Middleware
     class ErrorHandling
       attr_reader :logger
 
       include Wisper::Publisher
-      include Ditty::Helpers::Wisper
 
       def initialize(app, logger = nil)
         @app = app

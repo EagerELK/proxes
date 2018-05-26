@@ -13,7 +13,6 @@ module ProxES
 
       include Ditty::Helpers::Authentication
       include Ditty::Helpers::Pundit
-      include Ditty::Helpers::Wisper
 
       def initialize(app, logger = nil)
         @app = app
