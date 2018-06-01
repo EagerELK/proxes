@@ -25,14 +25,15 @@ module ProxES
         error 'Could not reach Elasticsearch at ' + ENV['ELASTICSEARCH_URL']
       rescue Errno::ECONNREFUSED, Faraday::ConnectionFailed, SocketError
         error 'Elasticsearch not listening at ' + ENV['ELASTICSEARCH_URL']
-      rescue Pundit::NotAuthorizedError, Ditty::Helpers::NotAuthenticated
+      rescue Pundit::NotAuthorizedError, Ditty::Helpers::NotAuthenticated => e
+        broadcast(:es_request_denied, request, e)
         log_not_authorized request
-        broadcast(:es_request_denied, request)
+        env['RACK_ENV'] == 'development' ? raise(e) : logger.error(e)
         request.html? && request.user.nil? ? login_and_redirect(request) : error('Not Authorized', 401)
       rescue StandardError => e
-        env['RACK_ENV'] == 'development' ? raise(e) : logger.error(e)
-        log_not_authorized request
         broadcast(:es_request_denied, request, e)
+        log_not_authorized request
+        env['RACK_ENV'] == 'development' ? raise(e) : logger.error(e)
         error 'Forbidden', 403
       end
 
