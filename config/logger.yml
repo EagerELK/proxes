@@ -1,5 +1,0 @@
----
-- name: default
-  class: Logger
-  level: WARN
-  options: $stdout
