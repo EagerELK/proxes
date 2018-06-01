@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require 'wisper'
+require 'proxes/request'
+require 'ditty/services/logger'
+
 module ProxES
   module Middleware
     class ErrorHandling
@@ -13,47 +17,28 @@ module ProxES
       end
 
       def call(env)
-        request = Request.from_env(env)
-        code, headers, body = @app.call env
-        unless (200..299).cover? code
-          log_action(
-            :es_request_failed,
-            user: request.user,
-            details: "#{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
-          )
-        end
-        [code, headers, body]
+        request = ProxES::Request.from_env(env)
+        response = @app.call env
+        broadcast(:es_request_failed, request, response) unless (200..299).cover?(response[0])
+        response
       rescue Errno::EHOSTUNREACH
         error 'Could not reach Elasticsearch at ' + ENV['ELASTICSEARCH_URL']
       rescue Errno::ECONNREFUSED, Faraday::ConnectionFailed
         error 'Elasticsearch not listening at ' + ENV['ELASTICSEARCH_URL']
       rescue Pundit::NotAuthorizedError, Ditty::Helpers::NotAuthenticated
-        if request.html? && request.user.nil?
-          env['rack.session']['omniauth.origin'] = request.url
-          return redirect '/_proxes/auth/identity'
-        end
-
-        user = request.user ? request.user.email : 'unauthenticated request'
-        logger.error "Access denied for #{user} by security layer: #{request.detail}"
-
-        failed request, 'Not Authorized', :es_request_denied, 401
+        log_not_authorized request
+        broadcast(:es_request_denied, request)
+        request.html? && request.user.nil? ? login_and_redirect(request) : error('Not Authorized', 401)
       rescue StandardError => e
-        raise e if env['RACK_ENV'] != 'production'
-
-        user = request.user ? request.user.email : 'unauthenticated request'
-        logger.error "Access denied for #{user} by security exception: #{request.detail}"
-        logger.error e
-
-        failed request, 'Forbidden', :es_request_denied, 403
+        env['RACK_ENV'] == 'development' ? raise(e) : logger.error(e)
+        log_not_authorized request
+        broadcast(:es_request_denied, request, e)
+        error 'Forbidden', 403
       end
 
-      def failed(request, message, action, code)
-        log_action(
-          action,
-          user: request.user,
-          details: "#{request.request_method.upcase} #{request.fullpath} (#{request.class.name})"
-        )
-        error message, code
+      def log_not_authorized(request)
+        user = request.user ? request.user.email : 'unauthenticated request'
+        logger.error "Access denied for #{user} by security layer: #{request.detail}"
       end
 
       # Response Helpers
@@ -61,6 +46,11 @@ module ProxES
         headers = { 'Content-Type' => 'application/json' }
         headers['WWW-Authenticate'] = 'Basic realm="security"' if code == 401
         [code, headers, ['{"error":"' + message + '"}']]
+      end
+
+      def login_and_redirect(request)
+        request.session['omniauth.origin'] = request.url unless request.url == '/_proxes/auth/identity'
+        redirect '/_proxes/auth/identity'
       end
 
       def redirect(destination, code = 302)
