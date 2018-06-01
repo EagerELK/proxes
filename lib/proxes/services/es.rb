@@ -29,10 +29,6 @@ module ProxES
       def conn
         client.transport.connections.get_connection.connection
       end
-
-      def cluster_health(level = 'cluster')
-        client.cluster.health level: level
-      end
     end
   end
 end

@@ -19,7 +19,7 @@ module ProxES
     get '/check' do
       checks = []
       begin
-        health = cluster_health
+        health = client.cluster.health level: 'cluster'
         checks << { text: 'Cluster Reachable', passed: true, value: health['cluster_name'] }
         checks << { text: 'Cluster Health', passed: health['status'] == 'green', value: health['status'] }
 
