@@ -8,6 +8,7 @@ module Ditty
       controllers = File.expand_path('../../../proxes/controllers', __FILE__)
       Dir.glob("#{controllers}/*.rb").each { |f| require f }
       require 'proxes/models/permission'
+      require 'proxes/services/listener'
     end
 
     def self.migrations
