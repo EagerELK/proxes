@@ -10,13 +10,6 @@ module ProxES
     include ProxES::Services::ES
 
     def call(env)
-      forward(env)
-    rescue SocketError
-      headers = { 'Content-Type' => 'application/json' }
-      [500, headers, ['{"error":"Could not connect to Elasticsearch"}']]
-    end
-
-    def forward(env)
       source = Rack::Request.new(env)
       response = conn.send(source.request_method.downcase) do |req|
         source_body = body_from(source)

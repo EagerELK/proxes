@@ -23,7 +23,7 @@ module ProxES
         response
       rescue Errno::EHOSTUNREACH
         error 'Could not reach Elasticsearch at ' + ENV['ELASTICSEARCH_URL']
-      rescue Errno::ECONNREFUSED, Faraday::ConnectionFailed
+      rescue Errno::ECONNREFUSED, Faraday::ConnectionFailed, SocketError
         error 'Elasticsearch not listening at ' + ENV['ELASTICSEARCH_URL']
       rescue Pundit::NotAuthorizedError, Ditty::Helpers::NotAuthenticated
         log_not_authorized request
