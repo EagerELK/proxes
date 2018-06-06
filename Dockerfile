@@ -25,7 +25,7 @@ RUN apk add --update \
 
 ADD views /usr/src/app/views
 COPY config.ru /usr/src/app/
-COPY config/logger.yml /usr/src/app/config/
+COPY config/settings.yml /usr/src/app/config/
 COPY config/puma.rb /usr/src/app/config/
 COPY Gemfile.deploy /usr/src/app/Gemfile
 COPY Gemfile.deploy.lock /usr/src/app/Gemfile.lock
