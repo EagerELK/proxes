@@ -2,16 +2,19 @@ version: '3'
 services:
   db:
     image: postgres
-  es:
+    container_name: postgres
+  elasticsearch:
     image: elasticsearch
+    container_name: elasticsearch
   web:
     image: eagerelk/proxes:latest
+    container_name: web-proxes
     command: web-proxes
     ports:
       - '9292:9292'
     environment:
       - DATABASE_URL=postgres://postgres:@db/postgres
-      - ELASTICSEARCH_URL=http://es:9200
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
     depends_on:
       - db
-      - es
+      - elasticsearch
