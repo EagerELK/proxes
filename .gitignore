@@ -13,6 +13,8 @@
 .vagrant
 *.db
 /Gemfile.dev.lock
+/Gemfile.ci.lock
 proxes-*.gem
 migrations
 .env
+pids
