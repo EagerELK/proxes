@@ -23,6 +23,10 @@ module ProxES
         @index ||= check_part(path_parts[0])
       end
 
+      def stats
+        @stats ||= check_part(path_parts[2])
+      end
+
       def indices?
         true
       end
