@@ -40,7 +40,7 @@ module ProxES
     def action_allowed?(action)
       # Give me all the user's permissions that match the verb
       patterns_for(action).each do |permission|
-        return true if request.path =~ /#{permission.pattern}/
+        return true unless (request.path =~ /#{permission.pattern}/).nil?
       end
       false
     end
