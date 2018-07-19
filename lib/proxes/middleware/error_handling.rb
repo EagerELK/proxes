@@ -28,12 +28,12 @@ module ProxES
       rescue Pundit::NotAuthorizedError, Ditty::Helpers::NotAuthenticated => e
         broadcast(:es_request_denied, request, e)
         log_not_authorized request
-        env['RACK_ENV'] == 'development' ? raise(e) : logger.error(e)
+        raise e if env['RACK_ENV'] == 'development'
         request.html? && request.user.nil? ? login_and_redirect(request) : error('Not Authorized', 401)
       rescue StandardError => e
         broadcast(:es_request_denied, request, e)
         log_not_authorized request
-        env['RACK_ENV'] == 'development' ? raise(e) : logger.error(e)
+        raise e if env['RACK_ENV'] == 'development'
         error 'Forbidden', 403
       end
 
