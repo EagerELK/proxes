@@ -1,0 +1,95 @@
+- unless params['fields']
+  :css
+    td {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    table {
+      table-layout: fixed
+    }
+
+= form_tag(base_path, form_verb: :get, attributes: { class: '' }) do
+  #filter-form.form-horizontal
+    .form-group
+      %label.col-sm-2.control-label{ for: "filter_indices" } Indices
+      .col-sm-10
+        %select.select2.form-control{ name: 'indices[]', id: 'filter_indices', multiple: true }
+          - indices.each do |k,v| k ||= v;  v ||= k;
+            %option{ value: k, selected: (params['indices'] && params['indices'].include?(k))}= v
+    .form-group
+      %label.col-sm-2.control-label{ for: "filter_fields" } Show Fields
+      .col-sm-10
+        %select.select2.form-control{ name: 'fields[]', id: 'filter_fields', multiple: true }
+          - fields.each do |k,v| v = k;
+            %option{ value: k, selected: (params['fields'] && params['fields'].include?(k))}= v
+  .form-group
+    .col-sm-12
+      .input-group
+        %input#search.form-control{ name: 'q', type: 'text', placeholder: 'Search...', value: params['q'] }
+        .input-group-btn
+          %button.btn.btn-primary{ type: 'submit' }
+            %span.fa.fa-search
+
+- if result
+  %p.text-center
+    Showing
+    = result['hits']['total']
+    results, that took
+    = result['took'] / 1000.0
+    seconds.
+
+  - if result['hits']['total'].positive?
+    .table-responsive
+      %table.table.table-hover
+        %thead
+          %tr
+          - if params['fields']
+            - params['fields'].each do |field|
+              %th= field
+          - else
+            %th.col-sm-4.path-column Path
+            %th.col-sm-7 Document
+          %th.col-sm-1
+        %tbody
+          - result['hits']['hits'].each do |row|
+            %tr
+              - if params['fields']
+                - params['fields'].each do |field|
+                  %td= row['_source'][field]
+              - else
+                %td.path-column= "#{row['_index']}/#{row['_type']}/#{row['_id']}"
+                %td= JSON.generate row['_source']
+              %td
+                %button.btn.btn-sm.btn-default{ type: 'button', :'data-toggle' => 'collapse', :'data-target' => "##{row['_index']}-#{row['_type']}-#{row['_id']}", :'aria-expanded' => 'false', :'aria-controls' => "#{row['_index']}-#{row['_type']}-#{row['_id']}"}
+                  %i.fa.fa-plus
+                  More
+            %tr.active.collapse{ id: "#{row['_index']}-#{row['_type']}-#{row['_id']}" }
+              %td{ colspan: (params['fields'] ? params['fields'].count + 1 : 3) }
+                %pre= JSON.pretty_generate row['_source']
+  - else
+    %p.lead.text-center No results found
+
+:javascript
+  $(function() {
+    var fields = new Bloodhound({
+      datumTokenizer: Bloodhound.tokenizers.whitespace,
+      queryTokenizer: Bloodhound.tokenizers.whitespace,
+      prefetch: {
+        url: './search/fields',
+        cacheKey: '2',
+        transform: function(elm) {
+          return Object.getOwnPropertyNames(elm);
+        }
+      }
+    });
+
+    $('#search').typeahead({
+      minLength: 3,
+      highlight: true
+    },
+    {
+      name: 'fields',
+      source: fields
+    })
+  });
