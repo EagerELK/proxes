@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'active_support/core_ext/object/blank'
 require 'ditty/controllers/application'
 require 'proxes/services/search'
 
@@ -8,7 +9,11 @@ module ProxES
     set base_path: "#{settings.map_path}/search"
 
     get '/' do
-      result = ProxES::Services::Search.search(params['q'], index: params['indices']) if params['q']
+      page = (params['page'] || 1).to_i
+      size = (params['count'] || 25).to_i
+      from = ((page - 1) * size)
+      params['q'] = '*' if params['q'].blank?
+      result = ProxES::Services::Search.search(params['q'], index: params['indices'], from: from, size: size)
       haml :"#{view_location}/index",
            locals: {
              title: 'Search',

@@ -34,8 +34,8 @@ module ProxES
           result['aggregations']['values']['buckets'].map { |e| e['key'] }
         end
 
-        def search(qs, index: nil)
-          client.search index: index, q: qs#, explain: true
+        def search(qs, options = {})
+          client.search options.merge(q: qs)#, explain: true
         end
       end
     end

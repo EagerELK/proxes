@@ -24,14 +24,30 @@ module ProxES
       validates_includes self.class.verbs, :verb
     end
 
-    def self.verbs
-      %w[GET POST PUT DELETE HEAD OPTIONS TRACE INDEX]
+    class << self
+      def verbs
+        %w[GET POST PUT DELETE HEAD OPTIONS TRACE INDEX]
+      end
+
+      def from_audit_log(audit_log)
+        match = audit_log.details.match(/^(\w)+ (\S+)/)
+        {
+          verb: match[1],
+          path: match[2]
+        }
+      end
     end
   end
 end
 
 module Ditty
   class User < ::Sequel::Model
+    one_to_many :permissions, class: ::ProxES::Permission
+  end
+end
+
+module Ditty
+  class Role < ::Sequel::Model
     one_to_many :permissions, class: ::ProxES::Permission
   end
 end
