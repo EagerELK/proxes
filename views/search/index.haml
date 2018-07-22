@@ -1,4 +1,4 @@
-- unless params['fields']
+- unless params[:fields]
   :css
     td {
       overflow: hidden;
@@ -15,18 +15,18 @@
       %label.col-sm-2.control-label{ for: "filter_indices" } Indices
       .col-sm-10
         %select.select2.form-control{ name: 'indices[]', id: 'filter_indices', multiple: true }
-          - indices.each do |k,v| k ||= v;  v ||= k;
-            %option{ value: k, selected: (params['indices'] && params['indices'].include?(k))}= v
+          - indices.sort.each do |k| v ||= k;
+            %option{ value: k, selected: (params[:indices] && params[:indices].include?(k))}= v
     .form-group
       %label.col-sm-2.control-label{ for: "filter_fields" } Show Fields
       .col-sm-10
         %select.select2.form-control{ name: 'fields[]', id: 'filter_fields', multiple: true }
-          - fields.each do |k,v| v = k;
-            %option{ value: k, selected: (params['fields'] && params['fields'].include?(k))}= v
+          - fields.keys.sort.each do |k| v = k;
+            %option{ value: k, selected: (params[:fields] && params[:fields].include?(k))}= v
   .form-group
     .col-sm-12
       .input-group
-        %input#search.form-control{ name: 'q', type: 'text', placeholder: 'Search...', value: params['q'] }
+        %input#search.form-control{ name: 'q', type: 'text', placeholder: 'Search...', value: params[:q] }
         .input-group-btn
           %button.btn.btn-primary{ type: 'submit' }
             %span.fa.fa-search
@@ -44,8 +44,8 @@
       %table.table.table-hover
         %thead
           %tr
-          - if params['fields']
-            - params['fields'].each do |field|
+          - if params[:fields]
+            - params[:fields].each do |field|
               %th= field
           - else
             %th.col-sm-4.path-column Path
@@ -54,8 +54,8 @@
         %tbody
           - result['hits']['hits'].each do |row|
             %tr
-              - if params['fields']
-                - params['fields'].each do |field|
+              - if params[:fields]
+                - params[:fields].each do |field|
                   %td= row['_source'][field]
               - else
                 %td.path-column= "#{row['_index']}/#{row['_type']}/#{row['_id']}"
@@ -65,7 +65,7 @@
                   %i.fa.fa-plus
                   More
             %tr.active.collapse{ id: "#{row['_index']}-#{row['_type']}-#{row['_id']}" }
-              %td{ colspan: (params['fields'] ? params['fields'].count + 1 : 3) }
+              %td{ colspan: (params[:fields] ? params[:fields].count + 1 : 3) }
                 %pre= JSON.pretty_generate row['_source']
   - else
     %p.lead.text-center No results found

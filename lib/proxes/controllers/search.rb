@@ -12,16 +12,16 @@ module ProxES
     get '/' do
       authorize self, :search
 
-      page = (params['page'] || 1).to_i
-      size = (params['count'] || 25).to_i
+      param :page, Integer, min: 0, default: 1
+      param :count, Integer, min: 0, default: 25
       from = ((page - 1) * size)
-      params['q'] = '*' if params['q'].blank?
-      result = ProxES::Services::Search.search(params['q'], index: params['indices'], from: from, size: size)
+      params[:q] = '*' if params[:q].blank?
+      result = ProxES::Services::Search.search(params[:q], index: params[:indices], from: from, size: size)
       haml :"#{view_location}/index",
            locals: {
              title: 'Search',
              indices: ProxES::Services::Search.indices,
-             fields: ProxES::Services::Search.fields(params['indices']),
+             fields: ProxES::Services::Search.fields(index: params[:indices], names_only: true),
              result: result
            }
     end
@@ -29,7 +29,8 @@ module ProxES
     get '/fields/?:indices?/?' do
       authorize self, :fields
 
-      json ProxES::Services::Search.fields params['indices']
+      param :names_only, Boolean, default: false
+      json ProxES::Services::Search.fields index: params[:indices], names_only: params[:names_only]
     end
 
     get '/indices/?' do
@@ -41,8 +42,8 @@ module ProxES
     get '/values/:field/?:indices?/?' do |field|
       authorize self, :values
 
-      size = params['size'] || 25
-      json ProxES::Services::Search.values(field, size: size, index: params['indices'])
+      param :size, Integer, min: 0, default: 25
+      json ProxES::Services::Search.values(field, size: params[:size], index: params[:indices])
     end
 
     def find_template(views, name, engine, &block)
