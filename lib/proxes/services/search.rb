@@ -1,5 +1,7 @@
 require 'proxes/services/es'
 
+# TODO: This needs to be filtered.
+
 module ProxES
   module Services
     module Search
