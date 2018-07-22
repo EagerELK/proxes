@@ -1,11 +1,13 @@
+# frozen_string_literal: true
 source 'https://rubygems.org'
 
 # Specify your gem's dependencies in proxes.gemspec
 gemspec
 
+gem 'ditty', path: '../ditty'
 gem 'dotenv'
 gem 'pry-byebug'
 gem 'puma'
 gem 'rerun', git: 'https://github.com/alexch/rerun.git', branch: 'master'
 gem 'simplecov'
-gem 'sqlite3'
+gem 'pg'
