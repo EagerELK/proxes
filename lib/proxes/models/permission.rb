@@ -30,7 +30,9 @@ module ProxES
       end
 
       def from_audit_log(audit_log)
+        return {} if audit_log.details.nil?
         match = audit_log.details.match(/^(\w)+ (\S+)/)
+        return {} if match.nil?
         {
           verb: match[1],
           path: match[2]
