@@ -20,7 +20,7 @@ module ProxES
                   keyword = details['fields'].find do |v|
                     v[1]['type'] == 'keyword'
                   end
-                  fields["#{name}.#{keyword[0]}"] ||= keyword[1]['type']
+                  fields["#{name}.#{keyword[0]}"] ||= keyword[1]['type'] if keyword
                 end
                 fields[name] ||= details['type'] unless details['type'].nil?
               end
