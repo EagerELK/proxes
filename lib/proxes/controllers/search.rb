@@ -14,9 +14,9 @@ module ProxES
 
       param :page, Integer, min: 0, default: 1
       param :count, Integer, min: 0, default: 25
-      from = ((page - 1) * size)
+      from = ((params[:page] - 1) * params[:count])
       params[:q] = '*' if params[:q].blank?
-      result = ProxES::Services::Search.search(params[:q], index: params[:indices], from: from, size: size)
+      result = ProxES::Services::Search.search(params[:q], index: params[:indices], from: from, size: params[:count])
       haml :"#{view_location}/index",
            locals: {
              title: 'Search',
