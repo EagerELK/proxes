@@ -21,7 +21,6 @@
             %a.btn.btn-default{ href: "#{base_path}/#{entity.id}/edit" } Edit
           .col-md-6.text-right
             - if policy(entity).delete?
-              %form{ method: 'post', action: "#{base_path}/#{entity.id}" }
-                %input{ name: '_method', value: 'DELETE', type: 'hidden' }
+              = delete_form_tag("#{base_path}/#{entity.id}") do
                 %button.btn.btn-warning{ type: 'submit' } Delete
   .col-md-2

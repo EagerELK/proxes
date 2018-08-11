@@ -3,7 +3,7 @@
   .col-md-8
     .panel.panel-default
       .panel-body
-        %form.form-horizontal{ method: 'post', action: base_path }
+        = form_tag(base_path) do
           = haml :'permissions/form', locals: { entity: entity }
           %button.btn.btn-primary.btn{ type: 'submit' }
             Create Permission

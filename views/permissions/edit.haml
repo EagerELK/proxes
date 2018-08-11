@@ -3,8 +3,7 @@
   .col-md-8
     .panel.panel-default
       .panel-body
-        %form.form-horizontal{ method: 'post', action: "#{base_path}/#{entity.id}" }
-          %input{ name: '_method', value: 'PUT', type: 'hidden' }
+        = edit_form_tag("#{base_path}/#{entity.id}") do
           = haml :'permissions/form', locals: { entity: entity }
           %button.btn.btn-primary{ type: 'submit' }
             Update Permission

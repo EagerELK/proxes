@@ -25,8 +25,4 @@
             %tr
               %td.text-center{ colspan: 3 } No records
 
-      - if policy(::ProxES::Permission).create?
-        .panel-body.text-right
-          %a.btn.btn-primary{ href: "#{base_path}/new" } New Permission
-
 =pagination(list, base_path)
