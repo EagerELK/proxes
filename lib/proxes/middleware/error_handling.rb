@@ -50,8 +50,8 @@ module ProxES
       end
 
       def login_and_redirect(request)
-        request.session['omniauth.origin'] = request.url unless request.url == '/_proxes/auth/identity'
-        redirect '/_proxes/auth/identity'
+        request.session['omniauth.origin'] = request.url unless request.url == '/_proxes/auth/login'
+        redirect '/_proxes/auth/login'
       end
 
       def redirect(destination, code = 302)

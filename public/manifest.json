@@ -18,8 +18,8 @@
       "sizes": "192x192"
     }
   ],
-  "start_url": "_proxes/auth/identity",
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
-  "display": "standalone"
+  "start_url": "_proxes/auth/login",
+  "theme_color": "#bebebe",
+  "background_color": "#bebebe",
+  "display": "fullscreen"
 }

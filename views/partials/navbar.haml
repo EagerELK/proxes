@@ -10,16 +10,15 @@
         ProxES
 
   -if authenticated?
-    %form.nav.navbar-top-links.navbar-form.navbar-right{ action: "#{settings.map_path}/auth/identity", method: 'post' }
+    = delete_form_tag("#{settings.map_path}/auth", attributes: { class: 'nav navbar-top-links navbar-form navbar-right' }) do
       %a.btn.btn-default{ href: "#{settings.map_path}/users/profile" } My Account
-      %input{ name: '_method', value: 'DELETE', type: 'hidden' }
       %button.btn.btn-default{ type: 'submit' }
         / %i.ti-panel
         Logout
   - else
     %ul.nav.navbar-top-links.navbar-right
       %li
-        %a.btn.btn-link{ href: "#{settings.map_path}/auth/identity" }
+        %a.btn.btn-link{ href: "#{settings.map_path}/auth/login" }
           Log In
   .navbar-default.sidebar{ role: 'navigation' }
     = haml :'partials/sidebar'
