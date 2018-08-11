@@ -33,16 +33,13 @@ module ProxES
       patterns = patterns_for('INDEX').map do |permission|
         return nil if permission.pattern.blank?
         permission.pattern.gsub(/\{user.(.*)\}/) { |_match| user.send(Regexp.last_match[1].to_sym) }
-      end
+      end.compact
       filter(request.index, patterns).count > 0
     end
 
     def action_allowed?(action)
       # Give me all the user's permissions that match the verb
-      patterns_for(action).each do |permission|
-        return true unless (request.path =~ /#{permission.pattern}/).nil?
-      end
-      false
+      !!patterns_for(action).find { |permission| (request.path =~ /#{permission.pattern}/) }
     end
 
     class Scope
