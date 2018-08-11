@@ -37,7 +37,7 @@ module ProxES
         end
 
         def search(qs, options = {})
-          client.search options.merge(q: qs)#, explain: true
+          client.search options.merge(q: qs) # , explain: true
         end
       end
     end

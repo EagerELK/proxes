@@ -5,22 +5,22 @@ require 'ditty'
 module Ditty
   class ProxES
     def self.load
-      controllers = File.expand_path('../../../proxes/controllers', __FILE__)
+      controllers = File.expand_path('../../proxes/controllers', __dir__)
       Dir.glob("#{controllers}/*.rb").each { |f| require f }
       require 'proxes/models/permission'
       require 'proxes/services/listener'
     end
 
     def self.migrations
-      File.expand_path('../../../../migrate', __FILE__)
+      File.expand_path('../../../migrate', __dir__)
     end
 
     def self.view_folder
-      File.expand_path('../../../../views', __FILE__)
+      File.expand_path('../../../views', __dir__)
     end
 
     def self.public_folder
-      File.expand_path('../../../../public', __FILE__)
+      File.expand_path('../../../public', __dir__)
     end
 
     def self.routes
