@@ -51,8 +51,17 @@ module Ditty
         %w[GET POST PUT DELETE HEAD OPTIONS INDEX].each do |verb|
           ::ProxES::Permission.find_or_create(role: sa, verb: verb, pattern: '.*')
         end
+
+        # Admin Role
         ::Ditty::Role.find_or_create(name: 'admin')
+
+        # User Role
         user_role = ::Ditty::Role.find_or_create(name: 'user')
+        ::ProxES::Permission.find_or_create(role: user_role, verb: 'GET', pattern: '/_cluster/stats')
+        ::ProxES::Permission.find_or_create(role: user_role, verb: 'GET', pattern: '/_nodes')
+        ::ProxES::Permission.find_or_create(role: user_role, verb: 'GET', pattern: '/_nodes/stats')
+        ::ProxES::Permission.find_or_create(role: user_role, verb: 'GET', pattern: '/_stats')
+        ::ProxES::Permission.find_or_create(role: user_role, verb: 'INDEX', pattern: 'user-{user.id}')
 
         # Kibana Specific
         anon = ::Ditty::User.find_or_create(email: 'anonymous@proxes.io')
