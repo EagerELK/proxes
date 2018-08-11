@@ -1,12 +1,7 @@
 # frozen_string_literal: true
 
-libdir = File.expand_path(File.dirname(__FILE__) + '/lib')
-$LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
-
 require 'dotenv/load'
 
-require 'ditty/services/logger'
-use Rack::CommonLogger, Ditty::Services::Logger.instance
 # Session
 use Rack::Session::Cookie,
     key: '_ProxES_session',
@@ -14,47 +9,21 @@ use Rack::Session::Cookie,
     # :secure=>!TEST_MODE, # Uncomment if only allowing https:// access
     secret: File.read('.session_secret')
 
-# Rack Protection
-require 'rack/protection'
-use Rack::Protection::RemoteToken
-use Rack::Protection::SessionHijacking
+require './application'
+require 'ditty/services/authentication'
+use OmniAuth::Builder do
+  Ditty::Services::Authentication.config.each do |prov, config|
+    provider prov, *config[:arguments]
+  end
+end
 
 map '/_proxes' do
-  require 'ditty/components/app'
-  Ditty.component :app
-
-  require 'ditty/controllers/application'
-  Ditty::Application.set :map_path, '/_proxes'
-
-  require 'omniauth'
-  require 'omniauth/identity'
-  OmniAuth.config.logger = Ditty::Services::Logger.instance
-  OmniAuth.config.on_failure = proc { |env|
-    OmniAuth::FailureEndpoint.new(env).redirect_to_failure
-  }
-
-  require 'ditty/controllers/main'
-  require 'ditty/models/identity'
-  use OmniAuth::Builder do
-    # The identity provider is used by the App.
-    provider :identity,
-             fields: [:username],
-             callback_path: '/auth/identity/callback',
-             model: Ditty::Identity,
-             on_login: Ditty::Main,
-             on_registration: Ditty::Main,
-             locate_conditions: ->(req) { { username: req['username'] } }
-  end
-
-  # Management App
-  require 'proxes'
-  Ditty.component :proxes
-
   run Rack::URLMap.new Ditty::Components.routes
 end
 
 map '/' do
   # Proxy all Elasticsearch requests
+  require 'ditty/services/logger'
   require 'proxes/middleware/metrics'
   require 'proxes/middleware/error_handling'
   require 'proxes/middleware/security'
