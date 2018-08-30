@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/eagerelk/proxes'
   spec.license       = 'LGPL-3.0'
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  spec.files         = Dir['lib/*.rb'] + Dir['bin/*']
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'activesupport', '>= 3'
   spec.add_dependency 'bcrypt', '~> 3.1'
-  spec.add_dependency 'ditty', '>= 0.2'
+  spec.add_dependency 'ditty', '>= 0.7.0'
   spec.add_dependency 'elasticsearch', '>= 2'
   spec.add_dependency 'faraday'
   spec.add_dependency 'haml', '~> 5.0'

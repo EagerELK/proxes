@@ -15,7 +15,7 @@ RUN apk add --update \
   openssh \
   openssl \
   openssl-dev \
-  postgresql-dev \
+  sqlite-dev \
   && rm -rf /var/cache/apk/* \
   && mkdir /root/.ssh \
   && mkdir /usr/src/app/config \
