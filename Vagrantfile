@@ -13,24 +13,15 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.provision 'shell', privileged: false, inline: <<-SHELL
+    # Repositories
+    sudo apt-add-repository ppa:brightbox/ruby-ng
+
     # Dependencies / Utilities
     sudo apt-get update
-    sudo apt-get install -y screen curl git build-essential libssl-dev
+    sudo apt-get install -y screen curl git build-essential libssl-dev libpq-dev
 
     # Ruby
-    # sudo apt-get install -y ruby2.3 ruby2.3-dev
-    if [ ! -f /home/vagrant/.rvm/scripts/rvm ]
-    then
-        gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-        \\curl -sSL https://get.rvm.io | bash
-    fi
-    source /home/vagrant/.rvm/scripts/rvm
-
-    # Ruby and it's Gems
-    cd /vagrant
-    rvm use $(cat .ruby-version) --install
-    gem install bundler --no-rdoc --no-ri
-    bundle install
+    sudo apt-get install ruby2.5 ruby2.5-dev
 
     # Node
     # if [ ! -f /home/vagrant/.nvm/nvm.sh ]
