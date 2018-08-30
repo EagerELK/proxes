@@ -32,6 +32,21 @@ gem install proxes
 
 ProxES has two [components](https://github.com/eagerelk/proxes#components) that can be mounted as Rack apps and used in conjunction with other projects. Check the supplied files on how to add proxes to another project.
 
+### Standalone
+
+ProxES can be run as a standalone system:
+
+```bash
+git clone git@github.com:EagerELK/proxes.git
+cd proxes
+cp .env.example .env
+bundle exec rake ditty:prep
+bundle exec rake ditty:migrate
+bundle exec rake ditty:seed
+bundle exec rackup
+```
+
+Feel free to modify `Gemfile` and `.env` to choose a different database driver and web server.
 
 ### Docker
 
