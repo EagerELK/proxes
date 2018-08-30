@@ -29,11 +29,13 @@ module ProxES
         broadcast(:es_request_denied, request, e)
         log_not_authorized request
         raise e if env['APP_ENV'] == 'development'
+        return [401, {}, []] if request.head?
         request.html? && request.user.nil? ? login_and_redirect(request) : error('Not Authorized', 401)
       rescue StandardError => e
         broadcast(:es_request_denied, request, e)
         log_not_authorized request
         raise e if env['APP_ENV'] == 'development'
+        return [403, {}. []] if request.head?
         error 'Forbidden', 403
       end
 
