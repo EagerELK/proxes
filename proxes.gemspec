@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/eagerelk/proxes'
   spec.license       = 'LGPL-3.0'
 
-  spec.files         = Dir['lib/*.rb'] + Dir['bin/*']
+  spec.files         = Dir['lib/**/*.rb'] + Dir['bin/*'] + Dir['migrate/*'] + Dir['views/**.*'] + Dir['public/**.*']
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
