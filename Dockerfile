@@ -23,18 +23,19 @@ RUN apk add --update \
   && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts \
   && gem install bundler
 
+COPY Rakefile /usr/src/app/
+COPY Gemfile.deploy /usr/src/app/Gemfile
+COPY Gemfile.deploy.lock /usr/src/app/Gemfile.lock
+
+RUN bundle install --path vendor/bundle --deployment --without=test development \
+  && bundle exec rake ditty:prep
+
 ADD views /usr/src/app/views
 COPY config.ru /usr/src/app/
 COPY config/settings.yml /usr/src/app/config/
 COPY config/puma.rb /usr/src/app/config/
-COPY Gemfile.deploy /usr/src/app/Gemfile
-COPY Gemfile.deploy.lock /usr/src/app/Gemfile.lock
-COPY Rakefile /usr/src/app/
 COPY startup.sh /
-
-RUN bundle install --deployment --without=test development \
-  && bundle exec rake ditty:prep \
-  && chmod 755 /startup.sh
+RUN chmod 755 /startup.sh
 
 ENV APP_ROOT="/usr/src/app"
 ENV RACK_ENV="production"
