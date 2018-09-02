@@ -75,10 +75,10 @@ GEM
     omniauth-identity (1.1.1)
       bcrypt-ruby (~> 3.0)
       omniauth (~> 1.0)
-    proxes (0.9.7)
+    proxes (0.9.9)
       activesupport (>= 3)
       bcrypt (~> 3.1)
-      ditty (>= 0.2)
+      ditty (>= 0.7.0)
       elasticsearch (>= 2)
       faraday
       haml (~> 5.0)
@@ -147,7 +147,6 @@ DEPENDENCIES
   dotenv
   proxes
   puma
-  rake
   sqlite3
 
 BUNDLED WITH

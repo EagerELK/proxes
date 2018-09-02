@@ -27,11 +27,13 @@ COPY Rakefile /usr/src/app/
 COPY Gemfile.deploy /usr/src/app/Gemfile
 COPY Gemfile.deploy.lock /usr/src/app/Gemfile.lock
 
-RUN bundle install --path vendor/bundle --deployment --without=test development \
+RUN bundle install \
   && bundle exec rake ditty:prep
 
 ADD views /usr/src/app/views
+ADD public /usr/src/app/public
 COPY config.ru /usr/src/app/
+COPY application.rb /usr/src/app/
 COPY config/settings.yml /usr/src/app/config/
 COPY config/puma.rb /usr/src/app/config/
 COPY startup.sh /
