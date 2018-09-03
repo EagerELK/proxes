@@ -64,10 +64,8 @@ module Ditty
         ::ProxES::Permission.find_or_create(role: user_role, verb: 'INDEX', pattern: 'user-{user.id}')
 
         # Kibana Specific
-        anon = ::Ditty::User.find_or_create(email: 'anonymous@proxes.io')
-        anon.remove_role user_role
         anon_role = ::Ditty::Role.find_or_create(name: 'anonymous')
-        anon.add_role anon_role unless anon.role?('anonymous')
+        ::Ditty::User.create_anonymous_user('anonymous@proxes.io')
         ::ProxES::Permission.find_or_create(role: anon_role, verb: 'GET', pattern: '/.kibana/config/*')
         ::ProxES::Permission.find_or_create(role: anon_role, verb: 'INDEX', pattern: '.kibana')
 

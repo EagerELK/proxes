@@ -41,6 +41,7 @@ RSpec.configure do |config|
 
   config.around(:each) do |example|
     DatabaseCleaner.cleaning do
+      ::Ditty::User.create_anonymous_user('anonymous@proxes.io')
       example.run
     end
   end
