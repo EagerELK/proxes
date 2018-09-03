@@ -39,6 +39,8 @@ COPY config/puma.rb /usr/src/app/config/
 COPY startup.sh /
 RUN chmod 755 /startup.sh
 
+VOLUME /usr/src/app/config
+
 ENV APP_ROOT="/usr/src/app"
 ENV RACK_ENV="production"
 
