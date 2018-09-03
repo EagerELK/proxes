@@ -17,18 +17,18 @@ module ProxES
       end
 
       def patterns
-        user ||= Ditty::User.anonymous_user
-        return [] if user.nil?
+        current_user = user || Ditty::User.anonymous_user
+        return [] if current_user.nil?
         patterns_for('INDEX').map do |permission|
           return nil if permission.pattern.blank?
-          permission.pattern.gsub(/\{user.(.*)\}/) { |_match| user.send(Regexp.last_match[1].to_sym) }
+          permission.pattern.gsub(/\{user.(.*)\}/) { |_match| current_user.send(Regexp.last_match[1].to_sym) }
         end.compact
       end
 
       def patterns_for(action)
-        user ||= Ditty::User.anonymous_user
-        return [] if user.nil?
-        Permission.for_user(user, action)
+        current_user = user || Ditty::User.anonymous_user
+        return [] if current_user.nil?
+        Permission.for_user(current_user, action)
       end
     end
   end
