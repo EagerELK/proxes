@@ -14,7 +14,7 @@ GEM
       bcrypt (>= 3.1.3)
     concurrent-ruby (1.0.5)
     connection_pool (2.2.2)
-    ditty (0.7.0)
+    ditty (0.7.1)
       activesupport (>= 3)
       bcrypt (~> 3.1)
       haml (~> 5.0)
