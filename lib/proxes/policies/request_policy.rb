@@ -21,6 +21,7 @@ module ProxES
     def method_missing(method_sym, *arguments, &block)
       return super if method_sym.to_s[-1] != '?'
 
+      return true if user && user.super_admin?
       return false if request.indices? && !index_allowed?
       action_allowed? method_sym[0..-2].upcase
     end
