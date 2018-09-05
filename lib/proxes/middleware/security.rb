@@ -11,9 +11,6 @@ module ProxES
     class Security
       attr_reader :logger
 
-      include Ditty::Helpers::Authentication
-      include Ditty::Helpers::Pundit
-
       def initialize(app, logger = nil)
         @app = app
         @logger = logger || ::Ditty::Services::Logger.instance
@@ -45,6 +42,10 @@ module ProxES
 
       def authorize(request)
         Pundit.authorize(request.user, request, request.request_method.downcase + '?')
+      end
+
+      def policy_scope(request)
+        Pundit.policy_scope(request.user, request)
       end
 
       def log(request, stage)
