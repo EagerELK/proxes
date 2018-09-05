@@ -9,7 +9,7 @@ require 'ditty/helpers/authentication'
 module ProxES
   module Middleware
     class Security
-      attr_reader :env, :logger
+      attr_reader :logger
 
       include Ditty::Helpers::Authentication
       include Ditty::Helpers::Pundit
@@ -20,7 +20,6 @@ module ProxES
       end
 
       def call(env)
-        @env = env
         request = ProxES::Request.from_env(env)
         log(request, 'BEFORE')
 
