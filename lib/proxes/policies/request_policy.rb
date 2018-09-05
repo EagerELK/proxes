@@ -55,7 +55,8 @@ module ProxES
       end
 
       def resolve
-        return [] if user.nil?
+        current_user = user || Ditty::User.anonymous_user
+        return [] if current_user.nil?
         filter request.index, patterns
       end
     end
