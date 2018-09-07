@@ -24,6 +24,8 @@
     %link{ rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/3.3.7+1/css/sb-admin-2.min.css', media: 'screen' }
     %link{ rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.5.2/metisMenu.min.css', media: 'screen' }
     %link{ rel: 'stylesheet', href: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css', media: 'screen' }
+    %link{ rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css', media: 'screen' }
+    %link{ rel: 'stylesheet', href: '/_proxes/css/typeahead.css', media: 'screen' }
     /[if lt IE 9] <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     /[if lt IE 9] <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
 
@@ -33,11 +35,17 @@
   %body
     #wrapper
       = haml :'partials/navbar', locals: { title: (defined?(title) ? title : 'ProxES') }
-      #page-wrapper{ style: 'opacity: 0.8' }
+      #page-wrapper
+        -if defined?(title) || defined?(actions)
+          .row
+            %h1.col-md-9= defined?(title) ? title : '&nbsp'
+            .col-md-3.text-right{ style: 'margin-top: 20px' }
+              = haml :'partials/actions', locals: { actions: defined?(actions) ? actions : {} }
+        -else
+          %div{ style: 'padding-top: 20px' }
+
         .row
           .col-md-12
-            -if defined? title
-              %h1.page-header= title
             = haml :'partials/notifications'
 
         = yield
@@ -52,9 +60,12 @@
     %script{ type: 'text/javascript', src: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' }
     %script{ type: 'text/javascript', src: 'https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react.min.js' }
     %script{ type: 'text/javascript', src: 'https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom.min.js' }
+    %script{ type: 'text/javascript', src: 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js' }
+    %script{ type: 'text/javascript', src: '/_proxes/js/typeahead.bundle.min.js' }
     %script{ type: 'text/javascript', src: '/_proxes/js/bundle.js' }
     :javascript
         $(function() {
             $('.sidebar-nav').metisMenu();
+            $('.select2').select2();
         });
 
