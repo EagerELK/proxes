@@ -81,14 +81,15 @@ describe ProxES do
 
       it 'fails with an invalid for specified indices' do
         expect do
-          get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1'))
+          get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices/test-user-*?v=1'))
         end.to raise_error Pundit::NotAuthorizedError
       end
 
       it 'fails with an invalid for unspecified indices' do
-        expect do
-          get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1'))
-        end.to raise_error Pundit::NotAuthorizedError
+        get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1'))
+        expect(last_response).to_not be_ok
+        # I would expect a 404 (Index not found), but ES returns 400 / Failed to parse value [1] as only [true] or [false] are allowed
+        expect(last_response.status).to eq 400
       end
     end
 

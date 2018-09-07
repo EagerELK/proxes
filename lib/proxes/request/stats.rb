@@ -30,6 +30,10 @@ module ProxES
       def indices?
         true
       end
+
+      def indices
+        @index || []
+      end
     end
   end
 end

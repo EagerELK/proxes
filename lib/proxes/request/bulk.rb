@@ -33,7 +33,11 @@ module ProxES
       end
 
       def indices?
-        !@index.nil?
+        bulk_indices.blank? == false
+      end
+
+      def indices
+        bulk_indices + (@index || [])
       end
     end
   end

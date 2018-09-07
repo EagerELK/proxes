@@ -41,7 +41,7 @@ module ProxES
 
       def log_not_authorized(request)
         user = request.user ? request.user.email : 'unauthenticated request'
-        logger.error "Access denied for #{user} by security layer: #{request.detail}"
+        logger.error "Access denied for #{user} by security layer: #{request.detail} #{request.indices.join(',')}"
       end
 
       # Response Helpers

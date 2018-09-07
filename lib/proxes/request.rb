@@ -21,8 +21,14 @@ module ProxES
       path_parts
     end
 
+    # Indicate whether or not the request is index specific
     def indices?
       false
+    end
+
+    # Return the indices associated with the request as an array. [] if `#indices?` is false
+    def indices
+      []
     end
 
     def html?
@@ -44,7 +50,9 @@ module ProxES
     end
 
     def detail
-      "#{request_method.upcase} #{fullpath} (#{self.class.name})"
+      detail = "#{request_method.upcase} #{fullpath} (#{self.class.name})"
+      return detail unless indices?
+      "#{detail} #{indices.join(',')}"
     end
 
     private

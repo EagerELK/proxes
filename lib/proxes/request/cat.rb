@@ -27,6 +27,10 @@ module ProxES
       def indices?
         %w[shards indices segments count recovery].include? type.first
       end
+
+      def indices
+        @index || []
+      end
     end
   end
 end

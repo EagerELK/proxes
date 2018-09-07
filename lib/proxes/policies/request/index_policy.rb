@@ -11,7 +11,7 @@ module ProxES
         def resolve
           result = super
           return [] unless result.count > 0
-          %w[POST PUT].include?(request.request_method) ? request.index : result
+          %w[POST PUT].include?(request.request_method) ? request.indices : result
         end
       end
     end

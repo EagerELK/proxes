@@ -8,12 +8,11 @@ module ProxES
   class Request
     class BulkPolicy < RequestPolicy
       def post?
-        return false if user.nil? ||
-                        (request.index && !index_allowed?) ||
-                        (request.bulk_indices == '' || patterns.blank?)
+        return false if super == false || (request.bulk_indices == '' || patterns.blank?)
 
-        patterns.find do |pattern|
-          request.bulk_indices.find { |idx| idx !~ /#{pattern}/ }
+        # Check if each index has a pattern that matches
+        request.indices.find do |idx|
+          patterns.find { |idx_pattern| idx =~ /#{idx_pattern}/ }.nil?
         end.nil?
       end
 

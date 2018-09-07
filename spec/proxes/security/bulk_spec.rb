@@ -58,6 +58,7 @@ describe ProxES do
         expect(last_response).to be_ok
       end
 
+      # Not ideal, but (for now) we can't filter out the illegal indices
       it 'fails with an invalid call if any of the specified indices are unauthorized' do
         expect do
           post('/_bulk', get_fixture('illegal_bulk_with_indices.json'), get_env('POST /_bulk'))
