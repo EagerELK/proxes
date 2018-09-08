@@ -3,6 +3,8 @@
 require 'spec_helper'
 require 'proxes/policies/request_policy'
 require 'proxes/request/index'
+require 'proxes/request/search'
+require 'proxes/request/snapshot'
 
 describe ProxES::RequestPolicy do
   let(:user) { create(:user) }
@@ -31,10 +33,17 @@ describe ProxES::RequestPolicy do
       expect { subject.missing }.to raise_error NoMethodError
     end
 
-    it 'checks the set up permissions' do
+    it 'checks the set up permissions for a request with indices' do
       ProxES::Permission.find_or_create(user: user, verb: 'GET', pattern: '/*', index: 'index')
 
       subject = described_class.new(user, ProxES::Request::Index.new(get_env('GET /index/type/id')))
+      expect(subject.get?).to be_truthy
+    end
+
+    it 'checks the set up permissions for a request with indices' do
+      ProxES::Permission.find_or_create(user: user, verb: 'GET', pattern: '/_snapshot', index: '*')
+
+      subject = described_class.new(user, ProxES::Request::Index.new(get_env('GET /_snapshot')))
       expect(subject.get?).to be_truthy
     end
 

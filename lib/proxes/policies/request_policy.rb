@@ -21,6 +21,8 @@ module ProxES
       return true if user && user.super_admin?
       return false if permissions.empty?
 
+      return permissions.count.positive? unless request.indices?
+
       # Only allow if all the indices match the given permissions
       request.indices.find do |idx|
         permissions.find { |perm| perm.index_regex.match idx }.nil?
