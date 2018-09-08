@@ -8,6 +8,7 @@ gem 'ditty', git: 'https://github.com/EagerELK/ditty.git', branch: 'master'
 gem 'dotenv'
 gem 'rspec'
 gem 'rubocop'
+gem 'rubocop-rspec'
 gem 'simplecov', '~> 0.13.0'
 gem 'sqlite3'
 
