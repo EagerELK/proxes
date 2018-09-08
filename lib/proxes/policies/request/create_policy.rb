@@ -6,9 +6,6 @@ module ProxES
   class Request
     class CreatePolicy < RequestPolicy
       class Scope < RequestPolicy::Scope
-        def resolve
-          super.count > 0 ? request.indices : []
-        end
       end
     end
   end

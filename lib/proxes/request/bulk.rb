@@ -17,6 +17,7 @@ module ProxES
       end
 
       def index=(idx)
+        @bulk_indices = []
         @index = idx
         self.path_info = '/' + [index, type, endpoint].compact
                                                       .map { |v| v.is_a?(Array) ? v.join(',') : v }

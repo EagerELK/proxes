@@ -49,8 +49,7 @@ describe ProxES do
   context '/_cat/indices' do
     context 'user with access' do
       before(:each) do
-        ProxES::Permission.find_or_create(user: user, verb: 'GET', pattern: '/_cat/indices')
-        ProxES::Permission.find_or_create(user: user, verb: 'INDEX', pattern: 'test-user-*')
+        ProxES::Permission.find_or_create(user: user, verb: 'GET', pattern: '/_cat/indices', index: 'test-user-*')
         env 'rack.session', 'user_id' => user.id
       end
 
@@ -73,32 +72,12 @@ describe ProxES do
       end
     end
 
-    context 'user without INDEX access' do
-      before(:each) do
-        ProxES::Permission.find_or_create(user: user, verb: 'GET', pattern: '/_cat/indices')
-        env 'rack.session', 'user_id' => user.id
-      end
-
-      it 'fails with an invalid for specified indices' do
-        expect do
-          get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices/test-user-*?v=1'))
-        end.to raise_error Pundit::NotAuthorizedError
-      end
-
-      it 'fails with an invalid for unspecified indices' do
-        get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1'))
-        expect(last_response).to_not be_ok
-        # I would expect a 404 (Index not found), but ES returns 400 / Failed to parse value [1] as only [true] or [false] are allowed
-        expect(last_response.status).to eq 400
-      end
-    end
-
     context 'user without access' do
       before(:each) do
         env 'rack.session', 'user_id' => user.id
       end
 
-      it 'fails with an invalid for specified indices' do
+      it 'fails with an invalid call for specified indices' do
         expect do
           get('/_cat/indices?v=1', {}, get_env('GET /_cat/indices?v=1'))
         end.to raise_error Pundit::NotAuthorizedError

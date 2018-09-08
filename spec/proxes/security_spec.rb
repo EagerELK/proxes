@@ -9,13 +9,10 @@ describe ProxES::Middleware::Security do
   end
 
   context '#call' do
-    it 'rejects anonymous requests' do
-      expect { get('/') }.to raise_error Pundit::NotAuthorizedError
-      expect { get('/_search') }.to raise_error Pundit::NotAuthorizedError
-      expect { get('/index/_search') }.to raise_error Pundit::NotAuthorizedError
-      expect { get('/_node') }.to raise_error Pundit::NotAuthorizedError
-      expect { get('/_cluster') }.to raise_error Pundit::NotAuthorizedError
-      expect { get('/_snapshot') }.to raise_error Pundit::NotAuthorizedError
+    %w[/ /_search /index/_search /_node /_cluster /_snapshot].each do |path|
+      it "rejects anonymous requests to #{path}" do
+        expect { get(path) }.to raise_error Pundit::NotAuthorizedError
+      end
     end
 
     context 'logged in' do

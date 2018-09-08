@@ -4,17 +4,14 @@ require 'active_support'
 require 'active_support/core_ext/object/blank'
 require 'ditty/services/logger'
 require 'proxes/models/permission'
-require 'proxes/helpers/indices'
 
 module ProxES
   class RequestPolicy
-    include Helpers::Indices
-
     attr_reader :user, :record
     alias request record
 
     def initialize(user, record)
-      @user = user
+      @user = user || Ditty::User.anonymous_user
       @record = record
     end
 
@@ -22,30 +19,23 @@ module ProxES
       return super if method_sym.to_s[-1] != '?'
 
       return true if user && user.super_admin?
-      return false if request.indices? && !index_allowed?
-      action_allowed? method_sym[0..-2].upcase
+      return false if permissions.empty?
+
+      # Only allow if all the indices match the given permissions
+      request.indices.find do |idx|
+        permissions.find { |perm| perm.index_regex.match idx }.nil?
+      end.nil?
     end
 
     def respond_to_missing?(name, _include_private = false)
       name[-1] == '?'
     end
 
-    def index_allowed?
-      patterns = patterns_for('INDEX').map do |permission|
-        return nil if permission.pattern.blank?
-        permission.pattern.gsub(/\{user.(.*)\}/) { |_match| user.send(Regexp.last_match[1].to_sym) }
-      end.compact
-      filter(request.indices, patterns).count > 0
-    end
-
-    def action_allowed?(action)
-      # Give me all the user's permissions that match the verb
-      patterns_for(action).all.find { |permission| (request.path =~ /#{permission.pattern}/) }.nil? == false
+    def permissions
+      @permissions ||= Permission.for_user(user).for_request(request)
     end
 
     class Scope
-      include Helpers::Indices
-
       attr_reader :user, :scope
       alias request scope
 
@@ -55,9 +45,14 @@ module ProxES
       end
 
       def resolve
-        current_user = user || Ditty::User.anonymous_user
-        return [] if current_user.nil?
-        filter request.index, patterns
+        return permissions.map(&:index) if request.indices == ['*'] || request.indices.blank?
+        request.indices.select do |idx|
+          permissions.find { |perm| perm.index_regex.match idx }
+        end
+      end
+
+      def permissions
+        @permissions ||= Permission.for_user(user).for_request(request)
       end
     end
   end

@@ -22,8 +22,8 @@ module ProxES
 
         check_basic request
         authorize request
-
         request.index = policy_scope(request) if request.indices?
+
         log(request, 'AFTER')
 
         @app.call env

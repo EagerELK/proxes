@@ -43,15 +43,15 @@ describe ProxES::Middleware::Security do
   context '/_search' do
     context 'user with access' do
       before(:each) do
-        ProxES::Permission.find_or_create(user: user, verb: 'GET', pattern: '/_search')
-        ProxES::Permission.find_or_create(user: user, verb: 'INDEX', pattern: 'test-user-*')
+        ProxES::Permission.find_or_create(user: user, verb: 'GET', pattern: '/*/?_search', index: 'test-user-*')
         env 'rack.session', 'user_id' => user.id
       end
 
       it 'succeeds with only the authorized indices if no index is specified' do
         get('/_search', {}, get_env('GET /_search'))
         expect(last_response).to be_ok
-        expect(last_indices).to eq ['test-user-today', 'test-user-yesterday']
+        expect(last_indices).to include('test-user-today', 'test-user-yesterday')
+        expect(last_indices).to_not include('another-user-today', 'another-user-yesterday')
       end
 
       it 'succeeds with only the specified indices if they are authorized' do
@@ -64,14 +64,14 @@ describe ProxES::Middleware::Security do
         expect(last_indices).to eq ['test-user-today', 'test-user-yesterday']
       end
 
-      it 'succeeds with only the authorized indices if some specified indices are unauthorized' do
-        get(
-          '/test-user-today,another-user-today/_search',
-          {},
-          get_env('GET /test-user-today,another-user-today/_search')
-        )
-        expect(last_response).to be_ok
-        expect(last_indices).to eq ['test-user-today']
+      it 'fails with an invalid call if some specified indices are unauthorized' do
+        expect do
+          get(
+            '/test-user-today,another-user-today/_search',
+            {},
+            get_env('GET /test-user-today,another-user-today/_search')
+          )
+        end.to raise_error Pundit::NotAuthorizedError
       end
 
       it 'fails with an invalid call if all of the specified indices are unauthorized' do

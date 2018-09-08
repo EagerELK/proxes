@@ -48,8 +48,7 @@ describe ProxES do
   context '/_bulk' do
     context 'user with access' do
       before(:each) do
-        ProxES::Permission.find_or_create(user: user, verb: 'POST', pattern: '/_bulk')
-        ProxES::Permission.find_or_create(user: user, verb: 'INDEX', pattern: 'test-user-*')
+        ProxES::Permission.find_or_create(user: user, verb: 'POST', pattern: '/_bulk', index: 'test-user-*')
         env 'rack.session', 'user_id' => user.id
       end
 
@@ -60,25 +59,6 @@ describe ProxES do
 
       # Not ideal, but (for now) we can't filter out the illegal indices
       it 'fails with an invalid call if any of the specified indices are unauthorized' do
-        expect do
-          post('/_bulk', get_fixture('illegal_bulk_with_indices.json'), get_env('POST /_bulk'))
-        end.to raise_error Pundit::NotAuthorizedError
-      end
-    end
-
-    context 'user without INDEX access' do
-      before(:each) do
-        ProxES::Permission.find_or_create(user: user, verb: 'POST', pattern: '/_bulk')
-        env 'rack.session', 'user_id' => user.id
-      end
-
-      it 'fails with an invalid for specified indices' do
-        expect do
-          post('/_bulk', get_fixture('bulk_without_indices.json'), get_env('POST /test-user-today/_bulk'))
-        end.to raise_error Pundit::NotAuthorizedError
-      end
-
-      it 'fails with an invalid for unspecified indices' do
         expect do
           post('/_bulk', get_fixture('illegal_bulk_with_indices.json'), get_env('POST /_bulk'))
         end.to raise_error Pundit::NotAuthorizedError
@@ -107,8 +87,7 @@ describe ProxES do
   context '/{index}/_bulk' do
     context 'user with access' do
       before(:each) do
-        ProxES::Permission.find_or_create(user: user, verb: 'POST', pattern: '/_bulk')
-        ProxES::Permission.find_or_create(user: user, verb: 'INDEX', pattern: 'test-user-*')
+        ProxES::Permission.find_or_create(user: user, verb: 'POST', pattern: '/*/?_bulk', index: 'test-user-*')
         env 'rack.session', 'user_id' => user.id
       end
 
