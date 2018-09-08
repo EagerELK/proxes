@@ -20,7 +20,7 @@ module ProxES
       end
 
       def for_request(request)
-        all.select{ |perm| perm.pattern_regex.match request.path }
+        where(verb: request.request_method).all.select{ |perm| perm.pattern_regex.match request.path }
       end
     end
 

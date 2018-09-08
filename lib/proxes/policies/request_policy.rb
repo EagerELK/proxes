@@ -16,7 +16,7 @@ module ProxES
     end
 
     def method_missing(method_sym, *arguments, &block)
-      return super if method_sym.to_s[-1] != '?'
+      return super unless respond_to_missing? method_sym
 
       return true if user && user.super_admin?
       return false if permissions.empty?
@@ -40,7 +40,7 @@ module ProxES
       alias request scope
 
       def initialize(user, scope)
-        @user = user
+        @user = user || Ditty::User.anonymous_user
         @scope = scope
       end
 

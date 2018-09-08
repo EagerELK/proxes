@@ -14,10 +14,27 @@ describe ProxES::Request::Search do
     }
   end
 
+  context '.from_env' do
+    it 'returns a Search request' do
+      expect(ProxES::Request.from_env(get_env('GET /_search'))).to be_a(described_class)
+    end
+
+    it 'gives the endpoint as _search' do
+      expect(ProxES::Request.from_env(get_env('GET /_search')).endpoint).to eq '_search'
+    end
+  end
+
   context '#indices?' do
     it 'does have indices' do
       request = described_class.new(get_env('GET /_search'))
       expect(request.indices?).to be true
+    end
+  end
+
+  context '#indices' do
+    it 'reports the correct indices' do
+      request = described_class.new(get_env('GET /index_one,index_two/_search'))
+      expect(request.indices).to eq ['index_two', 'index_two']
     end
   end
 
@@ -47,16 +64,6 @@ describe ProxES::Request::Search do
       id: nil
     }
   }.each do |path, values|
-    context '.from_env' do
-      it 'returns a Search request' do
-        expect(ProxES::Request.from_env(get_env('GET /_search'))).to be_a(described_class)
-      end
-
-      it 'gives the endpoint as _search' do
-        expect(ProxES::Request.from_env(get_env('GET /_search')).endpoint).to eq '_search'
-      end
-    end
-
     context 'accessors' do
       subject do
         ProxES::Request::Search.new('PATH_INFO' => path,
