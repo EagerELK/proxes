@@ -11,6 +11,7 @@ SimpleCov.start
 require 'ditty'
 require 'ditty/db'
 require 'rspec'
+require 'rspec_sequel_matchers'
 require 'rack/test'
 require 'factory_bot'
 require 'database_cleaner'
@@ -22,11 +23,12 @@ if ENV['DATABASE_URL'] == 'sqlite::memory:'
   Sequel::Migrator.apply(DB, folder)
 end
 
-Ditty.component :app
-Ditty.component :proxes
+Ditty.component :app unless Ditty::Components.has_component? :app
+Ditty.component :proxes unless Ditty::Components.has_component? :proxes
 
 RSpec.configure do |config|
   config.include Rack::Test::Methods
+  config.include RspecSequel::Matchers
   config.include FactoryBot::Syntax::Methods
 
   config.alias_example_to :fit, focus: true

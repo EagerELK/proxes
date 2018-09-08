@@ -12,8 +12,15 @@ module ProxES
     many_to_one :user, class: ::Ditty::User
 
     dataset_module do
-      def for_user(a_user, action)
-        where(verb: action).where { Sequel.|({ role: a_user.roles }, { user_id: a_user.id }) }
+      def for_user(usr)
+        return where(id: -1) if usr.nil?
+        # TODO: Injection of user fields into regex
+        # permission.pattern.gsub(/\{user.(.*)\}/) { |_match| user.send(Regexp.last_match[1].to_sym) }
+        where { Sequel.|({ role: usr.roles }, { user_id: usr.id }) }
+      end
+
+      def for_request(request)
+        all.select{ |perm| perm.pattern_regex.match request.path }
       end
     end
 
@@ -22,6 +29,23 @@ module ProxES
       validates_presence :role_id unless user_id
       validates_presence :user_id unless role_id
       validates_includes self.class.verbs, :verb
+    end
+
+    def pattern_regex
+      regex pattern
+    end
+
+    def index_regex
+      regex index
+    end
+
+    private
+
+    def regex(str)
+      return Regexp.new(str) if str[0] == '|' && str[-1] == '|'
+      str = str.gsub(/([^.])\*/, '\1.*')
+      str = '.*' if str == '*' # My regex foo is not strong enough to combine the previous line and this one
+      Regexp.new '^' + str
     end
 
     class << self
