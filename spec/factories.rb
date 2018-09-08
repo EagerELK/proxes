@@ -38,6 +38,7 @@ FactoryBot.define do
   factory :permission, class: ProxES::Permission, aliases: [:'ProxES::Permission'] do
     pattern { '*' }
     verb { 'GET' }
+    index { '*' }
     role
   end
 end
