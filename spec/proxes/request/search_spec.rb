@@ -34,7 +34,7 @@ describe ProxES::Request::Search do
   context '#indices' do
     it 'reports the correct indices' do
       request = described_class.new(get_env('GET /index_one,index_two/_search'))
-      expect(request.indices).to eq ['index_two', 'index_two']
+      expect(request.indices).to eq ['index_one', 'index_two']
     end
   end
 
