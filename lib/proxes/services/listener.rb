@@ -17,6 +17,7 @@ module ProxES
     def es_request_denied(request, exception = nil)
       detail = request.detail
       detail = "#{detail} - #{exception.class}" if exception
+      Ditty::Services::Logger.error exception if exception
       Ditty::AuditLog.create(
         action: :es_request_denied,
         user: request.user,
