@@ -4,8 +4,12 @@ require 'ditty/policies/application_policy'
 
 module ProxES
   class SearchPolicy < Ditty::ApplicationPolicy
+    def list?
+      search?
+    end
+
     def search?
-      user && user.super_admin?
+      user
     end
 
     def fields?

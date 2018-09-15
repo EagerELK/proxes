@@ -10,7 +10,7 @@ module ProxES
     set base_path: "#{settings.map_path}/search"
 
     get '/' do
-      authorize self, :search
+      authorize self, :index
 
       param :page, Integer, min: 0, default: 1
       param :count, Integer, min: 0, default: 25

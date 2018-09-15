@@ -36,7 +36,7 @@ module Ditty
       load
       [
         { order: 0, link: '/status/check', text: 'Status Check', target: ::ProxES::Status, icon: 'dashboard' },
-        { order: 1, link: '/search', text: 'Search', target: ::ProxES::Status, icon: 'search' },
+        { order: 1, link: '/search', text: 'Search', target: ::ProxES::Search, icon: 'search' },
         { order: 15, link: '/permissions', text: 'Permissions', target: ::ProxES::Permission, icon: 'check-square' }
       ]
     end
@@ -67,7 +67,8 @@ module Ditty
         # actions: ["indices:data/read/field_stats", "indices:admin/mappings/fields/get", "indices:admin/get", "indices:data/read/msearch"]
         anon_role = ::Ditty::Role.find_or_create(name: 'anonymous')
         ::Ditty::User.create_anonymous_user('anonymous@proxes.io')
-        ::ProxES::Permission.find_or_create(role: anon_role, verb: 'GET', pattern: '/.kibana/config/.*')
+        ::ProxES::Permission.find_or_create(role: anon_role, verb: 'GET', pattern: '/.kibana/config/*')
+        ::ProxES::Permission.find_or_create(role: anon_role, verb: 'GET', pattern: '/.kibana/doc/config/*')
         ::ProxES::Permission.find_or_create(role: anon_role, verb: 'INDEX', pattern: '.kibana')
 
         kibana = ::Ditty::Role.find_or_create(name: 'kibana')
