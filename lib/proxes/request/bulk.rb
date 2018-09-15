@@ -34,7 +34,7 @@ module ProxES
       end
 
       def indices?
-        bulk_indices.blank? == false
+        indices.blank? == false
       end
 
       def indices
