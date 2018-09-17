@@ -1,0 +1,4 @@
+{"index" : "test-user-today"}
+{"query" : {"match_all" : {}}, "from" : 0, "size" : 10}
+{"index" : "test-user-yesterday", "search_type" : "dfs_query_then_fetch"}
+{"query" : {"match_all" : {}}}

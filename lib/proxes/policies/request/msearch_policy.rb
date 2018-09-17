@@ -4,7 +4,7 @@ require 'proxes/policies/request_policy'
 
 module ProxES
   class Request
-    class BulkPolicy < RequestPolicy
+    class MsearchPolicy < RequestPolicy
       class Scope < RequestPolicy::Scope
       end
     end
