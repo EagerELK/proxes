@@ -9,6 +9,7 @@
             %th Role
             %th User
             %th Permission
+            %th Index
         %tbody
           - if list.count > 0
             - list.all.each do |entity|
@@ -21,6 +22,8 @@
                   %a.btn-block{ href: "#{base_path}/#{entity.id}" }
                     = entity.verb
                     = entity.pattern
+                %td
+                  = entity.index
           - else
             %tr
               %td.text-center{ colspan: 3 } No records

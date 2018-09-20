@@ -50,7 +50,7 @@ module ProxES
 
     class << self
       def verbs
-        %w[GET POST PUT DELETE HEAD OPTIONS TRACE INDEX]
+        %w[GET POST PUT DELETE HEAD OPTIONS TRACE]
       end
 
       def from_audit_log(audit_log)

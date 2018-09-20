@@ -9,7 +9,7 @@
       %a{ href: "#{settings.map_path}" }
         ProxES
 
-  -if authenticated?
+  - if authenticated?
     = delete_form_tag("#{settings.map_path}/auth", attributes: { class: 'nav navbar-top-links navbar-form navbar-right' }) do
       %a.btn.btn-default{ href: "#{settings.map_path}/users/profile" } My Account
       %button.btn.btn-default{ type: 'submit' }

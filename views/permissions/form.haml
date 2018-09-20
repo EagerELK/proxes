@@ -2,3 +2,4 @@
 = form_control(:user_id, entity, type: 'select', options: Ditty::User.to_hash(:id, :email))
 = form_control(:verb, entity, type: 'select', options: ProxES::Permission.verbs)
 = form_control(:pattern, entity)
+= form_control(:index, entity, default: '*')
