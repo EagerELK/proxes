@@ -49,7 +49,7 @@ module Ditty
 
         sa = ::Ditty::Role.find_or_create(name: 'super_admin')
         %w[GET POST PUT DELETE HEAD OPTIONS].each do |verb|
-          ::ProxES::Permission.find_or_create(role: sa, verb: verb, pattern: '.*', index: '*')
+          ::ProxES::Permission.find_or_create(role: sa, verb: verb, pattern: '*', index: '*')
         end
 
         # Admin Role
@@ -62,7 +62,7 @@ module Ditty
         ::ProxES::Permission.find_or_create(role: user_role, verb: 'GET', pattern: '/_nodes/stats')
         ::ProxES::Permission.find_or_create(role: user_role, verb: 'GET', pattern: '/_stats')
         # TODO
-        # ::ProxES::Permission.find_or_create(role: user_role, verb: 'INDEX', pattern: 'user-{user.id}.*')
+        # ::ProxES::Permission.find_or_create(role: user_role, verb: 'INDEX', pattern: 'user-{user.id}*')
 
         # Kibana Specific
         anon_role = ::Ditty::Role.find_or_create(name: 'anonymous')
@@ -73,8 +73,8 @@ module Ditty
         kibana = ::Ditty::Role.find_or_create(name: 'kibana')
         ::ProxES::Permission.find_or_create(role: kibana, verb: 'HEAD', pattern: '/', index: '.kibana')
         ::ProxES::Permission.find_or_create(role: kibana, verb: 'GET', pattern: '/_nodes*', index: '.kibana')
-        ::ProxES::Permission.find_or_create(role: kibana, verb: 'GET', pattern: '/_cluster/health.*', index: '.kibana')
-        ::ProxES::Permission.find_or_create(role: kibana, verb: 'GET', pattern: '/_cluster/settings.*', index: '.kibana')
+        ::ProxES::Permission.find_or_create(role: kibana, verb: 'GET', pattern: '/_cluster/health*', index: '.kibana')
+        ::ProxES::Permission.find_or_create(role: kibana, verb: 'GET', pattern: '/_cluster/settings*', index: '.kibana')
         ::ProxES::Permission.find_or_create(role: kibana, verb: 'POST', pattern: '/_mget', index: '.kibana')
         ::ProxES::Permission.find_or_create(role: kibana, verb: 'POST', pattern: '/_search', index: '.kibana')
         ::ProxES::Permission.find_or_create(role: kibana, verb: 'POST', pattern: '/_msearch', index: '.kibana')
