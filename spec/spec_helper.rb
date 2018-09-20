@@ -23,8 +23,8 @@ if ENV['DATABASE_URL'] == 'sqlite::memory:'
   Sequel::Migrator.apply(DB, folder)
 end
 
-Ditty.component :app unless Ditty::Components.has_component? :app
-Ditty.component :proxes unless Ditty::Components.has_component? :proxes
+Ditty.component :app unless Ditty::Components.component? :app
+Ditty.component :proxes unless Ditty::Components.component? :proxes
 
 RSpec.configure do |config|
   config.include Rack::Test::Methods
