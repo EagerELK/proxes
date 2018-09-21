@@ -9,7 +9,7 @@ Style/Documentation:
 Style/NumericPredicate:
   Enabled: false
 
-Style/LeadingCommentSpace:
+Layout/LeadingCommentSpace:
   Exclude:
     - 'config.ru'
 

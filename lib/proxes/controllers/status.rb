@@ -72,6 +72,7 @@ module ProxES
         node_stats['nodes'].each_value do |node|
           next if node['attributes'] && node['attributes']['data'] == 'false'
           next if node['roles'] && node['roles'].include?('data') == false
+
           stats = node['fs']['total']
           left = stats['available_in_bytes'] / stats['total_in_bytes'].to_f * 100
           fs_values << "#{node['name']}: #{format('%.02f', left)}% Free"

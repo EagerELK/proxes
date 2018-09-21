@@ -5,8 +5,8 @@ ENV['RACK_ENV'] ||= 'test'
 ENV['ELASTICSEARCH_URL'] ||= 'http://localhost:9200'
 ENV['DATABASE_URL'] ||= 'sqlite::memory:'
 
-require 'simplecov'
-SimpleCov.start
+# require 'simplecov'
+# SimpleCov.start
 
 require 'ditty'
 require 'ditty/db'
@@ -41,7 +41,7 @@ RSpec.configure do |config|
     Timecop.freeze
   end
 
-  config.around(:each) do |example|
+  config.around do |example|
     DatabaseCleaner.cleaning do
       ::Ditty::User.create_anonymous_user('anonymous@proxes.io')
       example.run

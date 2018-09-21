@@ -14,13 +14,14 @@ module ProxES
     dataset_module do
       def for_user(usr)
         return where(id: -1) if usr.nil?
+
         # TODO: Injection of user fields into regex
         # permission.pattern.gsub(/\{user.(.*)\}/) { |_match| user.send(Regexp.last_match[1].to_sym) }
         where { Sequel.|({ role: usr.roles }, { user_id: usr.id }) }
       end
 
       def for_request(request)
-        where(verb: request.request_method).all.select{ |perm| perm.pattern_regex.match request.path }
+        where(verb: request.request_method).all.select { |perm| perm.pattern_regex.match request.path }
       end
     end
 
@@ -43,6 +44,7 @@ module ProxES
 
     def regex(str)
       return Regexp.new(str) if str[0] == '|' && str[-1] == '|'
+
       str = str.gsub(/([^.])\*/, '\1.*')
       str = '.*' if str == '*' # My regex foo is not strong enough to combine the previous line and this one
       Regexp.new '^' + str
@@ -55,8 +57,10 @@ module ProxES
 
       def from_audit_log(audit_log)
         return {} if audit_log.details.nil?
+
         match = audit_log.details.match(/^(\w)+ (\S+)/)
         return {} if match.nil?
+
         {
           verb: match[1],
           path: match[2]

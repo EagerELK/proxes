@@ -23,7 +23,7 @@ describe ProxES::RequestPolicy do
   context '.initialize' do
     it 'Defaults to the anonymous user if none is given' do
       subject = described_class.new(nil, Rack::Request.new({}))
-      expect(subject.user.anonymous?).to be_truthy
+      expect(subject.user).to be_anonymous
     end
   end
 
@@ -37,21 +37,21 @@ describe ProxES::RequestPolicy do
       ProxES::Permission.find_or_create(user: user, verb: 'GET', pattern: '/*', index: 'index')
 
       subject = described_class.new(user, ProxES::Request::Index.new(get_env('GET /index/type/id')))
-      expect(subject.get?).to be_truthy
+      expect(subject).to be_get
     end
 
     it 'checks the set up permissions for a request with indices' do
       ProxES::Permission.find_or_create(user: user, verb: 'GET', pattern: '/_snapshot', index: '*')
 
       subject = described_class.new(user, ProxES::Request::Index.new(get_env('GET /_snapshot')))
-      expect(subject.get?).to be_truthy
+      expect(subject).to be_get
     end
 
     it 'returns false if a disallowed index is requested' do
       ProxES::Permission.find_or_create(user: user, verb: 'GET', pattern: '/*', index: 'index')
 
       subject = described_class.new(user, ProxES::Request::Search.new(get_env('GET /index,another/_search')))
-      expect(subject.get?).to be_falsey
+      expect(subject).not_to be_get
     end
   end
 
@@ -86,7 +86,7 @@ describe ProxES::RequestPolicy::Scope do
   context '.initialize' do
     it 'Defaults to the anonymous user if none is given' do
       subject = described_class.new(nil, Rack::Request.new({}))
-      expect(subject.user.anonymous?).to be_truthy
+      expect(subject.user).to be_anonymous
     end
   end
 
@@ -104,7 +104,7 @@ describe ProxES::RequestPolicy::Scope do
       ProxES::Permission.find_or_create(user: user, verb: 'GET', pattern: '/*', index: 'two')
 
       subject = described_class.new(user, ProxES::Request::Search.new(get_env('GET /*/_search')))
-      expect(subject.resolve).to eq ['one', 'two']
+      expect(subject.resolve).to eq %w[one two]
     end
 
     it 'returns all the specified indices if no indices are specified' do
@@ -112,7 +112,7 @@ describe ProxES::RequestPolicy::Scope do
       ProxES::Permission.find_or_create(user: user, verb: 'GET', pattern: '/*', index: 'two')
 
       subject = described_class.new(user, ProxES::Request::Search.new(get_env('GET /_search')))
-      expect(subject.resolve).to eq ['one', 'two']
+      expect(subject.resolve).to eq %w[one two]
     end
   end
 

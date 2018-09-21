@@ -34,7 +34,7 @@ describe ProxES::Request::Search do
   context '#indices' do
     it 'reports the correct indices' do
       request = described_class.new(get_env('GET /index_one,index_two/_search'))
-      expect(request.indices).to eq ['index_one', 'index_two']
+      expect(request.indices).to eq %w[index_one index_two]
     end
   end
 
@@ -66,9 +66,9 @@ describe ProxES::Request::Search do
   }.each do |path, values|
     context 'accessors' do
       subject do
-        ProxES::Request::Search.new('PATH_INFO' => path,
-                                    'REQUEST_PATH' => path,
-                                    'REQUEST_URI' => path)
+        described_class.new('PATH_INFO' => path,
+                            'REQUEST_PATH' => path,
+                            'REQUEST_URI' => path)
       end
 
       it "provides the index for #{path} as #{values[:index]}" do

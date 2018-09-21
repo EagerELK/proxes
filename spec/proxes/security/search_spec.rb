@@ -42,7 +42,7 @@ describe ProxES::Middleware::Security do
 
   context '/_search' do
     context 'user with access' do
-      before(:each) do
+      before do
         ProxES::Permission.find_or_create(user: user, verb: 'GET', pattern: '/*/?_search', index: 'test-user-*')
         env 'rack.session', 'user_id' => user.id
       end
@@ -51,7 +51,7 @@ describe ProxES::Middleware::Security do
         get('/_search', {}, get_env('GET /_search'))
         expect(last_response).to be_ok
         expect(last_indices).to include('test-user-today', 'test-user-yesterday')
-        expect(last_indices).to_not include('another-user-today', 'another-user-yesterday')
+        expect(last_indices).not_to include('another-user-today', 'another-user-yesterday')
       end
 
       it 'succeeds with only the specified indices if they are authorized' do
@@ -86,7 +86,7 @@ describe ProxES::Middleware::Security do
     end
 
     context 'user without access' do
-      before(:each) do
+      before do
         env 'rack.session', 'user_id' => user.id
       end
 

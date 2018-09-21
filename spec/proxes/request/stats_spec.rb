@@ -26,9 +26,9 @@ describe ProxES::Request::Stats do
 
   context '/some-index/_stats' do
     subject do
-      ProxES::Request::Stats.new('PATH_INFO' => '/some-index/_stats',
-                                 'REQUEST_PATH' => '/some-index/_stats',
-                                 'REQUEST_URI' => '/some-index/_stats')
+      described_class.new('PATH_INFO' => '/some-index/_stats',
+                          'REQUEST_PATH' => '/some-index/_stats',
+                          'REQUEST_URI' => '/some-index/_stats')
     end
 
     it "provides the index for '/some-index/_stats'" do
@@ -46,9 +46,9 @@ describe ProxES::Request::Stats do
 
     context '/docs,stats' do
       subject do
-        ProxES::Request::Stats.new('PATH_INFO' => '/some-index/_stats/docs,stats',
-                                   'REQUEST_PATH' => '/some-index/_stats/docs,stats',
-                                   'REQUEST_URI' => '/some-index/_stats/docs,stats')
+        described_class.new('PATH_INFO' => '/some-index/_stats/docs,stats',
+                            'REQUEST_PATH' => '/some-index/_stats/docs,stats',
+                            'REQUEST_URI' => '/some-index/_stats/docs,stats')
       end
 
       it "provides the index for 'docs,stats'" do

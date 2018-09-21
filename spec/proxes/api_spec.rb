@@ -11,7 +11,7 @@ describe ProxES::Permissions, type: :controller do
 
   let(:user) { create(:super_admin_user) }
 
-  before(:each) do
+  before do
     env 'rack.session', 'user_id' => user.id
   end
 

@@ -48,7 +48,7 @@ describe ProxES do
 
   context '/_cat/indices' do
     context 'user with access' do
-      before(:each) do
+      before do
         ProxES::Permission.find_or_create(user: user, verb: 'GET', pattern: '/_cat/indices', index: 'test-user-*')
         env 'rack.session', 'user_id' => user.id
       end
@@ -73,7 +73,7 @@ describe ProxES do
     end
 
     context 'user without access' do
-      before(:each) do
+      before do
         env 'rack.session', 'user_id' => user.id
       end
 

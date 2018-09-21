@@ -17,6 +17,7 @@ module ProxES
           client.indices.get_mapping(index: index).each do |_idx, index_map|
             index_map['mappings'].each do |_type, type_map|
               next if type_map['properties'].nil?
+
               type_map['properties'].each do |name, details|
                 if details['type'] != 'keyword' && details['fields'] && (names_only == false)
                   keyword = details['fields'].find do |v|

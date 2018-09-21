@@ -26,9 +26,9 @@ describe ProxES::Request::Cat do
 
   context '_cat/indices' do
     subject do
-      ProxES::Request::Cat.new('PATH_INFO' => '_cat/indices',
-                               'REQUEST_PATH' => '_cat/indices',
-                               'REQUEST_URI' => '_cat/indices')
+      described_class.new('PATH_INFO' => '_cat/indices',
+                          'REQUEST_PATH' => '_cat/indices',
+                          'REQUEST_URI' => '_cat/indices')
     end
 
     it "provides the index for '_cat/indices'" do
@@ -46,9 +46,9 @@ describe ProxES::Request::Cat do
 
     context '/some-index' do
       subject do
-        ProxES::Request::Cat.new('PATH_INFO' => '_cat/indices/some-index',
-                                 'REQUEST_PATH' => '_cat/indices/some-index',
-                                 'REQUEST_URI' => '_cat/indices/some-index')
+        described_class.new('PATH_INFO' => '_cat/indices/some-index',
+                            'REQUEST_PATH' => '_cat/indices/some-index',
+                            'REQUEST_URI' => '_cat/indices/some-index')
       end
 
       it "provides the index for '_cat/indices'" do
@@ -63,9 +63,9 @@ describe ProxES::Request::Cat do
 
   context '_cat/nodes' do
     subject do
-      ProxES::Request::Cat.new('PATH_INFO' => '_cat/nodes',
-                               'REQUEST_PATH' => '_cat/nodes',
-                               'REQUEST_URI' => '_cat/nodes')
+      described_class.new('PATH_INFO' => '_cat/nodes',
+                          'REQUEST_PATH' => '_cat/nodes',
+                          'REQUEST_URI' => '_cat/nodes')
     end
 
     it "provides the index for '_cat/nodes'" do

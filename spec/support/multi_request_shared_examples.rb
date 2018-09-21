@@ -48,7 +48,7 @@ shared_examples 'Multi Request' do |verb, endpoint|
 
   context "/#{endpoint}" do
     context 'user with access' do
-      before(:each) do
+      before do
         ProxES::Permission.find_or_create(user: user, verb: verb, pattern: "/#{endpoint}", index: 'test-user-*')
         env 'rack.session', 'user_id' => user.id
       end
@@ -81,7 +81,7 @@ shared_examples 'Multi Request' do |verb, endpoint|
     end
 
     context 'user without access' do
-      before(:each) do
+      before do
         env 'rack.session', 'user_id' => user.id
       end
 
@@ -115,7 +115,7 @@ shared_examples 'Multi Request' do |verb, endpoint|
 
   context "/{index}/#{endpoint}" do
     context 'user with access' do
-      before(:each) do
+      before do
         ProxES::Permission.find_or_create(user: user, verb: verb, pattern: "/*/?#{endpoint}", index: 'test-user-*')
         env 'rack.session', 'user_id' => user.id
       end
@@ -172,7 +172,7 @@ shared_examples 'Multi Request' do |verb, endpoint|
     end
 
     context 'user without access' do
-      before(:each) do
+      before do
         env 'rack.session', 'user_id' => user.id
       end
     end

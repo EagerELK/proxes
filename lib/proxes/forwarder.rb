@@ -34,6 +34,7 @@ module ProxES
 
     def body_from(request)
       return nil if request.body.nil? || (Kernel.const_defined?('::Puma::NullIO') && request.body.is_a?(Puma::NullIO))
+
       request.body.read.tap { |_r| request.body.rewind }
     end
 

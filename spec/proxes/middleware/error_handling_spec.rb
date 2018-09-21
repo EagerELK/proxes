@@ -9,7 +9,7 @@ describe ProxES::Middleware::ErrorHandling do
   context '.new' do
     it 'takes a logger as a parameter' do
       logger = double(Logger)
-      eh = ProxES::Middleware::ErrorHandling.new(proc { [200, {}, ['Hello, world.']] }, logger)
+      eh = described_class.new(proc { [200, {}, ['Hello, world.']] }, logger)
       expect(eh.logger).to be logger
     end
   end

@@ -41,17 +41,20 @@ module ProxES
 
     def user_id
       return env['rack.session']['user_id'] if env['rack.session']
+
       env['omniauth.auth'].uid if env['omniauth.auth']
     end
 
     def user
       return nil if user_id.nil?
+
       @user ||= Ditty::User[user_id]
     end
 
     def detail
       detail = "#{request_method.upcase} #{fullpath} (#{self.class.name})"
       return detail unless indices?
+
       "#{detail} #{indices.join(',')}"
     end
 
@@ -64,6 +67,7 @@ module ProxES
     def check_part(val)
       return val if val.nil?
       return [] if [endpoint, '_all'].include?(val) && !WRITE_METHODS.include?(request_method)
+
       val.split(',')
     end
 
@@ -81,10 +85,12 @@ module ProxES
 
       def path_endpoint(path)
         return '_root' if ['', nil, '/'].include? path
+
         path_parts = path[1..-1].split('/')
         return path_parts[-1] if ID_ENDPOINTS.include? path_parts[-1]
         return path_parts[-2] if path_parts[-1] == 'count' && path_parts[-2] == '_percolate'
         return path_parts[-2] if path_parts[-1] == 'scroll' && path_parts[-2] == '_search'
+
         path_parts.find { |part| part[0] == '_' }
       end
     end

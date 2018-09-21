@@ -4,7 +4,7 @@ require 'json'
 require 'active_support/core_ext/hash/except'
 
 shared_examples 'an API interface' do |subject, params|
-  before(:each) { create(subject) }
+  before { create(subject) }
 
   context 'GET /' do
     it 'returns HTML when requested' do
@@ -21,7 +21,7 @@ shared_examples 'an API interface' do |subject, params|
 
       expect(last_response).to be_ok
       expect(last_response.headers).to include('Content-Type' => 'application/json')
-      expect { JSON.parse(last_response.body) }.to_not raise_error
+      expect { JSON.parse(last_response.body) }.not_to raise_error
     end
 
     it 'returns a list object' do
@@ -30,9 +30,9 @@ shared_examples 'an API interface' do |subject, params|
 
       response = JSON.parse last_response.body
       expect(response).to include('page', 'count', 'total', 'items')
-      expect(response['page']).to be_an_instance_of Fixnum
-      expect(response['count']).to be_an_instance_of Fixnum
-      expect(response['total']).to be_an_instance_of Fixnum
+      expect(response['page']).to be_an_instance_of Integer
+      expect(response['count']).to be_an_instance_of Integer
+      expect(response['total']).to be_an_instance_of Integer
       expect(response['items']).to be_an Array
     end
   end
@@ -54,7 +54,7 @@ shared_examples 'an API interface' do |subject, params|
 
       expect(last_response).to be_ok
       expect(last_response.headers).to include('Content-Type' => 'application/json')
-      expect { JSON.parse(last_response.body) }.to_not raise_error
+      expect { JSON.parse(last_response.body) }.not_to raise_error
     end
 
     it 'returns the fetched object' do
