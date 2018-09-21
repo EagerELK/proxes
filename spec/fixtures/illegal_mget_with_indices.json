@@ -1,0 +1,19 @@
+{
+	"docs": [
+		{
+			"_index": "test-user-today",
+			"_type": "type1",
+			"_id": "1"
+		},
+		{
+			"_index": "another-user-today",
+			"_type": "type1",
+			"_id": "2"
+		}
+		{
+			"_index": "another-user-yesterday",
+			"_type": "type1",
+			"_id": "3"
+		}
+	]
+}
