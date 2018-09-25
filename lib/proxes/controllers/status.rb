@@ -101,14 +101,16 @@ module ProxES
         checks << { text: 'Cluster Reachable', passed: false, value: e.message }
       end
 
-      status checks.find { |c| c[:passed] == false } ? 500 : 200
+      passed = checks.find { |c| c[:passed] == false }.nil?
+      code = passed ? 200 : 500
 
+      status code
       respond_to do |format|
         format.html do
-          haml :'status/check', locals: { title: 'Status Check', checks: checks }
+          haml :'status/check', locals: { title: 'Status Check', checks: checks, passed: passed }
         end
         format.json do
-          json checks
+          json checks: checks, passed: passed, code: code
         end
       end
     end
