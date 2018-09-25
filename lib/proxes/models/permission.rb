@@ -3,6 +3,7 @@
 require 'ditty/models/base'
 require 'ditty/models/user'
 require 'ditty/models/role'
+require 'active_support/core_ext/object/blank'
 
 module ProxES
   class Permission < ::Sequel::Model
@@ -43,7 +44,8 @@ module ProxES
     private
 
     def regex(str)
-      return Regexp.new(str) if str[0] == '|' && str[-1] == '|'
+      str ||= ''
+      return Regexp.new(str) if str.blank? || (str[0] == '|' && str[-1] == '|')
 
       str = str.gsub(/([^.])\*/, '\1.*')
       str = '.*' if str == '*' # My regex foo is not strong enough to combine the previous line and this one

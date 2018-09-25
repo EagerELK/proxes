@@ -10,6 +10,11 @@ RSpec.describe ProxES::Permission, type: :model do
   end
 
   context '#pattern_regex' do
+    it 'returns an empty regex if the pattern is nil' do
+      subject = build(:permission, pattern: nil)
+      expect(subject.pattern_regex).to eq Regexp.new('')
+    end
+
     it 'returns a regex if the pattern is surrounded by pipes' do
       subject = create(:permission, pattern: '|.*|')
       expect(subject.pattern_regex).to be_a Regexp
@@ -47,6 +52,11 @@ RSpec.describe ProxES::Permission, type: :model do
   end
 
   context '#index_regex' do
+    it 'returns an empty regex if the pattern is nil' do
+      subject = build(:permission, index: nil)
+      expect(subject.index_regex).to eq Regexp.new('')
+    end
+
     it 'returns a regex if the pattern is surrounded by pipes' do
       subject = create(:permission, index: '|.*|')
       expect(subject.index_regex).to be_a Regexp
