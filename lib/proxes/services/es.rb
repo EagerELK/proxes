@@ -16,6 +16,7 @@ module ProxES
               cert_store: ssl_store
             }
           },
+          log: ENV['APP_ENV'] == 'development',
           logger: Ditty::Services::Logger.instance
         )
       end

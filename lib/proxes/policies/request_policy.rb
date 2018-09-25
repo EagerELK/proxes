@@ -47,7 +47,9 @@ module ProxES
       end
 
       def resolve
-        return permissions.map(&:index) if request.indices == ['*'] || request.indices.blank?
+        return permissions.map(&:index) if request.indices == ['*'] ||
+                                           request.indices.blank? ||
+                                           (user && user.super_admin?)
 
         request.indices.select do |idx|
           permissions.find { |perm| perm.index_regex.match idx }
