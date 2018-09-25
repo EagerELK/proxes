@@ -6,6 +6,13 @@ require 'ditty/services/logger'
 
 module ProxES
   class Listener
+    def user_login(details)
+      target = details[:target]
+      if target.request.session['omniauth.origin'].nil? && target.request.accept?('text/html')
+        target.request.session['omniauth.origin'] = '/_proxes'
+      end
+    end
+
     def es_request_failed(request, response)
       Ditty::AuditLog.create(
         action: :es_request_failed,
