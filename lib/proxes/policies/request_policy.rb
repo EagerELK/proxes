@@ -18,7 +18,6 @@ module ProxES
     def method_missing(method_sym, *arguments, &block)
       return super unless respond_to_missing? method_sym
 
-      return true if user && user.super_admin?
       return false if permissions.empty?
 
       return permissions.count.positive? unless request.indices?
@@ -47,9 +46,7 @@ module ProxES
       end
 
       def resolve
-        return permissions.map(&:index) if request.indices == ['*'] ||
-                                           request.indices.blank? ||
-                                           (user && user.super_admin?)
+        return permissions.map(&:index) if request.indices == ['*'] || request.indices.blank?
 
         request.indices.select do |idx|
           permissions.find { |perm| perm.index_regex.match idx }
