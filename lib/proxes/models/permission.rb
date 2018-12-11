@@ -27,6 +27,7 @@ module ProxES
     end
 
     def validate
+      super
       validates_presence %i[verb pattern]
       validates_presence :role_id unless user_id
       validates_presence :user_id unless role_id
