@@ -49,7 +49,7 @@ module ProxES
       # Response Helpers
       def error(message, code = 500)
         headers = { 'Content-Type' => 'application/json' }
-        headers['WWW-Authenticate'] = 'Basic realm="security"' if code == 401
+        headers['WWW-Authenticate'] = 'Basic realm="Authorization Required"' if code == 401
         [code, headers, ['{"error":"' + message + '"}']]
       end
 
