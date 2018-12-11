@@ -32,7 +32,7 @@ module ProxES
     end
 
     def html?
-      get_header('HTTP_ACCEPT') && get_header('HTTP_ACCEPT').include?('text/html')
+      get_header('HTTP_ACCEPT')&.include?('text/html')
     end
 
     def duration
@@ -42,7 +42,7 @@ module ProxES
     def user_id
       return env['rack.session']['user_id'] if env['rack.session']
 
-      env['omniauth.auth'].uid if env['omniauth.auth']
+      env['omniauth.auth']&.uid
     end
 
     def user

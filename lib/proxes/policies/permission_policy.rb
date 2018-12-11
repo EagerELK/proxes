@@ -5,7 +5,7 @@ require 'ditty/policies/application_policy'
 module ProxES
   class PermissionPolicy < Ditty::ApplicationPolicy
     def create?
-      user && user.super_admin?
+      user&.super_admin?
     end
 
     def list?
@@ -30,7 +30,7 @@ module ProxES
 
     class Scope < Ditty::ApplicationPolicy::Scope
       def resolve
-        user && user.super_admin? ? scope : scope.where(id: -1)
+        user&.super_admin? ? scope : scope.where(id: -1)
       end
     end
   end

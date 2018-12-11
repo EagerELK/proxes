@@ -35,7 +35,7 @@ module ProxES
 
         identity = ::Ditty::Identity.find(username: auth.credentials[0])
         identity ||= ::Ditty::Identity.find(username: CGI.unescape(auth.credentials[0]))
-        return false unless identity && identity.authenticate(auth.credentials[1])
+        return false unless identity&.authenticate(auth.credentials[1])
 
         request.env['rack.session'] ||= {}
         request.env['rack.session']['user_id'] = identity.user_id

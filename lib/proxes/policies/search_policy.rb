@@ -26,7 +26,7 @@ module ProxES
 
     class Scope < Ditty::ApplicationPolicy::Scope
       def resolve
-        user && user.super_admin? ? scope : scope.where(id: -1)
+        user&.super_admin? ? scope : scope.where(id: -1)
       end
     end
   end
