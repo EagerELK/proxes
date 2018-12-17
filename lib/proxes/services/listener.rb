@@ -15,9 +15,11 @@ module ProxES
 
     def es_request_failed(request, response)
       Ditty::AuditLog.create(
-        action: :es_request_failed,
-        user: request.user,
-        details: "#{request.detail} > #{response[0]}"
+        user_traits(request).merge(
+          action: :es_request_failed,
+          user: request.user,
+          details: "#{request.detail} > #{response[0]}"
+        )
       )
     end
 
@@ -26,10 +28,22 @@ module ProxES
       detail = "#{detail} - #{exception.class}" if exception
       Ditty::Services::Logger.error exception if exception
       Ditty::AuditLog.create(
-        action: :es_request_denied,
-        user: request.user,
-        details: detail
+        user_traits(request).merge(
+          action: :es_request_denied,
+          user: request.user,
+          details: detail
+        )
       )
+    end
+
+    def user_traits(request)
+      browser = Browser.new(request.user_agent, accept_language: request.env['HTTP_ACCEPT_LANGUAGE'])
+      {
+        platform: browser.platform.name,
+        device: browser.device.name,
+        browser: browser.name,
+        ip_address: request.ip
+      }
     end
   end
 end
