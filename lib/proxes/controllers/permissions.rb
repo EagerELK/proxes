@@ -9,6 +9,7 @@ require 'proxes/policies/permission_policy'
 module ProxES
   class Permissions < Ditty::Component
     set model_class: Permission
+    set view_folder: ::Ditty::ProxES.view_folder
 
     FILTERS = [
       { name: :user, field: 'user.email' },
@@ -30,12 +31,6 @@ module ProxES
       def verb_options
         ProxES::Permission.verbs
       end
-    end
-
-    def find_template(views, name, engine, &block)
-      super(views, name, engine, &block) # Root
-      super(::Ditty::ProxES.view_folder, name, engine, &block) # This Component
-      super(::Ditty::App.view_folder, name, engine, &block) # Ditty
     end
   end
 end

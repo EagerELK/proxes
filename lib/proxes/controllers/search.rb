@@ -8,6 +8,7 @@ require 'proxes/policies/search_policy'
 module ProxES
   class Search < Ditty::Application
     set base_path: "#{settings.map_path}/search"
+    set view_folder: ::Ditty::ProxES.view_folder
 
     get '/' do
       authorize self, :list
@@ -44,12 +45,6 @@ module ProxES
 
       param :size, Integer, min: 0, default: 25
       json ProxES::Services::Search.values(field, size: params[:size], index: params[:indices])
-    end
-
-    def find_template(views, name, engine, &block)
-      super(views, name, engine, &block) # Root
-      super(::Ditty::ProxES.view_folder, name, engine, &block) # This Component
-      super(::Ditty::App.view_folder, name, engine, &block) # Ditty
     end
   end
 end

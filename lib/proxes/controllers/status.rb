@@ -6,13 +6,9 @@ require 'proxes/services/es'
 
 module ProxES
   class Status < Ditty::Application
-    helpers ProxES::Services::ES
+    set view_folder: ::Ditty::ProxES.view_folder
 
-    def find_template(views, name, engine, &block)
-      super(views, name, engine, &block) # Root
-      super(::Ditty::ProxES.view_folder, name, engine, &block) # This Component
-      super(::Ditty::App.view_folder, name, engine, &block) # Ditty
-    end
+    helpers ProxES::Services::ES
 
     # This provides a URL that can be polled by a monitoring system. It will return
     # 200 OK if all the checks pass, or 500 if any of the checks fail.
