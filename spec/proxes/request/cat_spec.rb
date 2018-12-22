@@ -109,4 +109,11 @@ describe ProxES::Request::Cat do
       expect(request.indices?).to be true
     end
   end
+
+  context '_cat/' do
+    it 'does not have indices' do
+      request = described_class.new(get_env('GET /_cat/'))
+      expect(request.indices?).to be false
+    end
+  end
 end
