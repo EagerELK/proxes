@@ -10,6 +10,13 @@ module ProxES
     set base_path: "#{settings.map_path}/search"
     set view_folder: ::Ditty::ProxES.view_folder
 
+    helpers do
+      def fields(indices, names_only)
+        standard = { '_index' => 'text', '_type' => 'text', '_id' => 'text' }
+        standard.merge ProxES::Services::Search.fields(index: indices, names_only: names_only)
+      end
+    end
+
     get '/' do
       authorize self, :list
 
@@ -22,16 +29,16 @@ module ProxES
            locals: {
              title: 'Search',
              indices: ProxES::Services::Search.indices,
-             fields: ProxES::Services::Search.fields(index: params[:indices], names_only: true),
+             fields: fields(params[:indices], true),
              result: result
            }
     end
 
     get '/fields/?:indices?/?' do
+      param :names_only, Boolean, default: false
       authorize self, :fields
 
-      param :names_only, Boolean, default: false
-      json ProxES::Services::Search.fields index: params[:indices], names_only: params[:names_only]
+      json fields(params[:indices], params[:names_only])
     end
 
     get '/indices/?' do

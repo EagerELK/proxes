@@ -57,7 +57,7 @@
               - target = "#{row['_index']}#{row['_type']}#{row['_id']}".tr('._#', '')
               - if params[:fields]
                 - params[:fields].each do |field|
-                  %td= row['_source'][field]
+                  %td= row['_source'][field] || row[field]
               - else
                 %td.path-column= "#{row['_index']}/#{row['_type']}/#{row['_id']}"
                 %td= JSON.generate row['_source']
