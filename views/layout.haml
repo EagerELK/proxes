@@ -6,8 +6,8 @@
     %meta{ name: 'viewport', content: 'width=device-width, initial-scale=1' }
     %meta{ name: 'theme-color', content: '#ffffff' }
     %link{ rel: 'manifest', href: '/_proxes/manifest.json' }
-    %link{ rel: 'icon', type: 'image/png', sizes: '32x32', href: '/_proxes/images/favicon-32x32.png' }
-    %link{ rel: 'icon', type: 'image/png', sizes: '16x16', href: '/_proxes/images/favicon-16x16.png' }
+    %link{ rel: 'shortcut icon', type: 'image/png', sizes: '32x32', href: '/_proxes/images/favicon-32x32.png' }
+    %link{ rel: 'shortcut icon', type: 'image/png', sizes: '16x16', href: '/_proxes/images/favicon-16x16.png' }
     %link{ rel: 'apple-touch-icon', sizes: '76x76', href: '/_proxes/images/apple-icon.png' }
     %link{ rel: 'mask-icon', href: '/_proxes/images/safari-pinned-tab.svg', color: '#5bbad5' }
 
@@ -34,7 +34,7 @@
     %script{ type: 'text/javascript', src: 'https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.5.2/metisMenu.min.js' }
   %body
     #wrapper
-      = haml :'partials/navbar', locals: { title: (defined?(title) ? title : ('ditty.title', 'ProxES')) }
+      = haml :'partials/navbar', locals: { title: (defined?(title) ? title : 'ProxES') }
       #page-wrapper
         -if defined?(title) || defined?(actions)
           .row

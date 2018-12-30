@@ -7,6 +7,7 @@ module Ditty
     def self.load
       controllers = File.expand_path('../../proxes/controllers', __dir__)
       Dir.glob("#{controllers}/*.rb").each { |f| require f }
+      ENV['ELASTICSEARCH_URL'] ||= 'http://localhost:9200'
       require 'proxes/models/permission'
       require 'proxes/services/listener'
     end

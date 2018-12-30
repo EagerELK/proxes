@@ -6,19 +6,16 @@
       %span.icon-bar
       %span.icon-bar
     %span.navbar-brand
-      %a{ href: "#{settings.map_path}" }
-        = config('ditty.title', 'ProxES')
 
-  - if authenticated?
-    = delete_form_tag("#{settings.map_path}/auth", attributes: { class: 'nav navbar-top-links navbar-form navbar-right' }) do
-      %a.btn.btn-default{ href: "#{settings.map_path}/users/profile" } My Account
-      %button.btn.btn-default{ type: 'submit' }
-        / %i.ti-panel
-        Logout
-  - else
-    %ul.nav.navbar-top-links.navbar-right
-      %li
-        %a.btn.btn-link{ href: "#{settings.map_path}/auth/login" }
-          Log In
+  %nav.nav.navbar-top-links.navbar-right.navbar-form
+    - if authenticated?
+      = delete_form_tag("#{settings.map_path}/auth") do
+        %a.btn.btn-default{ href: "#{settings.map_path}/users/profile" } My Account
+        %button.btn.btn-default{ type: 'submit' }
+          Logout
+    - else
+      %a.btn.btn-default{ href: "#{settings.map_path}/auth/login" }
+        Log In
+
   .navbar-default.sidebar{ role: 'navigation' }
     = haml :'partials/sidebar'
