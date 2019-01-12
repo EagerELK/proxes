@@ -47,6 +47,7 @@ module Ditty
         require 'ditty/models/user'
         require 'ditty/models/role'
         require 'proxes/models/permission'
+        require 'proxes/models/status_check'
 
         sa = ::Ditty::Role.find_or_create(name: 'super_admin')
         %w[GET POST PUT DELETE HEAD OPTIONS].each do |verb|
@@ -80,6 +81,48 @@ module Ditty
         ::ProxES::Permission.find_or_create(role: kibana, verb: 'POST', pattern: '/_search', index: '.kibana')
         ::ProxES::Permission.find_or_create(role: kibana, verb: 'POST', pattern: '/_msearch', index: '.kibana')
         ::ProxES::Permission.find_or_create(role: kibana, verb: 'POST', pattern: '/_refresh', index: '.kibana')
+
+        # Status Check
+        ::ProxES::StatusCheck.find_or_create(
+          type: 'ProxES::ClusterHealthStatusCheck',
+          name: 'Cluster Health',
+          source: 'health'
+        ) { |r| r.set(required_value: 'green', order: 20) }
+        ::ProxES::StatusCheck.find_or_create(
+          type: 'ProxES::MasterNodesStatusCheck',
+          name: 'Master Nodes',
+          source: 'node_stats'
+        ) { |r| r.set(required_value: 1, order: 30) }
+        ::ProxES::StatusCheck.find_or_create(
+          type: 'ProxES::DataNodesStatusCheck',
+          name: 'Data Nodes',
+          source: 'node_stats'
+        ) { |r| r.set(required_value: 1, order: 40) }
+        ::ProxES::StatusCheck.find_or_create(
+          type: 'ProxES::IngestNodesStatusCheck',
+          name: 'Ingest Nodes',
+          source: 'node_stats'
+        ) { |r| r.set(required_value: 1, order: 50) }
+        ::ProxES::StatusCheck.find_or_create(
+          type: 'ProxES::JVMHeapStatusCheck',
+          name: 'Node JVM Heap',
+          source: 'node_stats'
+        ) { |r| r.set(required_value: 85, order: 60) }
+        ::ProxES::StatusCheck.find_or_create(
+          type: 'ProxES::FileSystemStatusCheck',
+          name: 'Node File Systems',
+          source: 'node_stats'
+        ) { |r| r.set(required_value: 10, order: 70) }
+        ::ProxES::StatusCheck.find_or_create(
+          type: 'ProxES::CPUStatusCheck',
+          name: 'Node CPU Usage',
+          source: 'node_stats'
+        ) { |r| r.set(required_value: 70, order: 80) }
+        ::ProxES::StatusCheck.find_or_create(
+          type: 'ProxES::MemoryStatusCheck',
+          name: 'Node Memory Usage',
+          source: 'node_stats'
+        ) { |r| r.set(required_value: 99, order: 90) }
       end
     end
   end
