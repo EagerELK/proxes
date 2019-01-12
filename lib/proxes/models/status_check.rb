@@ -51,3 +51,16 @@ module ProxES
 
   Dir.glob(File.expand_path('./status_checks', __dir__) + '/*.rb').each { |f| require f }
 end
+
+# Table: status_checks
+# Columns:
+#  id             | integer      | PRIMARY KEY AUTOINCREMENT
+#  type           | varchar(255) |
+#  name           | varchar(255) |
+#  source         | varchar(255) |
+#  required_value | varchar(255) |
+#  order          | integer      | DEFAULT 1
+#  created_at     | timestamp    | DEFAULT datetime(CURRENT_TIMESTAMP, 'localtime')
+#  updated_at     | timestamp    | DEFAULT datetime(CURRENT_TIMESTAMP, 'localtime')
+# Indexes:
+#  sqlite_autoindex_status_checks_1 | UNIQUE (name)

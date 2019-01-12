@@ -84,3 +84,16 @@ module Ditty
     one_to_many :permissions, class: ::ProxES::Permission
   end
 end
+
+# Table: permissions
+# Columns:
+#  id         | integer      | PRIMARY KEY AUTOINCREMENT
+#  verb       | varchar(255) |
+#  pattern    | varchar(255) |
+#  created_at | timestamp    |
+#  role_id    | integer      |
+#  user_id    | integer      |
+#  index      | varchar(255) | NOT NULL DEFAULT '*'
+# Foreign key constraints:
+#  (role_id) REFERENCES roles
+#  (user_id) REFERENCES users

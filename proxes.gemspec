@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'racksh'
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'rspec_sequel_matchers', '~> 0.4.0'
+  spec.add_development_dependency 'sequel-annotate'
   spec.add_development_dependency 'timecop'
   spec.add_development_dependency 'webmock'
 

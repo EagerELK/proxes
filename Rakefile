@@ -19,3 +19,15 @@ begin
   task default: :spec
 rescue LoadError
 end
+
+namespace :sequel do
+  task :annotate do
+    Dir['lib/proxes/models/*.rb'].each { |f| require_relative f }
+    begin
+      require 'sequel/annotate'
+      Sequel::Annotate.annotate(Dir['lib/proxes/models/*.rb'], namespace: '::ProxES')
+    rescue LoadError
+      puts 'sequel-annotate gem not loaded'
+    end
+  end
+end
