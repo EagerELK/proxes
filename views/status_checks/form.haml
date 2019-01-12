@@ -1,0 +1,5 @@
+= form_control(:type, entity, readonly: true, group: :status_check)
+= form_control(:name, entity, group: :status_check)
+= form_control(:source, entity, type: 'select', options: { 'health' => 'Cluster Health', 'node_stats' => 'Node Statistics' }, group: :status_check)
+= form_control(:required_value, entity, group: :status_check)
+= form_control(:order, entity, type: 'number', group: :status_check)

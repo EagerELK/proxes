@@ -13,9 +13,12 @@ module ProxES
     get '/check' do
       checks = []
       begin
-        ProxES::StatusCheck.each do |sc|
+        # Programmed checks
+        ProxES::StatusCheck.order(:order).all.each do |sc|
           checks << { text: sc.name, passed: sc.passed?, value: sc.value }
         end
+
+        # Default Check
         checks.unshift(
           text: 'Cluster Reachable',
           passed: true,

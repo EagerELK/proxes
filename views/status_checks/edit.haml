@@ -1,0 +1,10 @@
+.row
+  .col-md-2
+  .col-md-8
+    .panel.panel-default
+      .panel-body
+        = edit_form_tag("#{base_path}/#{entity.id}") do
+          = haml :'status_checks/form', locals: { entity: entity }
+          %button.btn.btn-primary{ type: 'submit' }
+            Update Status Check
+  .col-md-2

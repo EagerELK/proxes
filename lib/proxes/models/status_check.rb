@@ -36,6 +36,10 @@ module ProxES
       self.class.source_result(source)
     end
 
+    def policy_class
+      StatusCheckPolicy
+    end
+
     class << self
       def source_result(source)
         @source_result ||= Hash.new do |h, k|
