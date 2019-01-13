@@ -7,7 +7,11 @@ module ProxES
     end
 
     def check
-      value == 'green'
+      value == required_value
+    end
+
+    def formatted(val = nil)
+      (val || value).titlecase
     end
   end
 end

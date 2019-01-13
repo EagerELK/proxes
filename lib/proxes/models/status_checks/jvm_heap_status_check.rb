@@ -3,20 +3,24 @@
 module ProxES
   class JVMHeapStatusCheck < StatusCheck
     def value
-      node_values.sort.map { |k, v| "#{k}: #{v}%" }
+      children.values.inject(0.0) { |sum, el| sum + el } / children.count
     end
 
-    def node_values
-      @node_values ||= source_result['nodes']['nodes'].values.map do |node|
+    def children
+      @children ||= source_result['nodes']['nodes'].values.map do |node|
         [
           node['name'],
-          node['jvm']['mem']['heap_used_percent']
+          node['jvm']['mem']['heap_used_percent'].to_f
         ]
       end.to_h
     end
 
     def check
-      !(node_values.select { |k, v| v >= required_value.to_i }).count.positive?
+      value < required_value.to_f
+    end
+
+    def formatted(val = nil)
+      format('%.4f%% Average Usage', val || value)
     end
   end
 end

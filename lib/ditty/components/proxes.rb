@@ -106,15 +106,15 @@ module Ditty
           source: 'node_stats'
         ) { |r| r.set(required_value: 1, order: 50) }
         ::ProxES::StatusCheck.find_or_create(
-          type: 'ProxES::JVMHeapStatusCheck',
-          name: 'Node JVM Heap',
-          source: 'node_stats'
-        ) { |r| r.set(required_value: 85, order: 60) }
-        ::ProxES::StatusCheck.find_or_create(
           type: 'ProxES::FileSystemStatusCheck',
           name: 'Node File Systems',
           source: 'node_stats'
-        ) { |r| r.set(required_value: 10, order: 70) }
+        ) { |r| r.set(required_value: 10, order: 60) }
+        ::ProxES::StatusCheck.find_or_create(
+          type: 'ProxES::JVMHeapStatusCheck',
+          name: 'Node JVM Heap',
+          source: 'node_stats'
+        ) { |r| r.set(required_value: 85, order: 70) }
         ::ProxES::StatusCheck.find_or_create(
           type: 'ProxES::CPUStatusCheck',
           name: 'Node CPU Usage',

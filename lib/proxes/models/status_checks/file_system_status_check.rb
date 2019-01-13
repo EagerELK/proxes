@@ -3,11 +3,11 @@
 module ProxES
   class FileSystemStatusCheck < StatusCheck
     def value
-      node_values.sort.map { |k, v| "#{k}: #{format('%.02f', v)}% Free" }
+      children.values.min
     end
 
-    def node_values
-      @node_values ||= source_result['nodes']['nodes'].values.map do |node|
+    def children
+      @children ||= source_result['nodes']['nodes'].values.map do |node|
         next if node['attributes'] && node['attributes']['data'] == 'false'
         next if node['roles'] && node['roles'].include?('data') == false
 
@@ -20,7 +20,11 @@ module ProxES
     end
 
     def check
-      !(node_values.select { |k, v| v < required_value.to_f }).count.positive?
+      value > required_value.to_f
+    end
+
+    def formatted(val = nil)
+      format('%.4f%% Minimum Free', val || value)
     end
   end
 end

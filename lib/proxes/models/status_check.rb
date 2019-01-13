@@ -36,6 +36,12 @@ module ProxES
       self.class.source_result(source)
     end
 
+    def children; end
+
+    def formatted(val = nil)
+      val || value
+    end
+
     def policy_class
       StatusCheckPolicy
     end

@@ -15,7 +15,14 @@ module ProxES
       begin
         # Programmed checks
         ProxES::StatusCheck.order(:order).all.each do |sc|
-          checks << { text: sc.name, passed: sc.passed?, value: sc.value }
+          checks << {
+            text: sc.name,
+            passed: sc.passed?,
+            check: sc.required_value,
+            value: sc.value,
+            children: sc.children,
+            entity: sc
+          }
         end
 
         # Default Check
