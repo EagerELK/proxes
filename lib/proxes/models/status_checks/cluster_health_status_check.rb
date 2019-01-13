@@ -7,6 +7,8 @@ module ProxES
     end
 
     def check
+      return true if required_value.blank?
+
       value == required_value
     end
 

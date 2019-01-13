@@ -6,12 +6,6 @@ module ProxES
       raise 'Unimplemented'
     end
 
-    def check
-      return true if required_value.nil?
-
-      required_value.to_i == value
-    end
-
     def value
       children.count
     end
@@ -26,6 +20,12 @@ module ProxES
       @children ||= source_result['nodes']['nodes'].map do |_id, node|
         node['name'] if check_node(node)
       end.compact
+    end
+
+    def check
+      return true if required_value.blank?
+
+      required_value.to_i == value
     end
 
     def formatted(val = nil)
