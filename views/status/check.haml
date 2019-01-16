@@ -5,35 +5,42 @@
   .alert.alert-danger.text-center.lead
     Your Cluster needs attention
 
-%table.table.table-hover
-  %thead
-    %tr
-      %th Check
-      %th.text-right Value
-      %th.text-right Check
-      %th.text-center Passed
-      %th
-      %th
-  %tbody
-    - checks.each_with_index do |check, idx|
-      %tr{ class: check[:passed] ? 'success' : 'warning' }
-        %td= check[:text]
-        %td.text-right= check[:entity]&.formatted || check[:value]
-        %td.text-right= check[:entity]&.formatted(check[:check]) || check[:check]
-        %td.text-center= check[:passed] ? 'Yes' : 'No'
-        %td
+.row
+  .col-md-12
+    %table.table.table-hover
+      %thead
+        %tr
+          %th
+          %th Check
+          %th.text-right Value
+          %th.text-right Check
+          %th.text-center Passed
+          %th
+          %th
+      %tbody
+        - checks.each_with_index do |check, idx|
+          %tr{ class: check[:passed] ? 'success' : 'warning' }
+            %td.icon.text-center
+              %i.fa{ class: check[:passed] ? 'fa-check-circle' : 'fa-times-circle'}
+            %td= check[:text]
+            %td.text-right= check[:entity]&.formatted || check[:value]
+            %td.text-right= check[:entity]&.formatted(check[:check]) || check[:check]
+            %td.text-center= check[:passed] ? 'Yes' : 'No'
+            %td
+              - if check[:children]
+                %button.btn.btn-xs.btn-default{ type: 'button', :'data-toggle' => 'collapse', :'data-target' => "##{idx}", :'aria-expanded' => 'false', :'aria-controls' => idx, title: 'Detail' }
+                  %i.fa.fa-plus
+            %td
+              - if check[:entity] && policy(check[:entity]).update?
+                %a.btn.btn-xs.btn-default{ href: "#{settings.map_path}/status-checks/#{check[:entity].id}/edit", title: 'Configure' }
+                  %i.fa.fa-pencil
           - if check[:children]
-            %button.btn.btn-xs.btn-default{ type: 'button', :'data-toggle' => 'collapse', :'data-target' => "##{idx}", :'aria-expanded' => 'false', :'aria-controls' => idx, title: 'Detail' }
-              %i.fa.fa-plus
-        %td
-          - if check[:entity] && policy(check[:entity]).update?
-            %a.btn.btn-xs.btn-default{ href: "#{settings.map_path}/status-checks/#{check[:entity].id}/edit", title: 'Configure' }
-              %i.fa.fa-pencil
-      - if check[:children]
-        %tr.collapse{ id: idx }
-          %td{ colspan: 6 }
-            %table.table.table-striped{ style: 'margin-bottom: 0' }
-              - check[:children].each do |name, value|
-                %tr
-                  %td= name
-                  %td.text-right= check[:entity]&.formatted(value) || value
+            %tr.collapse{ id: idx }
+              %td{ colspan: 6 }
+                %table.table.table-striped{ style: 'margin-bottom: 0' }
+                  - check[:children].each do |name, value|
+                    %tr
+                      %td= name
+                      %td.text-right= check[:entity]&.formatted(value) || value
+
+    %p.pull-right.text-muted Last refreshed at #{Time.now.strftime("%Y-%m-%d %H:%M:%S")}
