@@ -101,16 +101,6 @@ describe ProxES::Middleware::Security do
         expect(last_indices).to eq ['test-user-today']
       end
 
-      fit 'succeeds if some authorized indices are specifically included' do
-        get(
-          '/+test-user-*,-test-user-yesterday/_search',
-          {},
-          get_env('GET /+test-user-*,-test-user-yesterday/_search')
-        )
-        expect(last_response).to be_ok
-        expect(last_indices).to eq ['test-user-today']
-      end
-
       # Elasticsearch currently sends back a 404 for this.
       it 'returns a 404 if all specified indices are excluded' do
         get(
