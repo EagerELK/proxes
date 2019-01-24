@@ -26,6 +26,7 @@ module ProxES
 
       def indices?
         return false if type.nil?
+
         %w[shards indices segments count recovery].include? type.first
       end
 

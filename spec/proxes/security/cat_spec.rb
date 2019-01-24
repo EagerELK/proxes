@@ -32,8 +32,8 @@ describe ProxES do
   end
 
   def last_indices
-    csv_data = CSV.parse(last_response.body, headers: true, col_sep: ' ', header_converters: :symbol)
-    csv_data.map(&:to_hash).map { |e| e[:index] }
+    response = JSON.parse last_response.body
+    response.map { |e| e['index'] }
   end
 
   before(:all) do
@@ -54,13 +54,13 @@ describe ProxES do
       end
 
       it 'succeeds with no indices specified' do
-        get('/_cat/indices?v', {}, get_env('GET /_cat/indices?v'))
+        get('/_cat/indices?v&format=json', {}, get_env('GET /_cat/indices?v&format=json'))
         expect(last_response).to be_ok
         expect(last_indices).to include('test-user-yesterday', 'test-user-today')
       end
 
       it 'succeeds with indices the user has access to' do
-        get('/_cat/indices?v', {}, get_env('GET /_cat/indices/test-user-*?v'))
+        get('/_cat/indices?v&format=json', {}, get_env('GET /_cat/indices/test-user-*?v&format=json'))
         expect(last_response).to be_ok
         expect(last_indices).to include('test-user-yesterday', 'test-user-today')
       end
