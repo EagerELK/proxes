@@ -54,6 +54,13 @@ describe ProxES::Middleware::Security do
         expect(last_indices).not_to include('another-user-today', 'another-user-yesterday')
       end
 
+      it 'succeeds with only the authorized indices if _all indices are specified' do
+        get('/_all/_search', {}, get_env('GET /_all/_search'))
+        expect(last_response).to be_ok
+        expect(last_indices).to include('test-user-today', 'test-user-yesterday')
+        expect(last_indices).not_to include('another-user-today', 'another-user-yesterday')
+      end
+
       it 'succeeds with only the specified indices if they are authorized' do
         get(
           '/test-user-today,test-user-yesterday/_search',
@@ -80,6 +87,57 @@ describe ProxES::Middleware::Security do
             '/another-user-today,another-user-yesterday/_search',
             {},
             get_env('GET /another-user-today,another-user-yesterday/_search')
+          )
+        end.to raise_error Pundit::NotAuthorizedError
+      end
+
+      it 'succeeds if some authorized and specified indices are excluded' do
+        get(
+          '/test-user-*,-test-user-yesterday/_search',
+          {},
+          get_env('GET /test-user-*,-test-user-yesterday/_search')
+        )
+        expect(last_response).to be_ok
+        expect(last_indices).to eq ['test-user-today']
+      end
+
+      fit 'succeeds if some authorized indices are specifically included' do
+        get(
+          '/+test-user-*,-test-user-yesterday/_search',
+          {},
+          get_env('GET /+test-user-*,-test-user-yesterday/_search')
+        )
+        expect(last_response).to be_ok
+        expect(last_indices).to eq ['test-user-today']
+      end
+
+      # Elasticsearch currently sends back a 404 for this.
+      it 'returns a 404 if all specified indices are excluded' do
+        get(
+          '/-test-user-yesterday/_search',
+          {},
+          get_env('GET /-test-user-yesterday/_search')
+        )
+        expect(last_response).to_not be_ok
+        expect(last_response.status).to eq 404
+      end
+
+      it 'fails with an invalid call if some of the excluded indices are unauthorized' do
+        expect do
+          get(
+            '/test-user-*,-another-user-yesterday/_search',
+            {},
+            get_env('GET /test-user-*,-another-user-yesterday/_search')
+          )
+        end.to raise_error Pundit::NotAuthorizedError
+      end
+
+      it 'fails with an invalid call if some of the excluded indices are unauthorized' do
+        expect do
+          get(
+            '/test-user-*,-another-user-yesterday/_search',
+            {},
+            get_env('GET /test-user-*,-another-user-yesterday/_search')
           )
         end.to raise_error Pundit::NotAuthorizedError
       end
