@@ -36,6 +36,10 @@ describe ProxES::Request do
       expect(described_class.path_endpoint('/indexname/_search')).to eq '_search'
     end
 
+    it 'interprets /_all/_search as a search endpoint' do
+      expect(described_class.path_endpoint('/_all/_search')).to eq '_search'
+    end
+
     it 'interprets /_search/scroll as a search endpoint' do
       expect(described_class.path_endpoint('/_search/scroll')).to eq '_search'
     end

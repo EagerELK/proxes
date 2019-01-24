@@ -91,7 +91,7 @@ module ProxES
         return path_parts[-2] if path_parts[-1] == 'count' && path_parts[-2] == '_percolate'
         return path_parts[-2] if path_parts[-1] == 'scroll' && path_parts[-2] == '_search'
 
-        path_parts.find { |part| part[0] == '_' }
+        path_parts.find { |part| part[0] == '_' && part != '_all' }
       end
     end
   end
