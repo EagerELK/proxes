@@ -11,7 +11,7 @@ module ProxES
         include ES
 
         def indices
-          client.indices.get_mapping(index: '_all').keys
+          client.indices.get_mapping(index: '_all', ignore: 404).keys
         end
 
         def fields(index: '_all', names_only: false)
