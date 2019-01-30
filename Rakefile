@@ -17,7 +17,8 @@ begin
   require 'rspec/core/rake_task'
   RSpec::Core::RakeTask.new(:spec)
   task default: :spec
-rescue LoadError
+rescue LoadError => e
+  puts 'Not loading RSpec: ' + e.message
 end
 
 namespace :sequel do

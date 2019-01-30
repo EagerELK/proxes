@@ -17,7 +17,7 @@ module ProxES
             }
           },
           log: ENV['APP_ENV'] == 'development',
-          logger: Ditty::Services::Logger.instance,
+          logger: Ditty::Services::Logger,
           request_timeout: (ENV['ELASTICSEARCH_REQUEST_TIMEOUT'] || 300).to_i
         )
       end
