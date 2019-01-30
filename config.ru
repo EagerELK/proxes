@@ -32,7 +32,7 @@ map '/' do
   # Security
   use ProxES::Middleware::Metrics
   use ProxES::Middleware::ErrorHandling
-  use ProxES::Middleware::Security, Ditty::Services::Logger.instance unless ENV['PROXES_PASSTHROUGH']
+  use ProxES::Middleware::Security, Ditty::Services::Logger unless ENV['PROXES_PASSTHROUGH']
   use Rack::ContentLength
 
   # Forward requests to ES
