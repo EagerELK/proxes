@@ -3,6 +3,7 @@
 require 'wisper'
 require 'ditty/models/audit_log'
 require 'ditty/services/logger'
+require 'browser/browser'
 
 module ProxES
   class Listener
