@@ -12,14 +12,14 @@ module ProxES
 
     def check_node(node)
       node['roles']&.include?(node_type) ||
-        node.dig('attributes', node_type) != 'false' ||
-        node.dig('settings', 'node', node_type) != 'false'
+        node['attributes'] && node.dig('attributes', node_type) != 'false' ||
+        node.dig('settings', 'node') && node.dig('settings', 'node', node_type) != 'false'
     end
 
     def children
       @children ||= source_result['nodes']['nodes'].map do |_id, node|
-        node['name'] if check_node(node)
-      end.compact
+        [node['name'], 1] if check_node(node)
+      end.compact.to_h
     end
 
     def check
@@ -29,7 +29,7 @@ module ProxES
     end
 
     def formatted(val = nil)
-      (val || value).to_i == 1 ? '1 Node' : "#{val} Nodes"
+      (val || value).to_i == 1 ? '1 Node' : "#{val || value} Nodes"
     end
   end
 
