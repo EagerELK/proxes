@@ -53,7 +53,7 @@ Feel free to modify `Gemfile` and `.env` to choose a different database driver a
 ProxES can be run in a Docker container:
 
 ```bash
-docker run -e ELASTICSEARCH_URL=http://elasticsearch -e DATABASE_URL=postgres://username:password@database:5432/proxes --add-host=database:10.0.2.15 --add-host=elasticearch:10.0.2.15 eagerelk/proxes web-proxes
+docker run -e ELASTICSEARCH_URL=https://elastic.pushshift.io -e DATABASE_URL=sqlite://dev.db -p 9292:9292 --mount type=bind,source=`pwd`/dev.db,destination=/usr/src/app/dev.db eagerelk/proxes web-proxes
 ```
 
 ### Docker Compose
