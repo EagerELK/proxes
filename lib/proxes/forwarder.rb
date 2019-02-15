@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require 'proxes/services/es'
-require 'net/http/persistent'
+require 'typhoeus'
+require 'typhoeus/adapters/faraday'
 require 'singleton'
 require 'rack'
 

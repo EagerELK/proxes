@@ -32,15 +32,14 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'webmock'
 
   spec.add_dependency 'activesupport', '>= 3'
-  spec.add_dependency 'browser', '~> 2.5'
   spec.add_dependency 'bcrypt', '~> 3.1'
+  spec.add_dependency 'browser', '~> 2.5'
   spec.add_dependency 'ditty', '>= 0.8.0'
   spec.add_dependency 'elasticsearch', '>= 2'
   spec.add_dependency 'faraday'
   spec.add_dependency 'haml', '~> 5.0'
   spec.add_dependency 'highline', '~> 1.7'
   spec.add_dependency 'logger', '~> 1.0'
-  spec.add_dependency 'net-http-persistent'
   spec.add_dependency 'omniauth', '~> 1.0'
   spec.add_dependency 'omniauth-http-basic', '~> 1.0'
   spec.add_dependency 'omniauth-identity', '~> 1.0'
@@ -52,5 +51,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'sinatra-contrib', '~> 2.0'
   spec.add_dependency 'sinatra-flash', '~> 0.3'
   spec.add_dependency 'tilt', '>= 2'
+  spec.add_dependency 'typhoeus'
   spec.add_dependency 'wisper', '~> 2.0'
 end

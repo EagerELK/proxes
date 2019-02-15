@@ -2,8 +2,8 @@
 
 source 'https://rubygems.org'
 
-gem 'ditty', '>= 0.7.0'
+gem 'ditty'
 gem 'dotenv'
-gem 'sqlite3'
 gem 'proxes'
 gem 'puma'
+gem 'sqlite3'

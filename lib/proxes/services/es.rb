@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'openssl'
+require 'typhoeus'
+require 'typhoeus/adapters/faraday'
 require 'elasticsearch'
 require 'ditty/services/logger'
 
