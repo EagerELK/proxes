@@ -39,6 +39,6 @@ FactoryBot.define do
     pattern { '*' }
     verb { 'GET' }
     index { '*' }
-    role
+    association :role, factory: :role, strategy: :create
   end
 end
