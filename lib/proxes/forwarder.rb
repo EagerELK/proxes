@@ -13,41 +13,61 @@ module ProxES
     include ProxES::Services::ES
 
     def call(env)
-      source = Rack::Request.new(env)
-      response = conn.send(source.request_method.downcase) do |req|
-        source_body = body_from(source)
-        req.body = source_body if source_body
-        req.url source.fullpath == '' ? URI.parse(env['REQUEST_URI']).request_uri : source.fullpath
-      end
-      mangle response
+      rewrite_response(
+        perform_request(
+          Rack::Request.new(
+            rewrite_env(env)
+          )
+        )
+      )
     end
 
-    def mangle(response)
-      headers = (response.respond_to?(:headers) && response.headers) || self.class.normalize_headers(response.to_hash)
+    def rewrite_env(env)
+      env
+    end
+
+    # TODO: Consider moving these methods to the ProxES ES Service to enable reuse
+    def perform_request(request)
+      conn.send(request.request_method.downcase) do |req|
+        body = body_from(request)
+        req.body = body if body
+        req.url request.fullpath == '' ? URI.parse(env['REQUEST_URI']).request_uri : request.fullpath
+      end
+    end
+
+    def rewrite_response(response)
+      headers = (response.respond_to?(:headers) && response.headers) || normalize_headers(response.to_hash)
       body    = response.body || ['']
       body    = [body] unless body.respond_to?(:each)
 
-      # Not sure where this is coming from, but it causes timeouts on the client
-      headers.delete('transfer-encoding')
-      # Ensure that the content length rack middleware kicks in
-      headers.delete('content-length')
+      # Only keep certain headers.
+      # See point 1 on https://www.mnot.net/blog/2011/07/11/what_proxies_must_do
+      # TODO: Extend on the above
+      headers.delete_if { |k, v| !header_list.include? k.downcase }
 
       [response.status, headers, body]
     end
 
+    def header_list
+      [
+        'date',
+        'content-type',
+        'cache-control',
+      ]
+    end
+
     def body_from(request)
-      return nil if request.body.nil? || (Kernel.const_defined?('::Puma::NullIO') && request.body.is_a?(Puma::NullIO))
+      return if request.body.nil? || request.body.respond_to?(:read) == false
 
       request.body.read.tap { |_r| request.body.rewind }
     end
 
-    class << self
-      def normalize_headers(headers)
-        mapped = headers.map do |k, v|
+    def normalize_headers(headers)
+      Rack::Utils::HeaderHash.new(
+        headers.map do |k, v|
           [k, v.is_a?(Array) ? v.join("\n") : v]
-        end
-        Rack::Utils::HeaderHash.new Hash[mapped]
-      end
+        end.to_h
+      )
     end
   end
 end

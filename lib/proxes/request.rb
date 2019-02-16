@@ -40,7 +40,7 @@ module ProxES
     end
 
     def user_id
-      return env['rack.session']['user_id'] if env['rack.session']
+      return session['user_id'] if session['user_id']
 
       env['omniauth.auth']&.uid
     end
