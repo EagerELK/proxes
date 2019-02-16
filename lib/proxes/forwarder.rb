@@ -43,7 +43,7 @@ module ProxES
       # Only keep certain headers.
       # See point 1 on https://www.mnot.net/blog/2011/07/11/what_proxies_must_do
       # TODO: Extend on the above
-      headers.delete_if { |k, v| !header_list.include? k.downcase }
+      headers.delete_if { |k, _v| !header_list.include? k.downcase }
 
       [response.status, headers, body]
     end
