@@ -18,12 +18,14 @@ module ProxES
 
       def call(env)
         request = ProxES::Request.from_env(env)
-        response = @app.call env
-        broadcast(:es_request_failed, request, response) unless (200..299).cover?(response[0])
-        response
+        @app.call(env).tap do |response|
+          unless (200..299).cover?(response[0])
+            broadcast(:es_request_failed, request, response)
+          end
+        end
       rescue Errno::EHOSTUNREACH
         error 'Could not reach Elasticsearch at ' + ENV['ELASTICSEARCH_URL']
-      rescue Errno::ECONNREFUSED, Faraday::ConnectionFailed, SocketError
+      rescue Errno::ECONNREFUSED, ::Faraday::ConnectionFailed, SocketError
         error 'Elasticsearch not listening at ' + ENV['ELASTICSEARCH_URL']
       rescue Pundit::NotAuthorizedError, Ditty::Helpers::NotAuthenticated => e
         broadcast(:es_request_denied, request, e)

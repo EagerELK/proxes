@@ -5,6 +5,7 @@ require 'typhoeus'
 require 'typhoeus/adapters/faraday'
 require 'elasticsearch'
 require 'ditty/services/logger'
+require 'proxes/middleware/faraday'
 
 module ProxES
   module Services
@@ -21,7 +22,9 @@ module ProxES
           log: ENV['APP_ENV'] == 'development',
           logger: Ditty::Services::Logger,
           request_timeout: (ENV['ELASTICSEARCH_REQUEST_TIMEOUT'] || 300).to_i
-        )
+        ) do |faraday|
+          faraday.use ProxES::Middleware::Faraday unless ENV['PROXES_PASSTHROUGH']
+        end
       end
 
       def ssl_store

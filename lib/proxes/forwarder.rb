@@ -28,9 +28,13 @@ module ProxES
 
     # TODO: Consider moving these methods to the ProxES ES Service to enable reuse
     def perform_request(request)
+      request.session['init'] = true # Initialize the session
       conn.send(request.request_method.downcase) do |req|
         body = body_from(request)
         req.body = body if body
+        req.options.context = {
+          user_id: request.session[:user_id]
+        }
         req.url request.fullpath == '' ? URI.parse(env['REQUEST_URI']).request_uri : request.fullpath
       end
     end
