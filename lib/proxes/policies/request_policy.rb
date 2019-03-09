@@ -47,12 +47,12 @@ module ProxES
       end
 
       def resolve
-        return permissions.map(&:index) if request.indices == ['*'] || request.indices == ['_all'] || request.indices.blank?
+        return permissions.map(&:index).uniq if request.indices == ['*'] || request.indices == ['_all'] || request.indices.blank?
 
         request.indices.select do |idx|
           idx = idx[1..-1] if idx[0] == '-'
           permissions.find { |perm| perm.index_regex.match idx }
-        end
+        end.uniq
       end
 
       def permissions
