@@ -12,6 +12,7 @@ module ProxES
 
       def call(request_env)
         request = ProxES::Request.from_env(env_from_faraday(request_env))
+
         request.session['user_id'] = request_env.request.context[:user_id]
         log(request, 'BEFORE')
 

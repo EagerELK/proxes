@@ -54,7 +54,7 @@ module ProxES
       [
         'date',
         'content-type',
-        'cache-control',
+        'cache-control'
       ]
     end
 

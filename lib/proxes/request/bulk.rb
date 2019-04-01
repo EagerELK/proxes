@@ -6,7 +6,7 @@ require 'proxes/policies/request/bulk_policy'
 module ProxES
   class Request
     class Bulk < Multi
-      INDICES_REGEX = /"(index|delete|create|update)".*"_index"\s*:\s*"(.*?)"/
+      INDICES_REGEX = /"(index|delete|create|update)".*"_index"\s*:\s*"(.*?)"/.freeze
 
       attr_reader :index, :type
 

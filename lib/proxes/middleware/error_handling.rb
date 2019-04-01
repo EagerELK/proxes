@@ -19,9 +19,7 @@ module ProxES
       def call(env)
         request = ProxES::Request.from_env(env)
         @app.call(env).tap do |response|
-          unless (200..299).cover?(response[0])
-            broadcast(:es_request_failed, request, response)
-          end
+          broadcast(:es_request_failed, request, response) unless (200..299).cover?(response[0])
         end
       rescue Errno::EHOSTUNREACH
         error 'Could not reach Elasticsearch at ' + ENV['ELASTICSEARCH_URL']

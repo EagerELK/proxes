@@ -18,9 +18,7 @@ module ProxES
 
       def parse
         parts = path_parts
-        if parts[0] == endpoint
-          parts.unshift('_all')
-        end
+        parts.unshift('_all') if parts[0] == endpoint
         @index ||= check_part(path_parts[0])
         @type  ||= check_part(path_parts[2])
       end

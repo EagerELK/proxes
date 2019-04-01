@@ -6,7 +6,7 @@ require 'proxes/policies/request/mget_policy'
 module ProxES
   class Request
     class Mget < Multi
-      INDICES_REGEX = /"(_index)"\s*:\s*"(.*?)"/
+      INDICES_REGEX = /"(_index)"\s*:\s*"(.*?)"/.freeze
 
       attr_reader :index, :type
 

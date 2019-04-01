@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ProxES
   class TimedCache
     attr_reader :timeout
