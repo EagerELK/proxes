@@ -32,9 +32,7 @@ module ProxES
       conn.send(request.request_method.downcase) do |req|
         body = body_from(request)
         req.body = body if body
-        req.options.context = {
-          user_id: request.session[:user_id]
-        }
+        req.options.context = { user_id: request.session[:user_id] }
         req.url request.fullpath == '' ? URI.parse(env['REQUEST_URI']).request_uri : request.fullpath
       end
     end

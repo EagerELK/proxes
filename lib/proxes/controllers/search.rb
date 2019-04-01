@@ -10,10 +10,14 @@ module ProxES
     set base_path: "#{settings.map_path}/search"
     set view_folder: ::Ditty::ProxES.view_folder
 
+    def search_service
+      ProxES::Services::Search.new(user: current_user)
+    end
+
     helpers do
       def fields(indices, names_only)
         standard = { '_index' => 'text', '_type' => 'text', '_id' => 'text' }
-        standard.merge ProxES::Services::Search.fields(index: indices, names_only: names_only)
+        standard.merge search_service.fields(index: indices, names_only: names_only)
       end
     end
 
@@ -24,11 +28,11 @@ module ProxES
       param :count, Integer, min: 0, default: 25
       from = ((params[:page] - 1) * params[:count])
       params[:q] = '*' if params[:q].blank?
-      result = ProxES::Services::Search.search(params[:q], index: params[:indices], from: from, size: params[:count])
+      result = search_service.search(params[:q], index: params[:indices], from: from, size: params[:count])
       haml :"#{view_location}/index",
            locals: {
              title: 'Search',
-             indices: ProxES::Services::Search.indices,
+             indices: search_service.indices,
              fields: fields(params[:indices], true),
              result: result
            }
@@ -44,14 +48,14 @@ module ProxES
     get '/indices/?' do
       authorize self, :indices
 
-      json ProxES::Services::Search.indices
+      json search_service.indices
     end
 
     get '/values/:field/?:indices?/?' do |field|
       authorize self, :values
 
       param :size, Integer, min: 0, default: 25
-      json ProxES::Services::Search.values(field, size: params[:size], index: params[:indices])
+      json search_service.values(field, size: params[:size], index: params[:indices])
     end
   end
 end

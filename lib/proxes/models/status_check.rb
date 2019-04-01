@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-require 'proxes/services/es'
+require 'proxes/timed_cache'
 
 module ProxES
   class StatusCheck < Sequel::Model
     plugin :single_table_inheritance, :type
-
-    extend ProxES::Services::ES
 
     SOURCE_CALLS = {
       health: %i[cluster health],
@@ -47,9 +45,19 @@ module ProxES
     end
 
     class << self
+      def search_client=(client)
+        @@search_client = client
+      end
+
+      def search_client
+        @@search_client
+      end
+
       def source_result(source)
-        @source_result ||= Hash.new do |h, k|
-          h[k] = client
+        raise 'No search client' unless search_client
+
+        @source_result ||= TimedCache.new do |h, k|
+          h[k] = search_client
           SOURCE_CALLS[source.to_sym].each do |call|
             h[k] = h[k].send(call)
           end
