@@ -6,6 +6,7 @@ require 'proxes/forwarder'
 require 'proxes/models/permission'
 require 'elasticsearch'
 require 'active_support/core_ext/hash/except'
+require 'active_support/hash_with_indifferent_access'
 
 shared_examples 'Multi Request' do |verb, endpoint|
   before(:all) do
@@ -50,7 +51,7 @@ shared_examples 'Multi Request' do |verb, endpoint|
     context 'user with access' do
       before do
         ProxES::Permission.find_or_create(user: user, verb: verb, pattern: "/#{endpoint}", index: 'test-user-*')
-        env 'rack.session', 'user_id' => user.id
+        env 'rack.session', ActiveSupport::HashWithIndifferentAccess.new('user_id' => user.id)
       end
 
       it 'succeeds with indices the user has access to' do
@@ -82,7 +83,7 @@ shared_examples 'Multi Request' do |verb, endpoint|
 
     context 'user without access' do
       before do
-        env 'rack.session', 'user_id' => user.id
+        env 'rack.session', ActiveSupport::HashWithIndifferentAccess.new('user_id' => user.id)
       end
 
       it 'fails with an invalid for specified indices' do
@@ -117,7 +118,7 @@ shared_examples 'Multi Request' do |verb, endpoint|
     context 'user with access' do
       before do
         ProxES::Permission.find_or_create(user: user, verb: verb, pattern: "/*/?#{endpoint}", index: 'test-user-*')
-        env 'rack.session', 'user_id' => user.id
+        env 'rack.session', ActiveSupport::HashWithIndifferentAccess.new('user_id' => user.id)
       end
 
       it 'succeeds with indices the user has access to' do
@@ -173,7 +174,7 @@ shared_examples 'Multi Request' do |verb, endpoint|
 
     context 'user without access' do
       before do
-        env 'rack.session', 'user_id' => user.id
+        env 'rack.session', ActiveSupport::HashWithIndifferentAccess.new('user_id' => user.id)
       end
     end
   end

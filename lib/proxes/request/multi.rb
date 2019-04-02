@@ -10,6 +10,8 @@ module ProxES
       # which negates this. Depending on your needs, you can enable / disable this
       def body_indices
         # TODO: Do / Don't do this depending on rest.action.multi.allow_explicit_index
+        return [] if body.nil?
+
         @body_indices ||= begin
           body.read.scan(self.class.indices_regex).tap { |_r| body.rewind }
         end.map { |e| e[1] }.compact.uniq
