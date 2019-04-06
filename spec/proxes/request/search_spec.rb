@@ -71,15 +71,15 @@ describe ProxES::Request::Search do
                             'REQUEST_URI' => path)
       end
 
-      it "provides the index for #{path} as #{values[:index]}" do
+      it "provides the index for #{path} as #{values[:index].nil? ? 'nil' : values[:index]}" do
         expect(subject.index).to eq values[:index]
       end
 
-      it "provides the type for #{path} as #{values[:type]}" do
+      it "provides the type for #{path} as #{values[:type].nil? ? 'nil' : values[:type]}" do
         expect(subject.type).to eq values[:type]
       end
 
-      it "provides the id for #{path} as #{values[:id]}" do
+      it "provides the id for #{path} as #{values[:id].nil? ? 'nil' : values[:id]}" do
         expect(subject.id).to eq values[:id]
       end
     end

@@ -51,23 +51,25 @@ describe ProxES::Request::Mapping do
   end
 
   {
-    '/_all/_mapping' => {
-      endpoint: nil,
+    '/_mapping' => {
       index: [],
-      type: nil,
-      id: nil
+      type: nil
+    },
+    '/_all/_mapping' => {
+      index: [],
+      type: nil
     },
     '/some-index/_mapping' => {
-      endpoint: nil,
       index: ['some-index'],
-      type: [],
-      id: nil
+      type: nil
     },
-    '/some-index/_mapping/_doc' => {
-      endpoint: nil,
+    '/some-index/_mapping/some-type' => {
       index: ['some-index'],
-      type: ['some-type'],
-      id: ['some-id']
+      type: ['some-type']
+    },
+    '/some-index/_mapping/type1,type2' => {
+      index: ['some-index'],
+      type: ['type1', 'type2']
     }
   }.each do |path, values|
     context 'accessors' do
@@ -77,16 +79,12 @@ describe ProxES::Request::Mapping do
                             'REQUEST_URI' => path)
       end
 
-      it "provides the index for #{path} as #{values[:index]}" do
+      it "provides the index for #{path} as #{values[:index].nil? ? 'nil' : values[:index]}" do
         expect(subject.index).to eq values[:index]
       end
 
-      it "provides the type for #{path} as #{values[:type]}" do
+      it "provides the type for #{path} as #{values[:type].nil? ? 'nil' : values[:type]}" do
         expect(subject.type).to eq values[:type]
-      end
-
-      it "provides the id for #{path} as #{values[:id]}" do
-        expect(subject.id).to eq values[:id]
       end
     end
   end
