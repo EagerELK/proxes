@@ -5,6 +5,7 @@ require 'proxes/middleware/security'
 require 'proxes/forwarder'
 require 'proxes/models/permission'
 require 'elasticsearch'
+require 'active_support/hash_with_indifferent_access'
 
 describe ProxES::Middleware::Security do
   def app
@@ -44,7 +45,7 @@ describe ProxES::Middleware::Security do
     context 'user with access' do
       before do
         ProxES::Permission.find_or_create(user: user, verb: 'GET', pattern: '/*/?_search', index: 'test-user-*')
-        env 'rack.session', 'user_id' => user.id
+        env 'rack.session', ActiveSupport::HashWithIndifferentAccess.new('user_id' => user.id)
       end
 
       it 'succeeds with only the authorized indices if no index is specified' do
@@ -135,7 +136,7 @@ describe ProxES::Middleware::Security do
 
     context 'user without access' do
       before do
-        env 'rack.session', 'user_id' => user.id
+        env 'rack.session', ActiveSupport::HashWithIndifferentAccess.new('user_id' => user.id)
       end
 
       it 'fails with specified indices' do

@@ -6,6 +6,7 @@ require 'proxes/forwarder'
 require 'proxes/models/permission'
 require 'elasticsearch'
 require 'csv'
+require 'active_support/hash_with_indifferent_access'
 
 describe ProxES do
   def app
@@ -50,7 +51,7 @@ describe ProxES do
     context 'user with access' do
       before do
         ProxES::Permission.find_or_create(user: user, verb: 'GET', pattern: '/_cat/indices', index: 'test-user-*')
-        env 'rack.session', 'user_id' => user.id
+        env 'rack.session', ActiveSupport::HashWithIndifferentAccess.new('user_id' => user.id)
       end
 
       it 'succeeds with no indices specified' do
@@ -74,7 +75,7 @@ describe ProxES do
 
     context 'user without access' do
       before do
-        env 'rack.session', 'user_id' => user.id
+        env 'rack.session', ActiveSupport::HashWithIndifferentAccess.new('user_id' => user.id)
       end
 
       it 'fails with an invalid call for specified indices' do

@@ -2,6 +2,7 @@
 
 require 'spec_helper'
 require 'proxes/middleware/security'
+require 'active_support/hash_with_indifferent_access'
 
 describe ProxES::Middleware::Security do
   def app
@@ -21,7 +22,7 @@ describe ProxES::Middleware::Security do
 
         before do
           # Log in
-          env 'rack.session', 'user_id' => user.id
+          env 'rack.session', ActiveSupport::HashWithIndifferentAccess.new('user_id' => user.id)
         end
 
         it 'authorizes calls that return data' do
