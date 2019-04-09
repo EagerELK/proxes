@@ -2,6 +2,7 @@
 
 require 'pundit'
 require 'faraday'
+require 'proxes/policies/request_policy'
 
 module ProxES
   module Middleware
@@ -28,14 +29,14 @@ module ProxES
       def env_from_faraday(request_env)
         uri = URI(request_env[:url])
         {
-          'RACK_INPUT' => request_env[:body],
-          'PATH_INFO' => uri.path,
-          'REQUEST_PATH' => uri.path,
-          'REQUEST_METHOD' => request_env[:method].to_s.upcase,
-          'QUERY_STRING' => uri.query,
+          'rack.input' => request_env[:body] ? StringIO.new(request_env[:body]) : nil,
+          'rack.url_scheme' => uri.scheme,
           'HTTP_HOST' => uri.host,
-          'SERVER_PORT' => uri.port,
-          'rack.url_scheme' => uri.scheme
+          'PATH_INFO' => uri.path,
+          'QUERY_STRING' => uri.query,
+          'REQUEST_METHOD' => request_env[:method].to_s.upcase,
+          'REQUEST_PATH' => uri.path,
+          'SERVER_PORT' => uri.port
         }.merge(request_env[:request_headers])
       end
 

@@ -18,7 +18,7 @@ shared_examples 'Multi Request' do |verb, endpoint|
   end
 
   def app
-    ProxES::Middleware::Security.new(ProxES::Forwarder.instance)
+    ProxES::Forwarder.instance
   end
 
   def client

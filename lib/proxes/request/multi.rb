@@ -13,7 +13,7 @@ module ProxES
         return [] if body.nil?
 
         @body_indices ||= begin
-          body.read.scan(self.class.indices_regex).tap { |_r| body.rewind }
+          body.read.scan(self.class.indices_regex).tap { body.rewind }
         end.map { |e| e[1] }.compact.uniq
       end
 

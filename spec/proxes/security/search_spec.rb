@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'proxes/middleware/security'
 require 'proxes/forwarder'
 require 'proxes/models/permission'
 require 'elasticsearch'
 require 'active_support/hash_with_indifferent_access'
 
-describe ProxES::Middleware::Security do
+describe ProxES do
   def app
-    ProxES::Middleware::Security.new(ProxES::Forwarder.instance)
+    ProxES::Forwarder.instance
   end
 
   def client

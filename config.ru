@@ -26,13 +26,11 @@ map '/' do
   require 'ditty/services/logger'
   require 'proxes/middleware/metrics'
   require 'proxes/middleware/error_handling'
-  require 'proxes/middleware/security'
   require 'proxes/forwarder'
 
   # Security
   use ProxES::Middleware::Metrics
   use ProxES::Middleware::ErrorHandling
-  use ProxES::Middleware::Security, Ditty::Services::Logger unless ENV['PROXES_PASSTHROUGH']
   use Rack::ContentLength
 
   # Forward requests to ES
