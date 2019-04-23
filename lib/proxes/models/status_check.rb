@@ -45,19 +45,19 @@ module ProxES
     end
 
     class << self
-      def search_client=(client)
-        @@search_client = client
+      def es_client=(client)
+        @@es_client = client
       end
 
-      def search_client
-        @@search_client
+      def es_client
+        @@es_client
       end
 
       def source_result(source)
-        raise 'No search client' unless search_client
+        raise 'No search client' unless es_client
 
         @source_result ||= TimedCache.new do |h, k|
-          h[k] = search_client
+          h[k] = es_client
           SOURCE_CALLS[source.to_sym].each do |call|
             h[k] = h[k].send(call)
           end

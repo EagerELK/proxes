@@ -15,7 +15,7 @@ module ProxES
     # 200 OK if all the checks pass, or 500 if any of the checks fail.
     get '/check' do
       checks = []
-      ProxES::StatusCheck.search_client = search_client
+      ProxES::StatusCheck.es_client = client_with_context(user_id: current_user&.id)
 
       begin
         # Programmed checks
@@ -52,11 +52,6 @@ module ProxES
           json checks: checks, passed: passed, code: code
         end
       end
-    end
-
-    def search_client
-      client.transport.connections.get_connection.connection.options.context = { user_id: current_user&.id }
-      client
     end
   end
 end

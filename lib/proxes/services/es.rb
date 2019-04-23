@@ -27,6 +27,10 @@ module ProxES
         end
       end
 
+      def client_with_context(context = {})
+        client.tap { |obj| obj.transport.connections.get_connection.connection.options.context = context }
+      end
+
       def ssl_store
         store = OpenSSL::X509::Store.new
         store.set_default_paths

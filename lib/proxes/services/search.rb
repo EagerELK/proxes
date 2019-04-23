@@ -16,12 +16,12 @@ module ProxES
       end
 
       def indices
-        search_client.indices.get_mapping(index: '_all', ignore: 404).keys
+        es_client.indices.get_mapping(index: '_all', ignore: 404).keys
       end
 
       def fields(index: '_all', names_only: false)
         fields = {}
-        search_client.indices.get_mapping(index: index).each do |_idx, index_map|
+        es_client.indices.get_mapping(index: index).each do |_idx, index_map|
           index_map['mappings'].each do |_type, type_map|
             next if type_map['properties'].nil?
 
@@ -40,15 +40,15 @@ module ProxES
       end
 
       def values(field, index = '_all', size = 25)
-        result = search_client.search index: index, body: { size: 0, aggs: { values: { terms: { field: field, size: size } } } }
+        result = es_client.search index: index, body: { size: 0, aggs: { values: { terms: { field: field, size: size } } } }
         result['aggregations']['values']['buckets'].map { |e| e['key'] }
       end
 
       def search(qs, options = {})
-        search_client.search options.merge(q: qs) # , explain: true
+        es_client.search options.merge(q: qs) # , explain: true
       end
 
-      def search_client
+      def es_client
         client.transport.connections.get_connection.connection.options.context = { user_id: user&.id }
         client
       end
