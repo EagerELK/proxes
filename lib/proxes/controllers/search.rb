@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 require 'active_support/core_ext/object/blank'
-require 'ditty/controllers/application'
+require 'ditty/controllers/application_controller'
 require 'proxes/services/search'
 require 'proxes/policies/search_policy'
 
 module ProxES
-  class Search < Ditty::Application
+  class Search < Ditty::ApplicationController
     set base_path: "#{settings.map_path}/search"
     set view_folder: ::Ditty::ProxES.view_folder
 

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'ditty/components/app'
+require 'ditty/components/ditty'
 require 'ditty/components/proxes'
 
-Ditty.component(:app)
+Ditty.component(:ditty)
 Ditty.component(:proxes)
 
-require 'ditty/controllers/application'
-Ditty::Application.set :map_path, '/_proxes'
+require 'ditty/controllers/application_controller'
+Ditty::ApplicationController.set :map_path, '/_proxes'

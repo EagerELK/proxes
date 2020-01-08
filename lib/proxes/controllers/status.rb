@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require 'ditty/controllers/application'
+require 'ditty/controllers/application_controller'
 require 'proxes/policies/status_policy'
 require 'proxes/models/status_check'
 require 'proxes/services/es'
 
 module ProxES
-  class Status < Ditty::Application
+  class Status < Ditty::ApplicationController
     set view_folder: ::Ditty::ProxES.view_folder
 
     include ProxES::Services::ES

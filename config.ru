@@ -2,6 +2,14 @@
 
 require 'dotenv/load'
 
+# Last Gasp Effort to catch the error
+require 'ditty/middleware/error_catchall'
+use ::Ditty::Middleware::ErrorCatchall if ENV['APP_ENV'] == 'production'
+
+use Rack::Static, root: 'public', urls: ['/favicon.ico', '/css', '/images', '/js'], header_rules: [
+  [:all, { 'Cache-Control' => 'public, max-age=31536000' }]
+]
+
 # Session
 use Rack::Session::Cookie,
     key: '_ProxES_session',
@@ -18,15 +26,20 @@ use OmniAuth::Builder do
 end
 
 map '/_proxes' do
+  require 'ditty/middleware/accept_extension'
+  require 'rack/content_type'
+
+  use Ditty::Middleware::AcceptExtension
+  use Rack::ContentType
   run Rack::URLMap.new Ditty::Components.routes
 end
 
 map '/' do
   # Proxy all Elasticsearch requests
   require 'ditty/services/logger'
-  require 'proxes/middleware/metrics'
-  require 'proxes/middleware/error_handling'
   require 'proxes/forwarder'
+  require 'proxes/middleware/error_handling'
+  require 'proxes/middleware/metrics'
 
   # Security
   use ProxES::Middleware::Metrics

@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'ditty/controllers/component'
+require 'ditty/controllers/component_controller'
 require 'proxes/models/permission'
 require 'ditty/policies/user_policy'
 require 'ditty/policies/role_policy'
 require 'proxes/policies/permission_policy'
 
 module ProxES
-  class Permissions < Ditty::Component
+  class Permissions < Ditty::ComponentController
     set model_class: Permission
     set view_folder: ::Ditty::ProxES.view_folder
 

@@ -1,36 +1,15 @@
-.sidebar-nav.navbar-collapse
-  %ul.nav.nav-pills.nav-stacked
-    %li
-      %a{ href: "#{settings.map_path}/" }
-        %img{ src: '/_proxes/images/proxes-logo.png', height: '51px', title: 'ProxES', alt: 'ProxES' }
-    - if authenticated?
-      - Ditty::Components.navigation.each do |item|
-        - if item[:target].nil? || policy(item[:target]).list?
-          - if item[:group]
-            %li
-              %a{ href: '#' }
-                %i.fa.fa-fw{ class: "fa-#{item[:icon]}" }
-                =item[:group]
-                %span.fa.arrow
-              %ul.nav.nav-second-level
-                - item[:items].each do |sub_item|
-                  - if sub_item[:target].nil? || policy(sub_item[:target]).list?
-                    %li
-                      %a{ href: "#{settings.map_path}#{sub_item[:link]}" }
-                        %i.fa.fa-fw{ class: "fa-#{sub_item[:icon]}" }
-                        = sub_item[:text]
-          - else
-            %li
-              %a{ href: "#{settings.map_path}#{item[:link]}" }
-                %i.fa.fa-fw{ class: "fa-#{item[:icon]}" }
-                = item[:text]
-    - else
-      %li
-        %a{ href: "#{settings.map_path}/auth/login" }
-          %i.fa.fa-user.fa-fw
-          Log In
-      - if policy(::Ditty::User).register?
-        %li
-          %a{ href: "#{settings.map_path}/auth/register" }
-            %i.fa.fa-pencil-square-o.fa-fw
-            Register
+/ Sidebar
+%ul#accordionSidebar.navbar-nav.bg-gradient-primary.sidebar.sidebar-dark.accordion
+  / Sidebar - Brand
+  %a.sidebar-brand.d-flex.align-items-center.justify-content-center{ href: config('ditty.home_page', settings.map_path || '/') }
+    .sidebar-brand-icon.rotate-n-15
+      %i.fas.fa-laugh-wink
+    .sidebar-brand-text.mx-3
+      = config('ditty.title', 'Ditty')
+
+  / Divider
+  %hr.sidebar-divider.my-0
+  = haml :'partials/navitems'
+
+  .text-center.d-none.d-md-inline
+    %button#sidebarToggle.rounded-circle.border-0

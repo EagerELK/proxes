@@ -5,10 +5,10 @@ require 'dotenv/load'
 require 'rake'
 require 'ditty'
 require 'ditty/db' if ENV['DATABASE_URL']
-require 'ditty/components/app'
+require 'ditty/components/ditty'
 require 'proxes'
 
-Ditty.component :app
+Ditty.component :ditty
 Ditty.component :proxes
 
 Ditty::Components.tasks

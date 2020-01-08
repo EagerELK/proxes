@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'ditty/controllers/component'
+require 'ditty/controllers/component_controller'
 require 'proxes/policies/status_check_policy'
 require 'proxes/models/status_check'
 
 module ProxES
-  class StatusChecks < Ditty::Component
+  class StatusChecks < Ditty::ComponentController
     set model_class: StatusCheck
     set view_folder: ::Ditty::ProxES.view_folder
 
