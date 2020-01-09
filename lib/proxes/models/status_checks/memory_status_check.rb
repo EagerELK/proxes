@@ -8,7 +8,7 @@ module ProxES
     end
 
     def children
-      @children ||= source_result['nodes']['nodes'].values.map do |node|
+      @children ||= source_result['nodes'].values.map do |node|
         [
           node['name'],
           node['os']['mem']['used_percent'].to_f

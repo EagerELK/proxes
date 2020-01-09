@@ -34,7 +34,7 @@ module ProxES
         checks.unshift(
           text: 'Cluster Reachable',
           passed: true,
-          value: ProxES::StatusCheck.source_result('health')['cluster_name']['cluster_name']
+          value: ProxES::StatusCheck.source_result['health']['cluster_name']['cluster_name']
         )
       rescue Faraday::Error => e
         checks << { text: 'Cluster Reachable', passed: false, value: e.message }

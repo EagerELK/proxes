@@ -7,7 +7,7 @@ module ProxES
     end
 
     def children
-      @children ||= source_result['nodes']['nodes'].values.map do |node|
+      @children ||= source_result['nodes'].values.map do |node|
         value = node['os']['cpu_percent'] || node['os']['cpu']['percent']
         [
           node['name'],

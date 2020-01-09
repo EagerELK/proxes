@@ -7,7 +7,7 @@ module ProxES
     end
 
     def children
-      @children ||= source_result['nodes']['nodes'].values.map do |node|
+      @children ||= source_result['nodes'].values.map do |node|
         next if node['attributes'] && node['attributes']['data'] == 'false'
         next if node['roles'] && node['roles'].include?('data') == false
 

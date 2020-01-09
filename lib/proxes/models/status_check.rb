@@ -31,7 +31,7 @@ module ProxES
     end
 
     def source_result
-      self.class.source_result(source)
+      self.class.source_result[source]
     end
 
     def children; end
@@ -53,12 +53,12 @@ module ProxES
         @@es_client
       end
 
-      def source_result(source)
+      def source_result
         raise 'No search client' unless es_client
 
-        @source_result ||= TimedCache.new do |h, k|
+        @@source_result ||= TimedCache.new do |h, k|
           h[k] = es_client
-          SOURCE_CALLS[source.to_sym].each do |call|
+          SOURCE_CALLS[k.to_sym].each do |call|
             h[k] = h[k].send(call)
           end
           h[k]

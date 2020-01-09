@@ -3,7 +3,7 @@
 module ProxES
   class ClusterHealthStatusCheck < StatusCheck
     def value
-      source_result['status']['status']
+      source_result['status']
     end
 
     def check

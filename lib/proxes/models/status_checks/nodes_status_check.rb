@@ -17,9 +17,9 @@ module ProxES
     end
 
     def children
-      @children ||= source_result['nodes']['nodes'].map do |_id, node|
+      @children ||= source_result['nodes']&.map do |_id, node|
         [node['name'], 1] if check_node(node)
-      end.compact.to_h
+      end&.compact.to_h
     end
 
     def check
