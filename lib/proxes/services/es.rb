@@ -19,7 +19,7 @@ module ProxES
               cert_store: ssl_store
             }
           },
-          log: ENV['APP_ENV'] == 'development',
+          log: ENV['APP_ENV'] == 'development' || (ENV['ES_DEBUG'] || 0).to_i == 1,
           logger: Ditty::Services::Logger,
           request_timeout: (ENV['ELASTICSEARCH_REQUEST_TIMEOUT'] || 300).to_i
         ) do |faraday|
