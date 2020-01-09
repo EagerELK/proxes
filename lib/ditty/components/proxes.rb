@@ -27,19 +27,19 @@ module Ditty
     def self.routes
       load
       {
-        '/search' => ::ProxES::Search,
-        '/status' => ::ProxES::Status,
-        '/status-checks' => ::ProxES::StatusChecks,
-        '/permissions' => ::ProxES::Permissions
+        '/search' => ::ProxES::SearchController,
+        '/status' => ::ProxES::StatusController,
+        '/status-checks' => ::ProxES::StatusChecksController,
+        '/permissions' => ::ProxES::PermissionsController
       }
     end
 
     def self.navigation
       load
       [
-        { order: 0, link: '/status/check', text: 'Status Check', target: ::ProxES::Status, icon: 'dashboard' },
+        { order: 0, link: '/status/check', text: 'Status Check', target: ::ProxES::StatusController, icon: 'dashboard' },
         { order: 1, link: '/status-checks', text: 'Mange Status Checks', target: ::ProxES::StatusCheck, icon: 'dashboard' },
-        { order: 1, link: '/search', text: 'Search', target: ::ProxES::Search, icon: 'search' },
+        { order: 1, link: '/search', text: 'Search', target: ::ProxES::SearchController, icon: 'search' },
         { order: 15, link: '/permissions', text: 'Permissions', target: ::ProxES::Permission, icon: 'check-square' }
       ]
     end

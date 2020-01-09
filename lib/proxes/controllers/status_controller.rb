@@ -6,10 +6,14 @@ require 'proxes/models/status_check'
 require 'proxes/services/es'
 
 module ProxES
-  class Status < Ditty::ApplicationController
+  class StatusController < Ditty::ApplicationController
     set view_folder: ::Ditty::ProxES.view_folder
 
     include ProxES::Services::ES
+
+    def self.policy_class
+      ProxES::StatusPolicy
+    end
 
     # This provides a URL that can be polled by a monitoring system. It will return
     # 200 OK if all the checks pass, or 500 if any of the checks fail.

@@ -7,7 +7,7 @@ require 'ditty/policies/role_policy'
 require 'proxes/policies/permission_policy'
 
 module ProxES
-  class Permissions < Ditty::ComponentController
+  class PermissionsController < Ditty::ComponentController
     set model_class: Permission
     set view_folder: ::Ditty::ProxES.view_folder
 

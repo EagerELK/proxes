@@ -6,9 +6,14 @@ require 'proxes/services/search'
 require 'proxes/policies/search_policy'
 
 module ProxES
-  class Search < Ditty::ApplicationController
+  class SearchController < Ditty::ApplicationController
     set base_path: "#{settings.map_path}/search"
     set view_folder: ::Ditty::ProxES.view_folder
+    set view_location: 'search'
+
+    def self.policy_class
+      ProxES::SearchPolicy
+    end
 
     def search_service
       ProxES::Services::Search.new(user: current_user)
