@@ -10,7 +10,10 @@ module ProxES
     end
 
     def [](key)
-      store.delete(key) if last_fetched.key?(key) && (Time.now - last_fetched[key]) >= timeout
+      return store[key] if store.has_key?(key) && age(key) < timeout
+
+      store.delete(key)
+      last_fetched[key] = Time.now
       store[key]
     end
 
@@ -21,6 +24,12 @@ module ProxES
 
     def last_fetched
       @last_fetched ||= {}
+    end
+
+    def age(key)
+      return 0 unless last_fetched.has_key?(key)
+
+      Time.now - last_fetched[key]
     end
 
     def method_missing(method, *args, &block)
