@@ -15,6 +15,19 @@ module ProxES
       ProxES::StatusPolicy
     end
 
+    get '/pools/?' do
+      pools = client_with_context(user_id: current_user&.id).cat.thread_pool(format: 'json')
+
+      respond_to do |format|
+        format.html do
+          haml :'status/pools', locals: { title: 'Clustr Pools', pools: pools }
+        end
+        format.json do
+          json result
+        end
+      end
+    end
+
     # This provides a URL that can be polled by a monitoring system. It will return
     # 200 OK if all the checks pass, or 500 if any of the checks fail.
     get '/check' do

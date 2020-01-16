@@ -1,0 +1,18 @@
+.row
+  .col-md-12
+    %table.table.table-striped.table-bordered.table-hover
+      %thead.thead-dark
+        %tr
+          %th Node
+          %th Pool
+          %th Active
+          %th Queued
+          %th Rejected
+      %tbody
+        - pools.each do |pool|
+          %tr{ class: pool['queue'] < pool['active'] * 12.5 ? '' : 'table-warning' }
+            %td= pool['node_name']
+            %td= pool['name']
+            %td= pool['active']
+            %td= pool['queue']
+            %td= pool['rejected']
